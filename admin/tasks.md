@@ -6,15 +6,19 @@ Record your weekly meeting time (outside of the lab) here:
 
 ## Week 4
 
-Everyone: create application skeleton - meeting 14:00 19 Mar
+Everyone: Familiarizing ourself with the game - meeting 15:00 to 17:00 13 Mar
+Everyone: create application skeleton and made necessary classes- meeting 15:00 to 17:00 13 Mar
 
 ## Week 5
 
-Zhang San: Task 3 isPlayerStateWellFormed - 23 Mar
+[//]: # ()
+[//]: # (Zhang San: Task 3 isPlayerStateWellFormed - 23 Mar)
 
-Jane Bloggs: Task 5 drawTileFromBag - 23 Mar
+[//]: # ()
+[//]: # (Jane Bloggs: Task 5 drawTileFromBag - 23 Mar)
 
-Erika Mustermann: Task 6 refillFactories - 25 Mar (depends on Task 5)
+[//]: # ()
+[//]: # (Erika Mustermann: Task 6 refillFactories - 25 Mar &#40;depends on Task 5&#41;)
 
 ## Week 6
 
