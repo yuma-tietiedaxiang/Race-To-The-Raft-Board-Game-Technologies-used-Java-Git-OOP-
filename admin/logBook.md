@@ -35,7 +35,7 @@ Ass 2 gitlab page:
 
 2. elements:
 
-   1. **game**
+   1. **checkpoint**
 
       fields:
 
@@ -208,3 +208,4 @@ Ass 2 gitlab page:
    If a there are no more fire tiles remaining AND the player is required to draw one; or
 
    If there are no more pathway cards in any of the decks AND the player is required to draw a card.
+
