@@ -6,11 +6,23 @@ public class Square {
     boolean hasCat;
     boolean hasFire;
 
-    public Colour setcolour(Colour colour){}
-    public Colour getcolour(){}
-    public boolean setHasCat(boolean b){}
-    public boolean getHasCat(){}
-    public boolean setHasFire(boolean b){}
-    public boolean getHasFire(){}
+    public void setColour(Colour colour){
+        this.colour = colour;
+    }
+    public Colour getcolour(){
+        return colour;
+    }
+    public void setHasCat(boolean hasCat){
+        this.hasCat = hasCat;
+    }
+    public boolean getHasCat(){
+        return hasCat;
+    }
+    public void setHasFire(boolean hasFire){
+        this.hasFire = hasFire;
+    }
+    public boolean getHasFire(){
+        return hasFire;
+    }
 
 }

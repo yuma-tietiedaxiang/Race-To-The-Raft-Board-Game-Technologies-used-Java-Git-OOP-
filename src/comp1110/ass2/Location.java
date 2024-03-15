@@ -7,14 +7,29 @@ public class Location {
     int row;
     int column;
 
-    public Location(int row,int column){}//constuctor
+    //Constructor
+    public Location(int row,int column){
+        this.row = row;
+        this.column = column;
+    }
 
-    public int setRow(int row){}
-    public int setColumn(int column){}
-    public int getRow(){}
-    public int getColumn(){}
+    public void setRow(int row){
+        this.row = row;
+    }
+    public void setColumn(int column){
+        this.column = column;
+    }
+    public int getRow(){
+        return row;
+    }
+    public int getColumn(){
+        return column;
+    }
 
-    public String toString(){}
+    @Override
+    public String toString() {
+        return "" + row + column;
+    }
 
 
 }

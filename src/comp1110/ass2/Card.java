@@ -10,7 +10,9 @@ public class Card {
 
     public Card(){}//constructor
 
-    public Location setLocation(int row, int column){}
+    public void setLocation(int row, int column){
 
-    public Location[] getAllLocations(Location mianLocation){}//get all locations on this tile
+    }
+
+//    public Location[] getAllLocations(Location mianLocation){}//get all locations on this tile
 }

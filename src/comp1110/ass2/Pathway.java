@@ -7,12 +7,12 @@ import comp1110.ass2.Card;
 public class Pathway extends Card{
 
     @Override
-    public Location setLocation(int b,int a){
-        return null;
+    public void setLocation(int b,int a){
+//        return null;
     }
 
-    public Square setOneSquare(Colour c){
-        squares[0][0].setcolour(c);
+    public void setOneSquare(Colour c){
+        squares[0][0].setColour(c);
     }
 
 }

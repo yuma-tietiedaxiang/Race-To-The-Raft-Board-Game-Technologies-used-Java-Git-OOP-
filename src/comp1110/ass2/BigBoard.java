@@ -18,10 +18,9 @@ public class BigBoard {
         //initialization
     }
 
-    public BigBoard changeState(Location location,Colour colour, boolean hasCat, boolean hasFire){
+    public void changeState(Location location,Colour colour, boolean hasCat, boolean hasFire){
 //        squares[location.getRow()][location.getColumn()].colour = colour;
     }
-    public String toString(){}
 
 
 }
