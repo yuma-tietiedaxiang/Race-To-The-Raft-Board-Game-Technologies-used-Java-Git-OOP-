@@ -10,8 +10,12 @@ public class FireTile {
 
     public void flip(){}
 
-    public boolean notOverlap(){}//not on fire and cat
+    public boolean notOverlap(){
+        return false;
+    }//not on fire and cat
 
-    public boolean isAdjacent(){}//adjacent to other fire
+    public boolean isAdjacent(){
+        return false;
+    }//adjacent to other fire
 
 }

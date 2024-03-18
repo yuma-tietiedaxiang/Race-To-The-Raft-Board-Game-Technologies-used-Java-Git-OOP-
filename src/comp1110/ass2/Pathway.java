@@ -29,6 +29,6 @@ public class Pathway extends Card{
 
     public void discard(){}//discard this pathway
 
-    }
+
 
 }

@@ -10,6 +10,8 @@ public class Challenge {
 
     Square[][] fireArea = new Square[maxRow][maxColumn];// has locations, colour 'f'
 
-    public boolean Lose(){}// loosing conditions
+    public boolean Lose(){
+        return false;
+    }// loosing conditions
 
 }

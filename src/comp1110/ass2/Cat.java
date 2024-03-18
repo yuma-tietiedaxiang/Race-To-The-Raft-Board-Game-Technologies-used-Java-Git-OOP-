@@ -25,6 +25,8 @@ move
 
     public void move(Cat cat){}
 
-    public boolean overLap(BigBoard b){}//not on fire or cat
+    public boolean overLap(BigBoard b){
+        return false;
+    }//not on fire or cat
 
 }
