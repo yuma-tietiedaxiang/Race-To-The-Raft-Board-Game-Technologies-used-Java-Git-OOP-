@@ -12,6 +12,4 @@ public class Challenge {
 
     public boolean Lose(){}// loosing conditions
 
-    public boolean
-
 }
