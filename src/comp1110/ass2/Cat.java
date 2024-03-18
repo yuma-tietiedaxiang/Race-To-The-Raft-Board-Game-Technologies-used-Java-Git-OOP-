@@ -14,12 +14,16 @@ move
     Colour Color;
     boolean isExhausted;
 
+    Location catLocation;
+
     public Cat(int catId, Colour Color,boolean isExhausted){
 
     }
 
-    public void move(Cat cat){
+    public void move(Cat cat){}
 
+    public boolean sameLocation(Location catLocation){// cannot be in a same location with other cat
+        return true;
     }
 
 

@@ -9,8 +9,8 @@ public class BigBoard {
     It records states of current game
      */
 
-    int maxRow;
-    int maxColumn;
+    int maxRow;//should be determined by challenge
+    int maxColumn;//should be determined by challenge
     Location[][] location = new Location[maxRow][maxColumn];
     Square[][] squares = new Square[maxRow][maxColumn];//2D
 
