@@ -11,7 +11,7 @@ public class BigBoard {
 
     int maxRow;
     int maxColumn;
-    Location location;
+    Location[][] location = new Location[maxRow][maxColumn];
     Square[][] squares = new Square[maxRow][maxColumn];//2D
 
     public BigBoard(int maxRow, int maxColumn){

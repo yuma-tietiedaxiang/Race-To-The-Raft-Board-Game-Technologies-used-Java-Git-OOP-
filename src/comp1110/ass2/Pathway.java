@@ -6,13 +6,27 @@ import comp1110.ass2.Card;
 
 public class Pathway extends Card{
 
-    @Override
-    public void setLocation(int b,int a){
-//        return null;
-    }
+    int pthId;//should no more than 6
 
-    public void setOneSquare(Colour c){
-        squares[0][0].setColour(c);
-    }
+    Location mainLocation;
+    Square[][] squares = new Square[3][3];
+
+    Location[][] allLocation;
+
+
+    @Override
+    public void setMainLocation(int b,int a){}//set main location
+
+    public Location[][] getAllLocations(Location mainLocation){
+        return null;
+    }// calculate all locations of this pathway
+
+    public Pathway fromDeck(char c){
+        return null;
+    }//select pathways from 4 deck, should be if-else
+
+    public void rotate(){}//rotate this pathway card
+
+    public void discard(){}//discard this pathway
 
 }
