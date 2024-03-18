@@ -1,7 +1,7 @@
 package comp1110.ass2;
 
 public enum Colour {
-    RED, BLUE, GREEN, YELLOW, PURPLE, NONE;
+    RED, BLUE, GREEN, YELLOW, PURPLE, FIRE, NONE;
 
     public static Colour fromChar(char colour) {
         return switch (colour) {
@@ -10,6 +10,7 @@ public enum Colour {
             case 'g' -> GREEN;
             case 'r' -> RED;
             case 'y' -> YELLOW;
+            case 'f' -> FIRE;
             default -> NONE;
         };
     }
@@ -21,6 +22,7 @@ public enum Colour {
             case GREEN -> 'g';
             case RED -> 'r';
             case YELLOW -> 'y';
+            case FIRE -> 'f';
             default -> 'x';
         };
     }

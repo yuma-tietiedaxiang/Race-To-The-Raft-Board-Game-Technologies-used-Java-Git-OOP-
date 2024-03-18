@@ -11,6 +11,9 @@ public class Card {
     public Card(){}//constructor
 
     public void setMainLocation(int row, int column){
-
     }
+
+    public boolean overLap(BigBoard b){
+        return false;
+    }// all card cannot overlap fire or cat
 }

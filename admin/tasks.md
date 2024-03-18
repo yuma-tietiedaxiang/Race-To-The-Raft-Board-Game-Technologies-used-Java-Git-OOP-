@@ -11,14 +11,14 @@ Everyone: create application skeleton and made necessary classes- meeting 15:00 
 
 ## Week 5
 
-[//]: # ()
-[//]: # (Zhang San: Task 3 isPlayerStateWellFormed - 23 Mar)
+[//]: #
+[//]: # "Zhang San: Task 3 isPlayerStateWellFormed - 23 Mar"
 
-[//]: # ()
-[//]: # (Jane Bloggs: Task 5 drawTileFromBag - 23 Mar)
+[//]: #
+[//]: # "Jane Bloggs: Task 5 drawTileFromBag - 23 Mar"
 
-[//]: # ()
-[//]: # (Erika Mustermann: Task 6 refillFactories - 25 Mar &#40;depends on Task 5&#41;)
+[//]: #
+[//]: # "Erika Mustermann: Task 6 refillFactories - 25 Mar &#40;depends on Task 5&#41;"
 
 ## Week 6
 

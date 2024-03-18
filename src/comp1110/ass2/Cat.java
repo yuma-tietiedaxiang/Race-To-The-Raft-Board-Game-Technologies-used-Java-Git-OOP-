@@ -17,16 +17,14 @@ move
     Location catLocation;
 
     public Cat(int catId, Colour Color,boolean isExhausted){
-
     }
+
+    public Location initialLocation(Location l){
+        return null;
+    }//set initial location
 
     public void move(Cat cat){}
 
-    public boolean sameLocation(Location catLocation){// cannot be in a same location with other cat
-        return true;
-    }
-
-
-
+    public boolean overLap(BigBoard b){}//not on fire or cat
 
 }

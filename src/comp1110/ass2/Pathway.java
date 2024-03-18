@@ -29,8 +29,6 @@ public class Pathway extends Card{
 
     public void discard(){}//discard this pathway
 
-    public boolean isOverlap(){//pathway cannot overlap fire and cat
-        return true;
     }
 
 }

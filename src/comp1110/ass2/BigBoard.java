@@ -15,7 +15,7 @@ public class BigBoard {
     Square[][] squares = new Square[maxRow][maxColumn];//2D
 
     public BigBoard(int maxRow, int maxColumn){
-        //initialization
+        //initialization from challenge
     }
 
     public void changeState(Location location,Colour colour, boolean hasCat, boolean hasFire){
