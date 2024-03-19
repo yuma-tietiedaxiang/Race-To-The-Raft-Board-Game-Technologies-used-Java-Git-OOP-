@@ -6,7 +6,7 @@ public class Deck {
 
     //check that at all points when adding percentages, they add up to a 100%. Use epsilon
 
-    char name;
+    char name;//private....
     double redPercent;
     double greenPercent;
     double bluePercent;

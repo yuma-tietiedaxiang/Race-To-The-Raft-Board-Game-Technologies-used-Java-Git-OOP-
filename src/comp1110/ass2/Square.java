@@ -1,8 +1,8 @@
 package comp1110.ass2;
 
-public class Square {
+public abstract class Square {
 
-    Colour colour;
+    private Colour colour;
     boolean hasCat;
     boolean hasFire;
 
