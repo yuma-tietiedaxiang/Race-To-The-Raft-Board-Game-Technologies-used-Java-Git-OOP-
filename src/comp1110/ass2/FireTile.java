@@ -10,6 +10,7 @@ public class FireTile {
 
     public void flip(){}
 
+    //should take another tile as input to check if it overlaps with it
     public boolean notOverlap(){
         return false;
     }//not on fire and cat
