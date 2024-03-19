@@ -3,7 +3,7 @@ package comp1110.ass2;
 public class Deck {
 //    Circle,Square,Crossing,Triangle;
 //    c,s,x,t;
-    char name;
+    char name;//private....
     double redPercent;
     double greenPercent;
     double bluePercent;
