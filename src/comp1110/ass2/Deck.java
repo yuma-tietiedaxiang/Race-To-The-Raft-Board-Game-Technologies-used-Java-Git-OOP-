@@ -3,6 +3,9 @@ package comp1110.ass2;
 public class Deck {
 //    Circle,Square,Crossing,Triangle;
 //    c,s,x,t;
+
+    //check that at all points when adding percentages, they add up to a 100%. Use epsilon
+
     char name;
     double redPercent;
     double greenPercent;
