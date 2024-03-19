@@ -4,7 +4,7 @@ public abstract class Square {
 
     private Colour colour;
     boolean hasCat;
-    boolean hasFire;
+    boolean hasFire;/////////
 
     public void setColour(Colour colour){
         this.colour = colour;
