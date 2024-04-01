@@ -10,7 +10,7 @@ public class Deck {
     double redPercent;
     double greenPercent;
     double bluePercent;
-    double purplePercent;///
+    double purplePercent;
     double yellowPercent;
 
     Deck(char c,double red, double green, double blue, double purple, double yellow) {
