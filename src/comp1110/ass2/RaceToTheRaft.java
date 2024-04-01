@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * This class is for testing purposes only. You should create and use your own objects to solve the tasks below
  * instead of directly using the strings provided. Note that Task 2 is the only task you are expected to use string
@@ -36,8 +39,40 @@ public class RaceToTheRaft {
      * @return True if the boardState is well-formed, otherwise false.
      */
     public static boolean isBoardStringWellFormed(String boardString) {
-        return false; // FIXME TASK 2
+
+        String[] list = boardString.split("\\r?\\n");
+
+        int length = list[0].length();
+
+        String newline = System.lineSeparator();
+        boolean hasNewline = boardString.substring(boardString.length() - 1).contains(newline);
+
+        if((list.length != 12 && list.length != 15 && list.length != 18) || (length != 9 && length != 18) || !hasNewline){
+            return false;
+        }
+
+        for(String string : list){
+            if(string.length() != length){
+                return false;
+            }
+
+            for (char ch : string.toCharArray()){
+                if(!isValidChar(ch)){
+                    return false;
+                }
+            }
+
+        }
+
+        return true; // FIXME TASK 2 - Done!!
     }
+
+    private static boolean isValidChar(char ch) {
+        return ch == 'b' || ch == 'B' || ch == 'f' || ch == 'g' || ch == 'G' ||
+                ch == 'n' || ch == 'o' || ch == 'p' || ch == 'P' || ch == 'r' ||
+                ch == 'R' || ch == 'w' || ch == 'W' || ch == 'y' || ch == 'Y';
+    }
+
 
     /**
      * Make Constructors for each of your objects.
