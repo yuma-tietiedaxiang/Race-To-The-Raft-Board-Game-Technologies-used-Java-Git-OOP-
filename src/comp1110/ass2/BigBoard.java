@@ -16,7 +16,7 @@ public class BigBoard {
 
     //square shape island
     IslandBoard s11 = new IslandBoard("fffgygbyrfffgygpbyfffrrbrgpfffbgypbrfffpbrpgyfffyrygypfffgbbrpbfffpggbygfffpypgrr",1);
-    IslandBoard s12 = new IslandBoard("gbygygbyrbrpgygpbyygbrrbrgpbypbgypbrgprpbrpgyrbgyrygypybygbbrpbygrpggbygbbypypgrr",2;
+    IslandBoard s12 = new IslandBoard("gbygygbyrbrpgygpbyygbrrbrgpbypbgypbrgprpbrpgyrbgyrygypybygbbrpbygrpggbygbbypypgrr",2);
     IslandBoard s21 = new IslandBoard("fffyggybpfffpyyrgyfffrgbpgbfffbrgyrpfffppbgrbfffbyrpbyfffbygbrpfffprgrygfffybyppy",3);
     IslandBoard s22 = new IslandBoard("gbbyggybprbgpyyrgyygyrgbpgbbprbrgyrpgbrppbgrbpygbyrpbygbybygbrppygprgryggbrybyppy",4);
     IslandBoard s31 = new IslandBoard("fffpybygrfffrpgbybfffbrbgyrfffgpypbgfffrbgpryfffpyrygbfffrggbpgfffpbyrybfffgybrgy",5);
