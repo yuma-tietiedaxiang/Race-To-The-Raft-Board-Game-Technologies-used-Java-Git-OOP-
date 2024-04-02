@@ -2,6 +2,7 @@
   <library name="javafx">
     <CLASSES>
       <root url="file://$PATH_TO_FX$" />
+      <root url="file://$PROJECT_DIR$/../../../../../Program Files/Java/javafx-sdk-17.0.10/lib" />
     </CLASSES>
     <JAVADOC />
     <NATIVE>
@@ -16,6 +17,7 @@
       <root url="jar://$PATH_TO_FX$/../src.zip!/javafx.swing" />
       <root url="jar://$PATH_TO_FX$/../src.zip!/javafx.web" />
     </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../../Program Files/Java/javafx-sdk-17.0.10/lib" recursive="false" />
     <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
   </library>
 </component>

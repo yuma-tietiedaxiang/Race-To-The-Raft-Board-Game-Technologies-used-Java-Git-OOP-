@@ -5,15 +5,37 @@ import comp1110.ass2.Location;
 import comp1110.ass2.Card;
 
 public class Pathway extends Card{
+//    public static void main(String[] args) {
+//        Pathway p = new Pathway("abgbbgybby");
+//        System.out.println(p.pathwayId);
+//        System.out.println(p.squares[2][2].getcolour());
+//
+//    }
 
-    int pthId;//should no more than 6
+    char pathwayId;
+    int pathwayNum;
 
     Location mainLocation;
     Square[][] squares = new Square[3][3];
-
     Location[][] allLocation;
 
 
+    public Pathway(String pathwayStr,int pathwayNum){
+        //"abgbbgybby"
+        pathwayId = pathwayStr.charAt(0);
+        this.pathwayNum = pathwayNum;
+        for (int s = 1; s < 10; s++) {//rotate pathwayStr
+            for (int i = 0; i < 3; i++) {//rotate squares row
+                for (int j = 0; j < 3; j++) {//rotate squares column
+                    squares[i][j] = new Square();
+                    squares[i][j].setColour(Colour.fromChar(pathwayStr.charAt(s)));
+                }
+            }
+        }
+
+
+
+    }
     @Override
     public void setMainLocation(int b,int a){}//set main location
 

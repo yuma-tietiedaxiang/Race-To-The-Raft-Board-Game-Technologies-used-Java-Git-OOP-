@@ -1,10 +1,4 @@
-## W4
-
-### pre-meeting
-
-#### comp 6710 webpage: 
-
-D2A:
+# D2A:
 
 1. Project description added  tue14b0
 2. Add **all group members** to your group’s repo as **‘maintainers’**
@@ -15,7 +9,7 @@ D2A:
 
 
 
-D2B w5:
+# D2B w5:
 
 1. Marks will be distributed according to the relative contribution of each group member as documented in `B-contribution.yml`
 
@@ -209,3 +203,26 @@ Ass 2 gitlab page:
 
    If there are no more pathway cards in any of the decks AND the player is required to draw a card.
 
+# D2C midbreak w1:
+
+| Criterion                                                    | Marks |
+| :----------------------------------------------------------- | :---- |
+| 1. Required admin files have been correctly filled in, committed and pushed, passing the CI compliance test. | 0.25  |
+| 2. Git log provides evidence of healthy teamwork and appropriate use of version control. | 0.25  |
+| 3. Object-oriented game state representation is built from string representation (Task 3). | 1     |
+| 4. Completed state viewer GUI as outlined in Task 4.         | 2     |
+| 5. Tests passing for Tasks 2, 5, 6, and 7.                   | 1.5   |
+| 6. The implemented design is good and makes appropriate use of object-orientation. | 0.5   |
+| 7. Code and design is of outstanding quality.                | 0.5   |
+
+| File                     | Description                          |
+| :----------------------- | :----------------------------------- |
+| admin/C-originality.yml  | Originality statement for Stage C.   |
+| admin/C-contribution.yml | Contribution statement for Stage C.  |
+| admin/C-best-uid.yml     | Statements of best code for Stage C. |
+
+
+
+#### 6 tasks, start from task 2
+
+2. 
