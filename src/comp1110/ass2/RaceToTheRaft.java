@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import comp1110.ass2.FireTile;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,6 +10,7 @@ import java.util.Arrays;
  * manipulation to solve.
  */
 public class RaceToTheRaft {
+
 
     /**
      * Determine whether a boardState string is well-formed.
@@ -78,6 +80,44 @@ public class RaceToTheRaft {
      * Make Constructors for each of your objects.
      */
     // FIXME TASK 3
+
+    //initialise Fire Tile
+    String[] fireStrArray = {
+        "a000110111221",
+        "b000102102021",
+        "c000102031121",
+        "d000102121314",
+        "e000111122021",
+        "f000102101120",
+        "g000102111213",
+        "h0001021121",
+        "i011011121321",
+        "j001011121322",
+        "k0001021020",
+        "l000111121322",
+        "m00011112",
+        "n0001112021",
+        "o000102101121",
+        "p0001111213",
+        "q000102031112",
+        "r0001111222",
+        "s000110111222",
+        "t0001020310",
+        "u000102101213",
+        "v000102031012",
+        "w0010111222",
+        "x0110111221",
+        "y0001111221",
+        "z00101120",
+        "A0001020311",
+        "B000102112122",
+        "C0001021011",
+        "D000102031011",
+        "E000102121323"
+};
+    FireTile fireTile = new FireTile(fireStrArray);
+
+
 
     /**
      * Draws a random fire tile from those remaining in the bag.
