@@ -75,19 +75,21 @@ public class Viewer extends Application {
             for (int col = 0; col < theBoard.getColumns(); col++) {
 
                 Rectangle rectangle = new Rectangle(35, 35);
+                StackPane stack = new StackPane();
 
                 rectangle.setFill(getSquareColour(theBoard, row, col));
 
                 if(theBoard.hasCat(row,col)){
                     System.out.println("Namaste Mummy and Papa!! " + row + " : " + col +  " has cat");
-                    StackPane stack = new StackPane();
                     Text text = new Text("CAT");
-                    text.setFont(Font.font(20));
-                    text.setFill(getSquareColour(theBoard, row, col ));
+                    text.setFont(Font.font(14));
+//                    text.setFill(getSquareColour(theBoard, row, col));
                     stack.getChildren().addAll(rectangle, text);
                     gridPane.add(stack, col, row);
                 }else{
-                    gridPane.add(rectangle, col, row);
+                    Text text = new Text(String.valueOf(theBoard.getSquares()[row][col]));
+                    stack.getChildren().addAll(rectangle, text);
+                    gridPane.add(stack, col, row);
                 }
             }
         }

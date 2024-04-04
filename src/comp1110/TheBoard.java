@@ -36,7 +36,7 @@ public class TheBoard {
     }
 
     public Colour getColor(int row, int column) {
-        return Colour.fromChar(squares[row][column]);
+        return Colour.fromChar(Character.toLowerCase(squares[row][column]));
 //        return squares[row][column];
     }
 
