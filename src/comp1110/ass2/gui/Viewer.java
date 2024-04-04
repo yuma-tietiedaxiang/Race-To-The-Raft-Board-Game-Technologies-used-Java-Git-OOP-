@@ -40,29 +40,33 @@ public class Viewer extends Application {
      */
     void displayState(String boardstate, String hand) {
 
-//        root.getChildren().clear(); // Clear previous state
-//        root.getChildren().add(controls); // Add controls back
+        root.getChildren().clear(); // Clear previous state
+        root.getChildren().add(controls); // Add controls back
 
-        String testingBoardState = """
-                 fffffffffrrfffffff
-                 fffffffffrRfffffff
-                 fffffffffrrfffffff
-                 fffgffyrgpygyrygbr
-                 fffgGfggyygprbprpg
-                 fffgggbgprbpygbpyb
-                 ffffffbpbpgrbrrbgy
-                 ffffffgygybpgygprb
-                 ffffffbrrrybgygybg
-                 ffffffgpbbyrprgbbp
-                 ffffffbyrbpybgpryg
-                 ffffffbyrbpybgpryg
-                 ffffffpgyrggrbgyby
-                 fffffybgbpryybpgyp
-                 ffffYyybpgbprygrow
-                 fffyyyyryygbygybww
-                 """;
+//        String testingBoardState = """
+//                 fffffffffrrfffffff
+//                 fffffffffrRfffffff
+//                 fffffffffrrfffffff
+//                 fffgffyrgpygyrygbr
+//                 fffgGfggyygprbprpg
+//                 fffgggbgprbpygbpyb
+//                 ffffffbpbpgrbrrbgy
+//                 ffffffgygybpgygprb
+//                 ffffffbrrrybgygybg
+//                 ffffffgpbbyrprgbbp
+//                 ffffffbyrbpybgpryg
+//                 ffffffbyrbpybgpryg
+//                 ffffffpgyrggrbgyby
+//                 fffffybgbpryybpgyp
+//                 ffffYyybpgbprygrow
+//                 fffyyyyryygbygybww
+//                 """;
 
-        TheBoard theBoard = new TheBoard(testingBoardState);
+        //removing spaces in boardstate string
+        boardstate = boardstate.replaceAll(" ","");
+
+        TheBoard theBoard = new TheBoard(boardstate);
+//        TheBoard theBoard = new TheBoard(testingBoardState);
 
         System.out.println("Namaste Mummy and Papa!! " + theBoard.getRows() + " : " + theBoard.getColumns());
 
@@ -116,6 +120,10 @@ public class Viewer extends Application {
             return Color.PURPLE;
         }else if (theBoard.getColor(row,col) == Colour.GREEN) {
             return Color.GREEN;
+        }else if (theBoard.getColor(row,col) == Colour.OBJECTIVE) {
+            return Color.GOLD;
+        }else if (theBoard.getColor(row,col) == Colour.WILD) {
+            return Color.BROWN;
         }else{
             return Color.BLACK;
         }
@@ -167,7 +175,7 @@ public class Viewer extends Application {
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
         makeControls();
         displayState("", "");
-        root.getChildren().add(controls);
+//        root.getChildren().add(controls);
         makeControls();
         stage.setScene(scene);
         stage.show();
