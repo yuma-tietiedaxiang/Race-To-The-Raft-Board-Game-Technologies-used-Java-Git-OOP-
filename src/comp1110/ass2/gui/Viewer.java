@@ -70,23 +70,24 @@ public class Viewer extends Application {
         gridPane.setHgap(2);
         gridPane.setVgap(2);
 
-        for (int i = 0; i < theBoard.getRows(); i++) {
+        for (int row = 0; row < theBoard.getRows(); row++) {
 
-            for (int j = 0; j < theBoard.getColumns(); j++) {
+            for (int col = 0; col < theBoard.getColumns(); col++) {
 
                 Rectangle rectangle = new Rectangle(35, 35);
 
-                checkAndSetSquareColour(theBoard, rectangle, i, j);
+                rectangle.setFill(getSquareColour(theBoard, row, col));
 
-                if(theBoard.hasCat(i,j)){
-                    System.out.println("Namaste Mummy and Papa!! " + i + " : " + j +  " has cat");
+                if(theBoard.hasCat(row,col)){
+                    System.out.println("Namaste Mummy and Papa!! " + row + " : " + col +  " has cat");
                     StackPane stack = new StackPane();
                     Text text = new Text("CAT");
                     text.setFont(Font.font(20));
+                    text.setFill(getSquareColour(theBoard, row, col ));
                     stack.getChildren().addAll(rectangle, text);
-                    gridPane.add(stack, j, i);
+                    gridPane.add(stack, col, row);
                 }else{
-                    gridPane.add(rectangle, j, i);
+                    gridPane.add(rectangle, col, row);
                 }
             }
         }
@@ -98,23 +99,23 @@ public class Viewer extends Application {
         // FIXME TASK 4
     }
 
-    void checkAndSetSquareColour(TheBoard theBoard, Rectangle rectangle, int i, int j){
-        if (theBoard.getColor(i,j) == Colour.FIRE) {
-            rectangle.setFill(Color.DARKORANGE);
-        } else if (theBoard.getColor(i,j) == Colour.BLUE) {
-            rectangle.setFill(Color.BLUE);
-        } else if (theBoard.getColor(i,j) == Colour.RED) {
-            rectangle.setFill(Color.RED);
+    Color getSquareColour(TheBoard theBoard, int row, int col){
+        if (theBoard.getColor(row,col) == Colour.FIRE) {
+            return Color.DARKORANGE;
+        } else if (theBoard.getColor(row,col) == Colour.BLUE) {
+            return Color.BLUE;
+        } else if (theBoard.getColor(row,col) == Colour.RED) {
+            return Color.RED;
         }
-        else if (theBoard.getColor(i,j) == Colour.YELLOW) {
-            rectangle.setFill(Color.YELLOW);
+        else if (theBoard.getColor(row,col) == Colour.YELLOW) {
+            return Color.YELLOW;
         }
-        else if (theBoard.getColor(i,j) == Colour.PURPLE) {
-            rectangle.setFill(Color.PURPLE);
-        }else if (theBoard.getColor(i,j) == Colour.GREEN) {
-            rectangle.setFill(Color.GREEN);
+        else if (theBoard.getColor(row,col) == Colour.PURPLE) {
+            return Color.PURPLE;
+        }else if (theBoard.getColor(row,col) == Colour.GREEN) {
+            return Color.GREEN;
         }else{
-            rectangle.setFill(Color.BLACK);
+            return Color.BLACK;
         }
     }
 
