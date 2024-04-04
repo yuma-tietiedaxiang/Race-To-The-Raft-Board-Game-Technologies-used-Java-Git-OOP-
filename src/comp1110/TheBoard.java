@@ -1,5 +1,7 @@
 package comp1110;
 
+import comp1110.ass2.Colour;
+
 public class TheBoard {
     private char[][] squares;
     int rows;
@@ -33,8 +35,9 @@ public class TheBoard {
         return columns;
     }
 
-    public char getColor(int row, int column) {
-        return squares[row][column];
+    public Colour getColor(int row, int column) {
+        return Colour.fromChar(squares[row][column]);
+//        return squares[row][column];
     }
 
     // Check if a square has a cat on it

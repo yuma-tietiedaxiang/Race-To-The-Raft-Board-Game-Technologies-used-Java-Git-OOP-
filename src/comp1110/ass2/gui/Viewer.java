@@ -1,6 +1,7 @@
 package comp1110.ass2.gui;
 
 import comp1110.TheBoard;
+import comp1110.ass2.Colour;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -98,19 +99,19 @@ public class Viewer extends Application {
     }
 
     void checkAndSetSquareColour(TheBoard theBoard, Rectangle rectangle, int i, int j){
-        if (theBoard.getColor(i,j) == 'f') {
+        if (theBoard.getColor(i,j) == Colour.FIRE) {
             rectangle.setFill(Color.DARKORANGE);
-        } else if (theBoard.getColor(i,j) == 'b') {
+        } else if (theBoard.getColor(i,j) == Colour.BLUE) {
             rectangle.setFill(Color.BLUE);
-        } else if (theBoard.getColor(i,j) == 'r') {
+        } else if (theBoard.getColor(i,j) == Colour.RED) {
             rectangle.setFill(Color.RED);
         }
-        else if (theBoard.getColor(i,j) == 'y') {
+        else if (theBoard.getColor(i,j) == Colour.YELLOW) {
             rectangle.setFill(Color.YELLOW);
         }
-        else if (theBoard.getColor(i,j) == 'p') {
+        else if (theBoard.getColor(i,j) == Colour.PURPLE) {
             rectangle.setFill(Color.PURPLE);
-        }else if (theBoard.getColor(i,j) == 'g') {
+        }else if (theBoard.getColor(i,j) == Colour.GREEN) {
             rectangle.setFill(Color.GREEN);
         }else{
             rectangle.setFill(Color.BLACK);
