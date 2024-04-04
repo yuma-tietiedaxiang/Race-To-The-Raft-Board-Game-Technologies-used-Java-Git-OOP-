@@ -9,8 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
@@ -70,17 +73,20 @@ public class Viewer extends Application {
 
             for (int j = 0; j < theBoard.getColumns(); j++) {
 
-
                 Rectangle rectangle = new Rectangle(35, 35);
 
+                checkAndSetSquareColour(theBoard, rectangle, i, j);
+
                 if(theBoard.hasCat(i,j)){
-
+                    System.out.println("Namaste Mummy and Papa!! " + i + " : " + j +  " has cat");
+                    StackPane stack = new StackPane();
+                    Text text = new Text("CAT");
+                    text.setFont(Font.font(20));
+                    stack.getChildren().addAll(rectangle, text);
+                    gridPane.add(stack, j, i);
+                }else{
+                    gridPane.add(rectangle, j, i);
                 }
-
-                checkSquareColour(theBoard, rectangle, i, j);
-
-
-                gridPane.add(rectangle, j, i);
             }
         }
 
@@ -91,7 +97,7 @@ public class Viewer extends Application {
         // FIXME TASK 4
     }
 
-    void checkSquareColour(TheBoard theBoard, Rectangle rectangle, int i, int j){
+    void checkAndSetSquareColour(TheBoard theBoard, Rectangle rectangle, int i, int j){
         if (theBoard.getColor(i,j) == 'f') {
             rectangle.setFill(Color.DARKORANGE);
         } else if (theBoard.getColor(i,j) == 'b') {
