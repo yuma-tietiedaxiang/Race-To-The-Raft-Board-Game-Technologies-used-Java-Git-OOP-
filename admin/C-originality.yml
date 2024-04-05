@@ -33,6 +33,19 @@ code:
   - comment: referred to stackoverflow to check if a string contains \n. I used this for task 2, to specifically handle the case when last character string had a \n or not.
     url: https://stackoverflow.com/a/5518515/16562982
     licence: https://stackoverflow.com/help/licensing
+    
+  - comment: learn how to use Random
+    url: https://www.educative.io/answers/how-to-generate-random-numbers-in-java
+    licence: CC-BY-SA 4.0
+
+  - comment: see what is ordinal method in Enum
+    url: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#ordinal()
+    licence: https://download.oracle.com/otndocs/jcp/java_se-17-final-spec/license.html
+    
+  - comment: see what is charAt()
+    url: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/CharSequence.html#charAt(int)
+    licence: https://download.oracle.com/otndocs/jcp/java_se-17-final-spec/license.html
+
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
