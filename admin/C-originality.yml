@@ -34,9 +34,13 @@ collaboration:
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment:
-    url:
-    licence:
+  - comment: referred to stackoverflow to split the string by new line \n
+    url: https://stackoverflow.com/a/454913/16562982
+    licence: https://stackoverflow.com/help/licensing
+
+  - comment: referred to stackoverflow to check if a string contains \n. I used this for task 2, to specifically handle the case when last character string had a \n or not.
+    url: https://stackoverflow.com/a/5518515/16562982
+    licence: https://stackoverflow.com/help/licensing
 
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL
