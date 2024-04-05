@@ -91,17 +91,6 @@ public class RaceToTheRaft {
      * Make Constructors for each of your objects.
      */
     // FIXME TASK 3
-    public RaceToTheRaft() {
-        //1.xxxx
-        //code
-        //2.xxxxx
-        //code2
-        //3.xxxx
-        //code3
-        //System.out.println(DECK_A.length);
-
-
-    }
 
     /**
      * Draws a random fire tile from those remaining in the bag.
