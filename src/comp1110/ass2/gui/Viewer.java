@@ -1,6 +1,6 @@
 package comp1110.ass2.gui;
 
-import comp1110.TheBoard;
+import comp1110.ass2.TheBoard;
 import comp1110.ass2.Colour;
 import comp1110.ass2.PathwayCard;
 import javafx.application.Application;
@@ -17,9 +17,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.util.Arrays;
-import java.util.Random;
 
 public class Viewer extends Application {
 
