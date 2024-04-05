@@ -72,9 +72,7 @@ public class Viewer extends Application {
 //        TheBoard theBoard = new TheBoard(testingBoardState);
 //        PathwayCard pathwayCard = new PathwayCard("AfhkBCDahw");
 
-        System.out.println("Namaste Mummy and Papa!! " + pathwayCard.getCardsInHand());
-
-
+        //For hand Pathway cards
         for (int count = 0; count < pathwayCard.getNumberOfCardsInHand(); count++) {
 
             GridPane pathwayCardGridPane = new GridPane();
@@ -90,7 +88,6 @@ public class Viewer extends Application {
 
                     StackPane stack = new StackPane();
                     Rectangle rectangle = new Rectangle(25, 25);
-                    System.out.println("Namaste Mummy and Papa!! " + pathwayCard.getCardsInHand().get(count).charAt(charPosition));
 
                     char c = pathwayCard.getCardsInHand().get(count).charAt(charPosition);
 
@@ -117,6 +114,7 @@ public class Viewer extends Application {
         boardGridPane.setHgap(2);
         boardGridPane.setVgap(2);
 
+        //For board
         for (int row = 0; row < theBoard.getRows(); row++) {
 
             for (int col = 0; col < theBoard.getColumns(); col++) {
@@ -127,7 +125,6 @@ public class Viewer extends Application {
                 rectangle.setFill(getSquareColour(theBoard, row, col));
 
                 if(theBoard.hasCat(row,col)){
-                    System.out.println("Namaste Mummy and Papa!! " + row + " : " + col +  " has cat");
                     Text text = new Text("CAT");
                     text.setFont(Font.font(14));
 //                    text.setFill(getSquareColour(theBoard, row, col));
@@ -146,7 +143,7 @@ public class Viewer extends Application {
 
         root.getChildren().add(boardGridPane);
 
-        // FIXME TASK 4
+        // FIXME TASK 4 - Done
     }
 
     Color getColourFromChar(char ch){
