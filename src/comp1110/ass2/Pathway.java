@@ -5,12 +5,12 @@ import comp1110.ass2.Location;
 import comp1110.ass2.Card;
 
 public class Pathway extends Card{
-    public static void main(String[] args) {
-        Pathway p = new Pathway("abgbbgybby",1);
-        System.out.println(p.pathwayId);
-        System.out.println(p.squares[2][2].getcolour());
-
-    }
+//    public static void main(String[] args) {
+//        Pathway p = new Pathway("abgbbgybby",1);
+//        System.out.println(p.pathwayId);
+//        System.out.println(p.squares[2][2].getcolour());
+//
+//    }
 
     char pathwayId;
     int pathwayNum;
@@ -20,10 +20,10 @@ public class Pathway extends Card{
     Location[][] allLocation;
 
     //constructor
-    public Pathway(String pathwayStr,int pathwayNum){
+    public Pathway(String pathwayStr){
         //"abgbbgybby"
         pathwayId = pathwayStr.charAt(0);
-        this.pathwayNum = pathwayNum;
+//        this.pathwayNum = pathwayNum;
         for (int s = 1; s < 10; s++) {//rotate pathwayStr
             for (int i = 0; i < 3; i++) {//rotate squares row
                 for (int j = 0; j < 3; j++) {//rotate squares column
