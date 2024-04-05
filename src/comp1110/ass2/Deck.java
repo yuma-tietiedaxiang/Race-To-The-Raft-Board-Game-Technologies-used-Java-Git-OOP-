@@ -1,13 +1,16 @@
 package comp1110.ass2;
 
-public enum Deck {
-    A,B,C,D;
-//- `A` -> CIRCLE;
-//- `B` -> CROSS;
-//- `C` -> SQUARE;
-//- `D` -> TRIANGLE;
+import java.util.ArrayList;
+import java.util.Random;
 
-    private char deckIDA = 'A';//private....
+public class Deck {
+    private final DeckType deckType;
+    //private ArrayList<Card> cards;
+    private String deckInfo;
+
+
+
+    /*private char deckIDA = 'A';//private....
     private char deckIDB = 'B';//private....
     private char deckIDC = 'C';//private....
     private char deckIDD = 'D';//private....
@@ -119,10 +122,26 @@ public enum Deck {
     Pathway d22 = new Pathway("vyyyypbybb",97);
     Pathway d23 = new Pathway("wrpbrpbrpb",98);
     Pathway d24 = new Pathway("xpppbyybyy",99);
-    Pathway d25 = new Pathway("ypprppyryy",100);
-
+    Pathway d25 = new Pathway("ypprppyryy",100);*/
+    public Deck(char type, String deckInfo){
+        this.deckType = DeckType.fromChar(type);
+        this.deckInfo=deckInfo;
+    }
+    public String getDeckInfo(){
+        return deckInfo;
+    }
     public boolean hasNoCard(){// see if this deck is empty
+        if (deckInfo.isEmpty()) {
+            return true;}
         return false;
+    }
+
+    public char drawCards(){
+        Random random = new Random();
+        int index = random.nextInt(deckInfo.toCharArray().length);
+        char randomChar = deckInfo.charAt(index);
+        deckInfo = deckInfo.replace(String.valueOf(randomChar), "");
+        return randomChar;
     }
 
 }
