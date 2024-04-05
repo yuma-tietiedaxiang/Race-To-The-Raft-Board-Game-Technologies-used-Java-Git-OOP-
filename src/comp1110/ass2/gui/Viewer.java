@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.TheBoard;
 import comp1110.ass2.Colour;
+import comp1110.ass2.PathwayCard;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -66,13 +67,55 @@ public class Viewer extends Application {
         boardstate = boardstate.replaceAll(" ","");
 
         TheBoard theBoard = new TheBoard(boardstate);
+        PathwayCard pathwayCard = new PathwayCard(hand);
+
 //        TheBoard theBoard = new TheBoard(testingBoardState);
+//        PathwayCard pathwayCard = new PathwayCard("AfhkBCDahw");
 
-        System.out.println("Namaste Mummy and Papa!! " + theBoard.getRows() + " : " + theBoard.getColumns());
+        System.out.println("Namaste Mummy and Papa!! " + pathwayCard.getCardsInHand());
 
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(2);
-        gridPane.setVgap(2);
+
+        for (int count = 0; count < pathwayCard.getNumberOfCardsInHand(); count++) {
+
+            GridPane pathwayCardGridPane = new GridPane();
+            pathwayCardGridPane.setHgap(2);
+            pathwayCardGridPane.setVgap(2);
+
+            //ignoring first char
+            int charPosition = 1;
+
+            for (int row = 0; row < 3; row++) {
+
+                for (int col = 0; col < 3; col++) {
+
+                    StackPane stack = new StackPane();
+                    Rectangle rectangle = new Rectangle(25, 25);
+                    System.out.println("Namaste Mummy and Papa!! " + pathwayCard.getCardsInHand().get(count).charAt(charPosition));
+
+                    char c = pathwayCard.getCardsInHand().get(count).charAt(charPosition);
+
+                    rectangle.setFill(getColourFromChar(c));
+
+                    Text text = new Text(String.valueOf(c));
+                    stack.getChildren().addAll(rectangle, text);
+                    pathwayCardGridPane.add(stack, col, row);
+
+                    charPosition++;
+//                    pathwayCardGridPane.add(rectangle, col, row);
+
+                }
+            }
+
+            pathwayCardGridPane.setLayoutX(30 + 105 * ((double) count % 2));
+            pathwayCardGridPane.setLayoutY(85 + 85 * ((double) count / 2));
+
+            root.getChildren().add(pathwayCardGridPane);
+
+        }
+
+        GridPane boardGridPane = new GridPane();
+        boardGridPane.setHgap(2);
+        boardGridPane.setVgap(2);
 
         for (int row = 0; row < theBoard.getRows(); row++) {
 
@@ -89,20 +132,44 @@ public class Viewer extends Application {
                     text.setFont(Font.font(14));
 //                    text.setFill(getSquareColour(theBoard, row, col));
                     stack.getChildren().addAll(rectangle, text);
-                    gridPane.add(stack, col, row);
+                    boardGridPane.add(stack, col, row);
                 }else{
                     Text text = new Text(String.valueOf(theBoard.getSquares()[row][col]));
                     stack.getChildren().addAll(rectangle, text);
-                    gridPane.add(stack, col, row);
+                    boardGridPane.add(stack, col, row);
                 }
             }
         }
 
-        gridPane.setLayoutX(380);
+        boardGridPane.setLayoutX(400);
+        boardGridPane.setLayoutY(20);
 
-        root.getChildren().add(gridPane);
+        root.getChildren().add(boardGridPane);
 
         // FIXME TASK 4
+    }
+
+    Color getColourFromChar(char ch){
+
+        Colour colour = Colour.fromChar(ch);
+
+        if (colour == Colour.BLUE) {
+            return Color.BLUE;
+        } else if (colour == Colour.RED) {
+            return Color.RED;
+        } else if (colour == Colour.YELLOW) {
+            return Color.YELLOW;
+        } else if (colour == Colour.PURPLE) {
+            return Color.PURPLE;
+        }else if (colour == Colour.GREEN) {
+            return Color.GREEN;
+        }else if (colour == Colour.OBJECTIVE) {
+            return Color.GOLD;
+        }else if (colour == Colour.WILD) {
+            return Color.BROWN;
+        }else{
+            return Color.BLACK;
+        }
     }
 
     Color getSquareColour(TheBoard theBoard, int row, int col){
