@@ -28,7 +28,7 @@ public class Location {
 
     @Override
     public String toString() {
-        return "" + row + ":" + column;
+        return "" + row + column;
     }
 
 
