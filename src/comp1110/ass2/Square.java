@@ -4,7 +4,22 @@ public class Square {
 
     private Colour colour;
     boolean hasCat;
-    boolean hasFire;/////////
+    boolean hasFire;
+    Location location;
+
+    public Square(){}
+
+
+    public Square(String location, Colour colour){
+        int row = Character.getNumericValue(location.charAt(0));
+        int column = Character.getNumericValue(location.charAt(1));
+        this.location = new Location(row,column);
+//        this.location.setRow(row);
+//        this.location.setColumn(column);
+
+        this.colour = colour;
+    }
+
 
     public void setColour(Colour colour){
         this.colour = colour;

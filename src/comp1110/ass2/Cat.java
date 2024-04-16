@@ -10,13 +10,17 @@ boolean isExhausted
 methods:
 move
      */
-    int catId;
-    Colour Color;
-    boolean isExhausted;
+    private int catId;
+    private Colour colour;
+    private boolean isExhausted;
 
-    Location catLocation;
+    private Location catLocation;
 
-    public Cat(int catId, Colour Color,boolean isExhausted){
+    public Cat(int catId, Colour colour, boolean isExhausted, Location location){
+        this.isExhausted = isExhausted;
+        this.catId = catId;
+        this.catLocation = location ;
+        this.colour = colour;
     }
 
     public Location initialLocation(Location l){

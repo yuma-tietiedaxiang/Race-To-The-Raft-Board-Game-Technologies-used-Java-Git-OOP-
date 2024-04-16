@@ -30,7 +30,7 @@ public class PathwayCard {
                     selectedDeck = Utility.DECK_D;
                 }
                 if (selectedDeck != null) {
-                    int cardIndex = ch - 'a'; // Assuming 'a' is the first card
+                    int cardIndex = ch - 'a'; // a being the first card
                     if (cardIndex >= 0 && cardIndex < selectedDeck.length) {
                         cardsInHand.add(selectedDeck[cardIndex]);
                     }

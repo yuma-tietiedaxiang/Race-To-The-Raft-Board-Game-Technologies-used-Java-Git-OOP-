@@ -43,6 +43,7 @@ public class Challenge {
 
         Random random = new Random();
         int num= random.nextInt((max - min) + 1) + min;
+//        System.out.println(num);
         return Utility.CHALLENGES[num];
 
     }

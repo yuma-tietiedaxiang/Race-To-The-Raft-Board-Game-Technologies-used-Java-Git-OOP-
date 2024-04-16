@@ -80,6 +80,7 @@ public class RaceToTheRaft {
         return true; // FIXME TASK 2 - Done!!
     }
 
+
     private static boolean isValidChar(char ch) {
         return ch == 'b' || ch == 'B' || ch == 'f' || ch == 'g' || ch == 'G' ||
                 ch == 'n' || ch == 'o' || ch == 'p' || ch == 'P' || ch == 'r' ||
@@ -92,41 +93,6 @@ public class RaceToTheRaft {
      */
     // FIXME TASK 3
 
-    //initialise Fire Tile
-    String[] fireStrArray = {
-        "a000110111221",
-        "b000102102021",
-        "c000102031121",
-        "d000102121314",
-        "e000111122021",
-        "f000102101120",
-        "g000102111213",
-        "h0001021121",
-        "i011011121321",
-        "j001011121322",
-        "k0001021020",
-        "l000111121322",
-        "m00011112",
-        "n0001112021",
-        "o000102101121",
-        "p0001111213",
-        "q000102031112",
-        "r0001111222",
-        "s000110111222",
-        "t0001020310",
-        "u000102101213",
-        "v000102031012",
-        "w0010111222",
-        "x0110111221",
-        "y0001111221",
-        "z00101120",
-        "A0001020311",
-        "B000102112122",
-        "C0001021011",
-        "D000102031011",
-        "E000102121323"
-};
-    FireTile fireTile = new FireTile(fireStrArray);
 
 
 
@@ -137,8 +103,17 @@ public class RaceToTheRaft {
      * @return a random fire tile from those remaining, in string form. If there are no tiles remaining, return the
      * empty string.
      */
-    public static String drawFireTile(String[] gameState) {
-        return ""; // FIXME TASK 5
+    public static String drawFireTile(String[] gameState) {//A not represented
+        if (gameState[4].isEmpty()) {
+            return "";
+        }
+        Random random = new Random();
+        int index= random.nextInt(gameState[4].length());
+        char fireID = gameState[4].charAt(index);
+        FireTile fireTile = new FireTile(fireID);
+        String fireToStr = fireTile.toString();
+        return fireToStr;
+        // FIXME TASK 5
     }
 
     /**

@@ -10,9 +10,8 @@
 #
 
 declaration: >-
-  We declare that everything we have submitted for Stage C of this assignment
-  and all stages before it is entirely our own work, with the following
-  exceptions:
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
 
 
 # Use this to list any code that you used that you did not write,
@@ -33,27 +32,22 @@ code:
   - comment: referred to stackoverflow to check if a string contains \n. I used this for task 2, to specifically handle the case when last character string had a \n or not.
     url: https://stackoverflow.com/a/5518515/16562982
     licence: https://stackoverflow.com/help/licensing
-    
-  - comment: learn how to use Random
-    url: https://www.educative.io/answers/how-to-generate-random-numbers-in-java
-    licence: CC-BY-SA 4.0
 
-  - comment: see what is ordinal method in Enum
-    url: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#ordinal()
-    licence: https://download.oracle.com/otndocs/jcp/java_se-17-final-spec/license.html
-    
-  - comment: see what is charAt()
-    url: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/CharSequence.html#charAt(int)
-    licence: https://download.oracle.com/otndocs/jcp/java_se-17-final-spec/license.html
+# I wish to submit the following classes as entirely my own (remove this if
+# you want to just submit methods):
+class:
+   - TheBoard
+   - PathwayCard
 
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - displayState in Viewer class, and sub methods used in it.
+   - isBoardStringWellFormed() method, for Task 2.
 
+statement of best code:
+  - https://gitlab.cecs.anu.edu.au/u7670957/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Viewer.java?ref_type=heads#L42-194
 
-# Sign *your* name and uids here. (Remove entries if you have fewer
-# than three members.)
-signatures:
-  - name: Yu Ma
-    uid: u7670957
-  - name: Weiqi Huang
-    uid: u7739624
-  - name: Aditya Arora
-    uid: u7865708
+# sign *your* name and uid here
+name: Aditya Arora
+uid: u7865708
