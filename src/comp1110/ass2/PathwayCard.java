@@ -7,10 +7,13 @@ public class PathwayCard {
     private List<String> cardsInHand = new ArrayList<>();
 
     public PathwayCard(String cardString) {
-        parseCardString(cardString);
+        cardsInHand = parseStringAndReturnCardsInHand(cardString);
     }
 
-    private void parseCardString(String cardString) {
+    private List<String> parseStringAndReturnCardsInHand(String cardString) {
+
+        List<String> cardsInHand = new ArrayList<>();
+
         char currentDeck = ' ';
         for (int i = 0; i < cardString.length(); i++) {
             char ch = cardString.charAt(i);
@@ -37,6 +40,9 @@ public class PathwayCard {
                 }
             }
         }
+
+        return cardsInHand;
+
     }
 
     public int getNumberOfCardsInHand(){
