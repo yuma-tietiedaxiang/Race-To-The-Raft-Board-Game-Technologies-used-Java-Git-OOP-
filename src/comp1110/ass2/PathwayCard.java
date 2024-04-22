@@ -14,7 +14,9 @@ public class PathwayCard {
         List<String> cardsInHand = new ArrayList<>();
         char currentDeck = ' ';
 
-        for (int i = 0; i < cardString.length(); i++) {
+        int cardCounter = 0;
+
+        for (int i = 0; i < cardString.length() && cardCounter < 6; i++) {
             char ch = cardString.charAt(i);
 
             if (Character.isUpperCase(ch)) {
@@ -45,6 +47,7 @@ public class PathwayCard {
                 if (selectedDeck != null) {
                     int cardIndex = ch - 'a'; // 'a' being the first card
                     if (cardIndex >= 0 && cardIndex < selectedDeck.length) {
+                        cardCounter++;
                         cardsInHand.add(selectedDeck[cardIndex]);
                     }
                 }

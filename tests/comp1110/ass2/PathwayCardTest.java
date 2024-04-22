@@ -18,8 +18,6 @@ public class PathwayCardTest {
         List<String> cards = card.getCardsInHand();
         Assertions.assertEquals(2, cards.size());
         Assertions.assertTrue(cards.contains(Utility.DECK_A[5])); // 'f' from DECK_A
-        System.out.println("Namaste Mummy and Papa!! " + cards.get(1));
-        System.out.println("Namaste Mummy and Papa!! " + Utility.DECK_B[3]);
         Assertions.assertTrue(cards.contains(Utility.DECK_B[3])); // 'd' from DECK_B
     }
 
@@ -44,6 +42,22 @@ public class PathwayCardTest {
         // Check how the class handles empty input
         PathwayCard card = new PathwayCard("");
         Assertions.assertEquals(0, card.getNumberOfCardsInHand());
+    }
+
+    @Test
+    public void testInvalidCardIndex() {
+        // Test that providing an invalid card index results in the corresponding card not being added to the list
+        PathwayCard card = new PathwayCard("Aabcz");
+        List<String> cards = card.getCardsInHand();
+        Assertions.assertEquals(3, cards.size());
+    }
+
+    @Test
+    public void testMaxNumberOfCards() {
+        // Test that providing a string with more than 6 valid cards only adds the first 6 cards to the list
+        PathwayCard card = new PathwayCard("AfgsBrteCghDiu");
+        List<String> cards = card.getCardsInHand();
+        Assertions.assertEquals(6, cards.size()); // Only the first 6 valid cards should be added
     }
 
 }
