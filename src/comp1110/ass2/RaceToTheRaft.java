@@ -507,6 +507,8 @@ public class RaceToTheRaft {
      * @return A board string for this challenge.
      */
     public static String initialiseChallenge(String challengeString) {
+//        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009R01215";
+
         return "";  // FIXME 10
     }
 
