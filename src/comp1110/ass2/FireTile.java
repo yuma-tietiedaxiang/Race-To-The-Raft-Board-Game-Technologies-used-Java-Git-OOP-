@@ -1,6 +1,5 @@
 package comp1110.ass2;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FireTile {
@@ -13,6 +12,12 @@ public class FireTile {
     String info;
 
     public FireTile(){}
+//
+//    public FireTile(String locations){
+//        for (int i = 0; i < locations.length(); i+=2) {
+//
+//        }
+//    }
 
 
     // constructor use fromString to get coordinates
@@ -50,34 +55,21 @@ public class FireTile {
         return fireStr.toString();
     }
 
-    // convert str to fire tile, return a List<FireTile> that as 31 elements.
-    // Index start from 0, fireID start from a to E
-//    public static List<FireTile> fromString(String[] fireStrArray) {
-//        List<FireTile> result = new ArrayList<>();
-//        for (String fs : fireStrArray) {
-//            char id = fs.charAt(0);
-//            List<Location> coordinates = new ArrayList<>();
-//            Square[][] fireSquares = new Square[9][9];
-//
-//            for (int i = 1; i < fs.length(); i += 2) {
-//                int row = Character.getNumericValue(fs.charAt(i));
-//                int column = Character.getNumericValue(fs.charAt(i + 1));
-//                fireSquares[row][column] = new Square();
-//                fireSquares[row][column].setColour(Colour.fromChar('f'));
-//                Location location = new Location(row, column);
-//                coordinates.add(location);
-//            }
-//
-//            FireTile fireTile = new FireTile(id, coordinates);
-//            fireTile.fireSquares = fireSquares;
-//            result.add(fireTile);
-//        }
-//        return result;
-//    }
 
 
 
-    public void rotate(){}
+    public String rotate(String drawFireTile){//input str like "a000110111221"
+
+        String fireLocation = drawFireTile.substring(1);
+        StringBuilder afterRotateLocation = new StringBuilder();
+        for (int i = 0; i < fireLocation.length(); i+=2) {
+            int newj = 4 - fireLocation.charAt(i)+48 -1;
+            afterRotateLocation.append(fireLocation.charAt(i+1)).append(newj);
+        }
+//        System.out.println(afterRotateLocation);
+        return afterRotateLocation.toString();
+    }
+
 
     public void flip(){}
 
