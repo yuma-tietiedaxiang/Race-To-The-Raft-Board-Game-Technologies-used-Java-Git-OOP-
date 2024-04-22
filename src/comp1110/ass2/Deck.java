@@ -130,7 +130,6 @@ public class Deck {
     public String getDeckInfo(){
         return deckInfo;
     }
-
     public boolean hasNoCard(){// see if this deck is empty
         if (deckInfo.isEmpty()) {
             return true;}

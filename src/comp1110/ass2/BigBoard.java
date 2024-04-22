@@ -5,10 +5,10 @@ import comp1110.ass2.Location;
 
 public class BigBoard {
     /*
-    this is the big board formed by 2 or 4 island board.
-    It r
-    ecords states of current game
+    this is the big board formed by 4 island board.
+    It records states of current game
      */
+
     int maxRow;//should be determined by challenge
     int maxColumn;//should be determined by challenge
     Location[][] location = new Location[maxRow][maxColumn];

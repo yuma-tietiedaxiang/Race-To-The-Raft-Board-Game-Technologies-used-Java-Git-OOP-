@@ -38,5 +38,8 @@ public class IslandBoard {
         }
     }
 
-    public String rotateIsland(){}
+    //TODO
+    public String rotateIsland(){
+        return "";
+    }
 }

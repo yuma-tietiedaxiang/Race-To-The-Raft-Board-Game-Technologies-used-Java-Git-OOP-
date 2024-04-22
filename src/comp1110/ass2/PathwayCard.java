@@ -7,37 +7,56 @@ public class PathwayCard {
     private List<String> cardsInHand = new ArrayList<>();
 
     public PathwayCard(String cardString) {
-        parseCardString(cardString);
+        cardsInHand = parseStringAndReturnCardsInHand(cardString);
     }
 
-    private void parseCardString(String cardString) {
+    private List<String> parseStringAndReturnCardsInHand(String cardString) {
+        List<String> cardsInHand = new ArrayList<>();
         char currentDeck = ' ';
-        for (int i = 0; i < cardString.length(); i++) {
+
+        int cardCounter = 0;
+
+        for (int i = 0; i < cardString.length() && cardCounter < 6; i++) {
             char ch = cardString.charAt(i);
+
             if (Character.isUpperCase(ch)) {
+                if(ch != 'A' && ch != 'B' && ch != 'C' && ch != 'D') {
+                    return new ArrayList<>();
+                }
                 currentDeck = ch;
             } else {
+                String[] selectedDeck;
 
-                String[] selectedDeck = new String[25];
-
-                if(currentDeck == 'A'){
-                    selectedDeck = Utility.DECK_A;
-                } else if (currentDeck == 'B') {
-                    selectedDeck = Utility.DECK_A;
-                }else if (currentDeck == 'C') {
-                    selectedDeck = Utility.DECK_C;
-                }else if (currentDeck == 'D') {
-                    selectedDeck = Utility.DECK_D;
+                switch (currentDeck) {
+                    case 'A':
+                        selectedDeck = Utility.DECK_A;
+                        break;
+                    case 'B':
+                        selectedDeck = Utility.DECK_B;
+                        break;
+                    case 'C':
+                        selectedDeck = Utility.DECK_C;
+                        break;
+                    case 'D':
+                        selectedDeck = Utility.DECK_D;
+                        break;
+                    default:
+                        selectedDeck = null;
                 }
+
                 if (selectedDeck != null) {
-                    int cardIndex = ch - 'a'; // a being the first card
+                    int cardIndex = ch - 'a'; // 'a' being the first card
                     if (cardIndex >= 0 && cardIndex < selectedDeck.length) {
+                        cardCounter++;
                         cardsInHand.add(selectedDeck[cardIndex]);
                     }
                 }
             }
         }
+
+        return cardsInHand;
     }
+
 
     public int getNumberOfCardsInHand(){
         return cardsInHand.size();
