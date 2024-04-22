@@ -37,4 +37,6 @@ public class IslandBoard {
             }
         }
     }
+
+    public String rotateIsland(){}
 }
