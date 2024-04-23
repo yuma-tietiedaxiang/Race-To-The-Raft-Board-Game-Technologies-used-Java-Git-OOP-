@@ -24,8 +24,9 @@ public class PathwayCardTest {
     @Test
     public void testInvalidDeckIdentifier() {
         // This test ensures that an invalid deck identifier results in no cards being added
-        PathwayCard card = new PathwayCard("XfYeZg");
-        Assertions.assertEquals(0, card.getNumberOfCardsInHand());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            PathwayCard card = new PathwayCard("XfYeZg");
+        });
     }
 
     @Test

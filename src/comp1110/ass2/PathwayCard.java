@@ -21,7 +21,7 @@ public class PathwayCard {
 
             if (Character.isUpperCase(ch)) {
                 if(ch != 'A' && ch != 'B' && ch != 'C' && ch != 'D') {
-                    return new ArrayList<>();
+                    throw new IllegalArgumentException("Deck does not exist");
                 }
                 currentDeck = ch;
             } else {
