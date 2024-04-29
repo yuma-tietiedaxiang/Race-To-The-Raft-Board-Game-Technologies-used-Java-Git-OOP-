@@ -25,7 +25,6 @@ class:
 # you want to just submit classes):
 method:
    - https://gitlab.cecs.anu.edu.au/u7670957/comp1110-ass2/-/blob/main/src/comp1110/ass2/RaceToTheRaft.java?ref_type=heads#L106-117
-   - 
 
 # sign *your* name and uid here
 name: Yu Ma
