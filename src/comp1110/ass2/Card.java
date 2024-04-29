@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+// Yu Ma
 public class Card {
     /*
     every card(islands, pathway, fire, raft) is a card

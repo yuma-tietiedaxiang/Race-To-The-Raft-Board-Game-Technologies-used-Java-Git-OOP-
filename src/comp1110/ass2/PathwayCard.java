@@ -3,6 +3,8 @@ package comp1110.ass2;
 import java.util.ArrayList;
 import java.util.List;
 
+// Aditya Arora
+
 public class PathwayCard {
     private List<String> cardsInHand = new ArrayList<>();
 
