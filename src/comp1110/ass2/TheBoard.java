@@ -1,7 +1,6 @@
 package comp1110.ass2;
 
-import comp1110.ass2.Colour;
-
+// Aditya Arora
 public class TheBoard {
     private char[][] squares;
     int rows;
