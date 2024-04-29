@@ -37,9 +37,8 @@ The code follows Java code conventions, with proper method and variable naming a
 style. For example, camel nomenclature is used for method and variable names, and there are 
 stylistic conventions such as code indentation.
 
-To point out errors in the code, the comment should be English to improve readability. And
-there may be instances where the code still attempts to draw when the number of cards requested
-is greater than the actual number of cards remaining in the deck without sufficient checking 
+To point out errors in the code, there may be instances where the code still attempts to draw 
+when the number of cards requested is greater than the actual number of cards remaining in the deck without sufficient checking 
 and handling during the card extraction process. This can lead to array out-of-bounds or other 
 exceptions.
 
