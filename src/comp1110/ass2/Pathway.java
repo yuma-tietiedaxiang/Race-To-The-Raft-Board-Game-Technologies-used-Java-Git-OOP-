@@ -4,6 +4,7 @@ import comp1110.ass2.Colour;
 import comp1110.ass2.Location;
 import comp1110.ass2.Card;
 
+// Yu Ma
 public class Pathway extends Card{
 //    public static void main(String[] args) {
 //        Pathway p = new Pathway("abgbbgybby",1);
@@ -19,6 +20,7 @@ public class Pathway extends Card{
     Square[][] squares = new Square[3][3];
     Location[][] allLocation;
 
+    // Yu Ma
     //constructor
     public Pathway(String pathwayStr){
         //"abgbbgybby"

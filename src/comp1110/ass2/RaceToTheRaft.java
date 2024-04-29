@@ -103,6 +103,8 @@ public class RaceToTheRaft {
      * @return a random fire tile from those remaining, in string form. If there are no tiles remaining, return the
      * empty string.
      */
+
+    // Yu Ma
     public static String drawFireTile(String[] gameState) {//A not represented
         if (gameState[4].isEmpty()) {
             return "";
