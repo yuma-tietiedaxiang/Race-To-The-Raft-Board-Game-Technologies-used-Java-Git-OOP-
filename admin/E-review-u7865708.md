@@ -2,7 +2,7 @@
 
 Reviewed by: Aditya Arora, u7865708
 
-Reviewing code written by: <the other person's full name> <other uid>
+Reviewing code written by: Yu Ma u7670957
 
 Component: 
 ```

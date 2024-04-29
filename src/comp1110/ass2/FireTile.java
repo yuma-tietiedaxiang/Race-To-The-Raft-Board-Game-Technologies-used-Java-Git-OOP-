@@ -2,6 +2,7 @@ package comp1110.ass2;
 
 import java.util.List;
 
+// Yu Ma
 public class FireTile {
 
     //fields
