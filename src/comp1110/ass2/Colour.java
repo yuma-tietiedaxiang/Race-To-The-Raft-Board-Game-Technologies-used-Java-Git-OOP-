@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+// Weiqi Huang
+
 public enum Colour {
     RED, BLUE, GREEN, YELLOW, PURPLE, FIRE, NONE, OBJECTIVE, WILD;
 

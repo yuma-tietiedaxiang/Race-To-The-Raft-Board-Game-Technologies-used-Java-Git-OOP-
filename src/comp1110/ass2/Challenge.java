@@ -2,6 +2,8 @@ package comp1110.ass2;
 
 import java.util.Random;
 
+// Weiqi Huang
+
 public class Challenge {
     private int difficulty;
     private String challenge;

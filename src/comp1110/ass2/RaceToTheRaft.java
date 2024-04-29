@@ -116,6 +116,8 @@ public class RaceToTheRaft {
      * @param difficulty the desired difficulty of the challenge
      * @return a random challenge of the given difficulty
      */
+
+    // Weiqi Huang
     public static String chooseChallenge(int difficulty) {
         // FIXME TASK 6 - Done!!
 
@@ -160,6 +162,8 @@ public class RaceToTheRaft {
      * @return The updated gameState array after the cards have been drawn. (Remove all cards drawn from decks and add them to the Hand string). If it is not possible to draw all the specified cards, you should return the original gameState.
      * 在抽完牌后更新的gameState数组。(从牌组中取出所有牌并将其添加到手牌串中)。如果不能抽到所有指定的牌，你应该返回原始的gameState。
      */
+
+    // Weiqi Huang
     public static String[] drawHand(String[] gameState, String drawRequest) {
         // FIXME TASK 7 Done!
         // Get the current state of the decks 获取牌组的当前状态

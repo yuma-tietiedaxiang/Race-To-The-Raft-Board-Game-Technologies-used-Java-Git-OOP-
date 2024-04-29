@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+// Weiqi Huang
+
 public class Cat {
     /*
     fields:
