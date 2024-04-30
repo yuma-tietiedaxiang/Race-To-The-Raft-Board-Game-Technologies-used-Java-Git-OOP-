@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-// Aditya Arora
+// author: Aditya Arora
 public class TheBoard {
     private char[][] squares;
     int rows;

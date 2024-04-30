@@ -4,7 +4,7 @@ import comp1110.ass2.Colour;
 import comp1110.ass2.Location;
 import comp1110.ass2.Card;
 
-// Yu Ma
+// author: Yu Ma
 public class Pathway extends Card{
 //    public static void main(String[] args) {
 //        Pathway p = new Pathway("abgbbgybby",1);

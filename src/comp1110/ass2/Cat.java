@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-// Weiqi Huang
+// author: Weiqi Huang
 
 public class Cat {
     /*

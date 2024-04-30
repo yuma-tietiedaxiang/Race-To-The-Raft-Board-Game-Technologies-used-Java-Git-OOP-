@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+// author: Yu Ma and Aditya Arora
 public class Square {
 
     private Colour colour;

@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-// Yu Ma
+// author: Yu Ma
 public class IslandBoard {
 //    public static void main(String[] args) {
 //        IslandBoard i = new IslandBoard("brpygybgygrbgyrpbggyppbyyrpybygbrggrgyrpgbypbpbbgrpryb",1);

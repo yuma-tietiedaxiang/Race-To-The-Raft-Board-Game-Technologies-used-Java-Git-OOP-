@@ -2,7 +2,7 @@ package comp1110.ass2;
 
 import java.util.List;
 
-// Yu Ma
+// author: Yu Ma
 public class FireTile {
 
     //fields
@@ -29,7 +29,7 @@ public class FireTile {
             info = Utility.FIRE_TILES[fireID-'a'];
         }else info = Utility.FIRE_TILES[fireID-'A'+26];//"w0010111222"
 
-        this.fireSquares = new Square[(info.length()-1)/2];// 这个fireTile一共有多少个square
+        fireSquares = new Square[(info.length()-1)/2];// 这个fireTile一共有多少个square
         for (int i = 1; i < this.fireSquares.length; i+=2) {
             String location = info.substring(i,i+2);
             this.fireSquares[i-1] = new Square(location,Colour.fromChar('f'));

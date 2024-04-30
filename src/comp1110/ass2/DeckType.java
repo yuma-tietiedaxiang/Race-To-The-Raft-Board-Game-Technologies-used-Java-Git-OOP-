@@ -9,7 +9,7 @@ import javax.lang.model.type.NullType;
  * </p>
  */
 
-// Weiqi Huang
+// author: Weiqi Huang
 public enum DeckType {
     CIRCLE, CROSS, SQUARE, TRIANGLE,NONE;
 
