@@ -100,6 +100,7 @@ public class FireTile {
 - naming of variables can be improved, like info, newj, fireLocation, fireSquares.
 - use objects instead of string, for example - location, info, rotate function
 - this keyword in this.fireSquares is not required.
+- documentation could be improved, describing what a method takes as an input, what it does and what does the function return. Like rotate function.
 - notOverlap method should take a tile as input to check if it does or does not overlap with that tile.
 - flip method should take a tile as input to flip that tile.
 - isAdjacent method should take another tile as input to check if it is adjacent to another tile or not.
