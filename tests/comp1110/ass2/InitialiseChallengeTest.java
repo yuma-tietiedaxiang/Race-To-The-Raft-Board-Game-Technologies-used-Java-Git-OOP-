@@ -48,33 +48,32 @@ public class InitialiseChallengeTest {
         {
             char islandType=islandPart.charAt(i*2);
             char orChar=islandPart.charAt(i*2+1);
-            Orientation orientation=Orientation.fromChar(orChar);
             int fireRowsStart=-1;
             int fireRowsEnd=-1;
             int fireColumnsStart=-1;
             int fireColumnsEnd=-1;
-            switch(orientation) {
-                case ANY:
+            switch(orChar) {
+                case 'A':
                     break;
-                case NORTH:
+                case 'N':
                     fireRowsStart = rowOffset;
                     fireRowsEnd = rowOffset + islandType == 'L' ? 9 : 6;
                     fireColumnsStart = columnOffset;
                     fireColumnsEnd = columnOffset + 3;
                     break;
-                case EAST:
+                case 'E':
                     fireRowsStart = rowOffset;
                     fireRowsEnd = rowOffset + 3;
                     fireColumnsStart = columnOffset;
                     fireColumnsEnd= columnOffset + 9;
                     break;
-                case SOUTH:
+                case 'S':
                     fireRowsStart = rowOffset;
                     fireRowsEnd = rowOffset + islandType == 'L' ? 9 : 6;
                     fireColumnsStart = columnOffset + 6;
                     fireColumnsEnd = columnOffset + 9;
                     break;
-                case WEST:
+                case 'W':
                     fireRowsStart = rowOffset + islandType == 'L' ? 3 : 6;
                     fireRowsEnd = rowOffset + islandType == 'L' ? 9 : 6;
                     fireColumnsStart = columnOffset;
