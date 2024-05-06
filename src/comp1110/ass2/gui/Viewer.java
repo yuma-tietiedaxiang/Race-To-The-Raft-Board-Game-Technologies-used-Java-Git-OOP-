@@ -37,7 +37,7 @@ public class Viewer extends Application {
      *
      */
 
-    // Aditya Arora
+    // author: Aditya Arora
     void displayState(String boardstate, String hand) {
 
         root.getChildren().clear(); // Clear previous state
@@ -145,7 +145,7 @@ public class Viewer extends Application {
         // FIXME TASK 4 - Done
     }
 
-    // Aditya Arora
+    // author: Aditya Arora
     Color getColourFromChar(char ch){
 
         Colour colour = Colour.fromChar(ch);
@@ -169,7 +169,7 @@ public class Viewer extends Application {
         }
     }
 
-    // Aditya Arora
+    // author: Aditya Arora
     Color getSquareColour(TheBoard theBoard, int row, int col){
         if (theBoard.getColor(row,col) == Colour.FIRE) {
             return Color.DARKORANGE;
@@ -234,7 +234,7 @@ public class Viewer extends Application {
         return button;
     }
 
-    // Aditya Arora and Fabian
+    // author: Aditya Arora and Fabian
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Race to the Raft Viewer");
