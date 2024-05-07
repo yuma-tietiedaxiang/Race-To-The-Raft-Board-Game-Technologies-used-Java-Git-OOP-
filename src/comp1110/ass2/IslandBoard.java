@@ -12,8 +12,8 @@ public class IslandBoard {
     Square[][] rectangleShape = new Square[6][9];
 
     //constructor for 2 shape boards
-    public IslandBoard(String islandStr,int islandNum){
-        this.islandNum = islandNum;
+    public IslandBoard(String islandStr){
+//        this.islandNum = islandNum;
         System.out.println(islandStr.length());
         if (islandStr.length() == 81) {//for square shape
             for (int s = 0; s < 81; s++) {//rotate islandStr
@@ -36,6 +36,14 @@ public class IslandBoard {
                     }
                 }
             }
+        }
+    }
+
+    public Square[][] getShape(){
+        if (this.squareShape != null){
+            return this.squareShape;
+        }else{
+            return this.rectangleShape;
         }
     }
 

@@ -4,8 +4,6 @@ package comp1110.ass2;
 
 import java.util.*;
 
-import static comp1110.ass2.Utility.*;
-
 /**
  * This class is for testing purposes only. You should create and use your own objects to solve the tasks below
  * instead of directly using the strings provided. Note that Task 2 is the only task you are expected to use string
@@ -285,11 +283,189 @@ public class RaceToTheRaft {
      * @param challengeString A string representing the challenge to initialise
      * @return A board string for this challenge.
      */
-    public static String initialiseChallenge(String challengeString) {
+    public static String initialiseChallenge(String challengeString) {// FIXME 10
 //        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009R01215";
+        // find substrings for different parts
+        String islandSubstring = challengeString.substring(0, challengeString.indexOf('F'));
+        System.out.println(islandSubstring);
+        String fireSubstring = challengeString.substring(challengeString.indexOf('F') + 1, challengeString.indexOf('C'));
+        String catSubstring = challengeString.substring(challengeString.indexOf('C') + 1, challengeString.indexOf('R'));
+        String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
-        return "";  // FIXME 10
+        Square[][] board = parseIsland(islandSubstring);
+
+        addFire(board, fireSubstring);
+
+        addCats(board, catSubstring);
+
+        addRaft(board, raftSubstring);
+
+        return boardToString(board);
     }
+
+    private static Square[][] parseIsland(String islandSubstring) {
+        // 解析岛屿布局字符串并生成对应的字符数组
+        int islandCount = islandSubstring.length() / 2; // 计算岛屿数量
+        System.out.println("island count: "+ islandCount);
+        Square[][] board = new Square[18][18]; // 创建游戏板字符数组，最大不会超过18*18
+
+        int rowOffset = 0;//记录偏移量？？
+        int columnOffset = 0;
+//        System.out.println(Utility.SQUARE_BOARDS[0][0]);
+        for (int i = 0; i < islandCount; i++) {//rotate all islands one by one
+            // 解析岛屿子字符串
+            char size = islandSubstring.charAt(i * 2);//should be L or S
+            char orientation = islandSubstring.charAt(i * 2 + 1);//the orientation of each island
+
+            // 根据岛屿大小和旋转方向确定岛屿的具体布局
+            Square[][] islandLayout = generateIslandLayout(size, orientation,islandSubstring);
+
+            // 根据岛屿布局将岛屿放置在游戏板上
+            for (int r = 0; r < islandLayout.length; r++) {
+                for (int c = 0; c < islandLayout[0].length; c++) {
+                    // 根据岛屿的旋转方向和偏移量计算在游戏板上的位置
+                    int row = r + rowOffset;
+                    int column = c + columnOffset;
+                    // 检查游戏板的边界，确保不会出现越界的情况
+                    // 将岛屿的字符放置在游戏板上
+                    board[row][column] = islandLayout[r][c];
+
+                }
+            }
+
+            // 更新行和列的偏移量
+            if (i % 2 == 0) {
+                rowOffset = (size == 'L') ? 9 : 6;
+            } else {
+                rowOffset = 0;
+                columnOffset = 9;
+            }
+        }
+
+        return board;
+    }
+
+    //在parseIsland遍历中对每个island进行旋转，得到一个island Square[][]
+    private static Square[][] generateIslandLayout(char size, char orientation, String islandSubstring) {
+        // 根据岛屿大小和旋转方向生成岛屿的具体布局
+        Square[][] islandLayout;
+
+        if (size == 'S') {
+            if (orientation == 'N' || orientation == 'S') {
+                islandLayout = new Square[6][9]; // 创建一个6x9的岛屿布局
+            } else {
+                islandLayout = new Square[9][6]; // 创建一个9x6的岛屿布局
+            }
+        } else { // 如果岛屿大小为 'L'，则创建一个9x9的岛屿布局
+            islandLayout = new Square[9][9];
+        }
+        return islandLayout; // 示例返回一个空的3x3字符数组
+    }
+
+    private static void addFire(Square[][] board, String fireSubstring) {
+        while (!fireSubstring.isEmpty()) {
+            int row = Integer.parseInt(fireSubstring.substring(0, 2));
+            int column = Integer.parseInt(fireSubstring.substring(2, 4));
+
+            if (row >= 0 && row + 2 < board.length && column >= 0 && column + 2 < board[0].length) {
+                for (int r = row; r < row + 3; r++) {
+                    for (int c = column; c < column + 3; c++) {
+                        board[r][c].setColour(Colour.FIRE);
+                    }
+                }
+            } else {
+                System.err.println("Fire location out of bounds: " + fireSubstring);
+            }
+
+            fireSubstring = fireSubstring.substring(4);
+        }
+    }
+
+    private static void addCats(Square[][] board, String catSubstring) {
+        while (!catSubstring.isEmpty()) {
+            int catId = Integer.parseInt(catSubstring.substring(0, 1));
+            int row = Integer.parseInt(catSubstring.substring(1, 3));
+            int column = Integer.parseInt(catSubstring.substring(3, 5));
+
+            if (row >= 0 && row + 2 < board.length && column >= 0 && column + 2 < board[0].length) {
+                for (int r = row; r < row + 3; r++) {
+                    for (int c = column; c < column + 3; c++) {
+                        if (!board[r][c].getcolour().equals(Colour.OBJECTIVE)) {
+
+                            char catColorChar = board[r][c].getcolour().toChar();
+                            Colour catColor = Character.isLowerCase(catColorChar) ?
+                                    board[r][c].setColour(Colour.fromChar(Character.toUpperCase(catColorChar))) : Colour.fromChar('W');
+                            board[r][c].setColour(catColor);
+                        }
+                    }
+                }
+            } else {
+                System.err.println("Cat location out of bounds: " + catSubstring);
+            }
+
+            catSubstring = catSubstring.substring(5);
+        }
+    }
+
+    private static void addRaft(Square[][] board, String raftSubstring) {
+        int raftId = Integer.parseInt(raftSubstring.substring(1, 2));
+        int row = Integer.parseInt(raftSubstring.substring(2, 4));
+        int column = Integer.parseInt(raftSubstring.substring(4, Math.min(6, raftSubstring.length())));
+
+        if (row >= 0 && row + 2 < board.length && column >= 0 && column + 2 < board[0].length) {
+            for (int r = row; r < row + 3; r++) {
+                for (int c = column; c < column + 3; c++) {
+                    board[r][c].setColour(Colour.WILD);
+                }
+            }
+        } else {
+            System.err.println("Raft location out of bounds: " + raftSubstring);
+        }
+    }
+
+    private static String boardToString(Square[][] board) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                sb.append(board[i][j].getcolour().toChar()).append("\n");
+            }
+
+        }
+        return sb.toString();
+    }
+
+
+    // Number facing north in physical game
+    public static final String[] CAT_CARDS = {
+            // This card is 1 in the game
+            "0rrfrRfrrf",
+            // This card is 3 in the game
+            "1fffbBbbbb",
+            // This card is 4 in the game
+            "2fffbBbbbY",
+            // This card is 5 in the game
+            "3gffgGfggg",
+            // This card is 7 in the game
+            "4ffyfYyyyy",
+            // This card is 9 in the game
+            "5fppfPpfpp",
+            // This card is 10 in the game
+            "6fppfPpfpR"
+    };
+
+    public static final String[] RAFT_CARDS = {
+            // Card A
+            "0wwwwowwww",
+            // Card B
+            "1gyprowbww",
+            // Card C
+            "2prpbowbyg",
+            // Card D
+            "3pbyrorgwg"
+    };
+
+
 
 
     /**

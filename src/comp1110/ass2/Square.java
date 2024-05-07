@@ -22,11 +22,12 @@ public class Square {
     }
 
 
-    public void setColour(Colour colour){
+    public Colour setColour(Colour colour){
         this.colour = colour;
+        return colour;
     }
     public Colour getcolour(){
-        return colour;
+        return this.colour;
     }
     public void setHasCat(boolean hasCat){
         this.hasCat = hasCat;
