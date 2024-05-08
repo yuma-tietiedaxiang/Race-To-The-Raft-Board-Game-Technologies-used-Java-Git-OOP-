@@ -13,6 +13,10 @@ public class RaceToTheRaft {
 
     public static HashMap<Integer, String[]> challenges = new HashMap<>();
 
+    //copy two types of Island Board String[][]
+    public static String[][] copiedSquareBoard = Arrays.copyOf(Utility.SQUARE_BOARDS, Utility.SQUARE_BOARDS.length);
+    public static String[][] copiedRectangleBoard = Arrays.copyOf(Utility.RECTANGLE_BOARDS, Utility.RECTANGLE_BOARDS.length);
+
     /**
      * Determine whether a boardState string is well-formed.
      * To be well-formed the string must satisfy all the following conditions:
@@ -302,6 +306,7 @@ public class RaceToTheRaft {
 
         return boardToString(board);
     }
+    
 
     private static Square[][] parseIsland(String islandSubstring) {
         // 解析岛屿布局字符串并生成对应的字符数组
@@ -311,14 +316,15 @@ public class RaceToTheRaft {
 
         int rowOffset = 0;//记录偏移量？？
         int columnOffset = 0;
-//        System.out.println(Utility.SQUARE_BOARDS[0][0]);
+
+//        System.out.println(Utility.SQUARE_BOARDS[0][0]);//看看是不是二维数组，都是4*2
         for (int i = 0; i < islandCount; i++) {//rotate all islands one by one
             // 解析岛屿子字符串
             char size = islandSubstring.charAt(i * 2);//should be L or S
             char orientation = islandSubstring.charAt(i * 2 + 1);//the orientation of each island
 
             // 根据岛屿大小和旋转方向确定岛屿的具体布局
-            Square[][] islandLayout = generateIslandLayout(size, orientation,islandSubstring);
+            Square[][] islandLayout = generateIslandLayout(size, orientation, islandSubstring);
 
             // 根据岛屿布局将岛屿放置在游戏板上
             for (int r = 0; r < islandLayout.length; r++) {
@@ -341,25 +347,74 @@ public class RaceToTheRaft {
                 columnOffset = 9;
             }
         }
-
         return board;
     }
 
+    
     //在parseIsland遍历中对每个island进行旋转，得到一个island Square[][]
     private static Square[][] generateIslandLayout(char size, char orientation, String islandSubstring) {
         // 根据岛屿大小和旋转方向生成岛屿的具体布局
-        Square[][] islandLayout;
+        IslandBoard chooseIsland;
+        int indexRow = 0;
+        int indexColumn = 0;
+
+        //每次使用一个island Board，不能重复使用
+//        Random random = new Random();
+        for(indexRow = 0; indexRow < 4; indexRow++){
+            for(indexColumn = 0; indexColumn < 2; indexColumn++){
+                if(copiedSquareBoard[indexRow][indexColumn] != null){
+                    break;
+                }
+            }
+        }
 
         if (size == 'S') {
-            if (orientation == 'N' || orientation == 'S') {
-                islandLayout = new Square[6][9]; // 创建一个6x9的岛屿布局
-            } else {
-                islandLayout = new Square[9][6]; // 创建一个9x6的岛屿布局
+            //从矩形板中随机选一个，并替换为null
+
+            String randomChooseIsland = copiedRectangleBoard[indexRow][indexColumn];
+            chooseIsland = new IslandBoard(randomChooseIsland);//转化为IslandBoard对象
+            copiedRectangleBoard[indexRow][indexColumn] = null;//对应位置替换为null
+            Square[][] chooseIslandSquares = chooseIsland.getIslandSquares();//将IslandBoard对象的Square赋值给local variable
+
+            // 根据旋转方向进行旋转
+            switch (orientation) {
+                case 'N', 'A':
+                    return chooseIslandSquares;
+                case 'S':
+                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 2);
+                case 'E':
+                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 1);
+                case 'W':
+                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 3);
+                default:
+                    // handle unknown orientation
+                    break;
             }
+
         } else { // 如果岛屿大小为 'L'，则创建一个9x9的岛屿布局
-            islandLayout = new Square[9][9];
+            //从方形板中随机选一个，并替换为null
+            String randomChooseIsland = copiedSquareBoard[indexRow][indexColumn];
+            chooseIsland = new IslandBoard(randomChooseIsland);//转化为IslandBoard对象
+            copiedSquareBoard[indexRow][indexColumn] = null;//对应位置替换为null
+            Square[][] chooseIslandSquares = chooseIsland.getIslandSquares();//将IslandBoard对象的Square赋值给local variable
+
+            // 根据旋转方向进行旋转
+            switch (orientation) {
+                case 'N', 'A':
+                    return chooseIslandSquares;
+                case 'S':
+                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 2);
+                case 'E':
+                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 1);
+                case 'W':
+                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 3);
+                default:
+                    // handle unknown orientation
+                    System.out.println("unknown orientation!(generateIslandLayout)");
+                    break;
+            }
         }
-        return islandLayout; // 示例返回一个空的3x3字符数组
+        return new Square[0][];
     }
 
     private static void addFire(Square[][] board, String fireSubstring) {

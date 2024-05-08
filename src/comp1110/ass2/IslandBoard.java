@@ -39,7 +39,44 @@ public class IslandBoard {
         }
     }
 
-    public Square[][] getShape(){
+    // 顺时针旋转 Square[][]，并输出旋转后的结果
+    public Square[][] rotateIslandBoard(Square[][] islandSquares) {//可以用island.getIslandSquaresd得到Square[][]
+        int rows = islandSquares.length;
+        int cols = islandSquares[0].length;
+
+        // 创建一个新的二维数组用于存储旋转后的结果
+        Square[][] rotatedIslandSquares = new Square[cols][rows];//行数是原来的列数
+
+        // 进行矩阵转置
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                rotatedIslandSquares[j][i] = islandSquares[i][j];
+                rotatedIslandSquares[j][i].setColour(islandSquares[i][j].getcolour());//颜色也传过去
+
+            }
+        }
+
+        // 水平翻转每一行
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols / 2; j++) {
+                Square temp = rotatedIslandSquares[i][j];//temp储存左边的Square，有对应的颜色
+                rotatedIslandSquares[i][j] = rotatedIslandSquares[i][cols - 1 - j];//水平翻转右边传到左边
+                rotatedIslandSquares[i][cols - 1 - j] = temp;//水平翻转左边传到右边
+            }
+        }
+        return rotatedIslandSquares;//输出Square[][]
+    }
+
+    //rotate island Board Square[][] many times
+    public Square[][] rotateIslandTimes(Square[][] islandSquares, int rotations) {
+        for (int i = 0; i < rotations; i++) {
+            islandSquares = rotateIslandBoard(islandSquares);
+        }
+        return islandSquares;
+    }
+
+
+    public Square[][] getIslandSquares(){
         if (this.squareShape != null){
             return this.squareShape;
         }else{
