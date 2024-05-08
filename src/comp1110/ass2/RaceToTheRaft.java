@@ -13,6 +13,10 @@ public class RaceToTheRaft {
 
     public static HashMap<Integer, String[]> challenges = new HashMap<>();
     public static TheBoard theBoard = new TheBoard();
+    public static Square[][] islandLayout01;
+    public static Square[][] islandLayout02;
+    public static Square[][] islandLayout03;
+    public static Square[][] islandLayout04;
 
     //copy two types of Island Board String[][]
     public static String[][] copiedSquareBoard = Arrays.copyOf(Utility.SQUARE_BOARDS, Utility.SQUARE_BOARDS.length);
@@ -297,8 +301,11 @@ public class RaceToTheRaft {
         String catSubstring = challengeString.substring(challengeString.indexOf('C') + 1, challengeString.indexOf('R'));
         String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
-        Square[][] board = parseIsland(islandSubstring);
-        theBoard.squares = board;
+        Square[][] board = formBoard(islandSubstring);
+        System.out.println("检查board是否有值："+ board[0][0].getColour());
+        theBoard.setSquares(board);
+        System.out.println(theBoard.squares[0][5].getColour());
+        System.out.println(theBoard.boardToString());
 
         addFire(board, fireSubstring);
 
@@ -311,25 +318,47 @@ public class RaceToTheRaft {
     }
     
 
-    private static Square[][] parseIsland(String islandSubstring) {
+    private static Square[][] formBoard(String islandSubstring) {
         // 解析岛屿布局字符串并生成对应的字符数组
         int islandCount = islandSubstring.length() / 2; // 计算岛屿数量
-        System.out.println("island count: "+ islandCount);
-        Square[][] board = new Square[18][18]; // 创建游戏板字符数组，最大不会超过18*18
-        int countRow = 0;//计算各个island添加之后，board的行数，用来计算rowOffset
-        int countColumn = 0;//计算各个island添加之后，board的列数，用来计算columnOffset
+        System.out.println("island count: " + islandCount);
+
+        int boardRow = 0;
+        int boardColumn = 0;
+        int usedRow = 0;//计算各个island添加之后，board的行数，用来计算rowOffset
+        int usedColumn = 0;//计算各个island添加之后，board的列数，用来计算columnOffset
 
         int rowOffset = 0;//记录偏移量？？
         int columnOffset = 0;
 
 //        System.out.println(Utility.SQUARE_BOARDS[0][0]);//看看是不是二维数组，都是4*2
+        Square[][] board = new Square[0][];
+
+
         for (int i = 0; i < islandCount; i++) {//rotate all islands one by one
             // 解析岛屿子字符串
             char size = islandSubstring.charAt(i * 2);//should be L or S
             char orientation = islandSubstring.charAt(i * 2 + 1);//the orientation of each island
-
+            System.out.println("现在i=" + i);
             // 根据岛屿大小和旋转方向确定岛屿的具体布局
-            Square[][] islandLayout = generateIslandLayout(size, orientation, islandSubstring);
+            if(i == 0) {
+                islandLayout01 = generateIslandLayout(size, orientation, islandSubstring);
+                System.out.println("landLayout01有没有颜色？" + islandLayout01[0][0].getColour());
+                boardRow += islandLayout01.length;
+                boardColumn += islandLayout01[0].length;
+            } else if (i==1) {
+                islandLayout02 = generateIslandLayout(size, orientation, islandSubstring);
+                System.out.println("landLayout02有没有颜色？" + islandLayout02[0][0].getColour());
+                boardRow += islandLayout.length;
+            }else if (i==2) {
+                islandLayout03 = generateIslandLayout(size, orientation, islandSubstring);
+                System.out.println("landLayout03有没有颜色？" + islandLayout03[0][0].getColour());
+                boardColumn += islandLayout[0].length;
+            }
+
+            //initialize board
+            board = new Square[boardRow][boardColumn];
+            System.out.println("board row column "+boardRow+" "+boardColumn);
 
             // 根据岛屿布局将岛屿放置在游戏板上
             for (int r = 0; r < islandLayout.length; r++) {
@@ -339,30 +368,33 @@ public class RaceToTheRaft {
                     int column = c + columnOffset;
                     // 检查游戏板的边界，确保不会出现越界的情况
                     // 将岛屿的字符放置在游戏板上
-                    board[row][column] = islandLayout[r][c];
+//                    System.out.println("Board row column: "+row +" "+column);
+                    board[row][column] = new Square();
+                    board[row][column].setColour(islandLayout[r][c].getColour());
                 }
             }
+                System.out.println("???"+board[0][0].getColour());
 
-            if(countRow == 0){
-                countRow = islandLayout.length;
+            //update Offsets
+            if (usedRow == 0) {
+                usedRow = islandLayout.length;
             }
-            if(countColumn == 0){
-                countColumn = islandLayout[0].length;
+            if (usedColumn == 0) {
+                usedColumn = islandLayout[0].length;
             }
 
-            // 更新行和列的偏移量
             //第一个板偏移量0，第二个rowOffset变化，第三个columnOffset，第四个都变
             if (i == 0) {//i=0时，要改变第二个板的rowOffset；
                 rowOffset += islandLayout.length;
                 columnOffset = 0;
 
-            } else if(i == 1){//i=1，要改变第三个板的columnOffset；
+            } else if (i == 1) {//i=1，要改变第三个板的columnOffset；
                 rowOffset = 0;//在i=0的时候被改成9or6了，要重新改成0
                 columnOffset = islandLayout[0].length;//根据第一个板的layout列数变化
 
-            }else if(i == 2){//i=2，要改变第4个板的rowOffset & columnOffset；
+            } else if (i == 2) {//i=2，要改变第4个板的rowOffset & columnOffset；
                 rowOffset = islandLayout.length;
-                columnOffset = countColumn;//根据第一个板的layout列数变化
+                columnOffset = usedColumn;//根据第一个板的layout列数变化
             }
         }
         return board;
@@ -373,30 +405,39 @@ public class RaceToTheRaft {
     private static Square[][] generateIslandLayout(char size, char orientation, String islandSubstring) {
         // 根据岛屿大小和旋转方向生成岛屿的具体布局
         IslandBoard chooseIsland;
+        Square[][] chooseIslandSquares;
         int indexRow = 0;
         int indexColumn = 0;
 
         //每次使用一个island Board，不能重复使用
-//        Random random = new Random();
+        boolean found = false; // 添加一个标志变量
         for(indexRow = 0; indexRow < 4; indexRow++){
             for(indexColumn = 0; indexColumn < 2; indexColumn++){
                 if(copiedSquareBoard[indexRow][indexColumn] != null){
+                    found = true; // 设置标志变量为 true
                     break;
                 }
             }
+            if (found) { // 如果标志变量为 true，则跳出外层循环
+                break;
+            }
         }
+//        System.out.println("indexRow= "+indexRow + " indexColumn= "+indexColumn);
+//        System.out.println(copiedSquareBoard[indexRow][indexColumn]);
 
         if (size == 'S') {
             //从矩形板中随机选一个，并替换为null
-
             String randomChooseIsland = copiedRectangleBoard[indexRow][indexColumn];
+//            System.out.println(randomChooseIsland);
             chooseIsland = new IslandBoard(randomChooseIsland);//转化为IslandBoard对象
             copiedRectangleBoard[indexRow][indexColumn] = null;//对应位置替换为null
-            Square[][] chooseIslandSquares = chooseIsland.getIslandSquares();//将IslandBoard对象的Square赋值给local variable
-
+            chooseIslandSquares = chooseIsland.getIslandSquares();//将IslandBoard对象的Square赋值给local variable
+            System.out.println(chooseIsland.getIslandSquares()[0][0].getColour());
+            System.out.println("大小方向："+size+orientation);
             // 根据旋转方向进行旋转
             switch (orientation) {
                 case 'N', 'A':
+                    System.out.println(chooseIslandSquares[0][0].getColour());
                     return chooseIslandSquares;
                 case 'S':
                     return chooseIsland.rotateIslandTimes(chooseIslandSquares, 2);
@@ -404,18 +445,15 @@ public class RaceToTheRaft {
                     return chooseIsland.rotateIslandTimes(chooseIslandSquares, 1);
                 case 'W':
                     return chooseIsland.rotateIslandTimes(chooseIslandSquares, 3);
-                default:
-                    // handle unknown orientation
-                    break;
             }
 
-        } else { // 如果岛屿大小为 'L'，则创建一个9x9的岛屿布局
+        } else { // 如果岛屿大小为 'L'
             //从方形板中随机选一个，并替换为null
             String randomChooseIsland = copiedSquareBoard[indexRow][indexColumn];
             chooseIsland = new IslandBoard(randomChooseIsland);//转化为IslandBoard对象
             copiedSquareBoard[indexRow][indexColumn] = null;//对应位置替换为null
-            Square[][] chooseIslandSquares = chooseIsland.getIslandSquares();//将IslandBoard对象的Square赋值给local variable
-
+            chooseIslandSquares = chooseIsland.getIslandSquares();//将IslandBoard对象的Square赋值给local variable
+            System.out.println("大小方向："+size+orientation);
             // 根据旋转方向进行旋转
             switch (orientation) {
                 case 'N', 'A':
@@ -426,13 +464,9 @@ public class RaceToTheRaft {
                     return chooseIsland.rotateIslandTimes(chooseIslandSquares, 1);
                 case 'W':
                     return chooseIsland.rotateIslandTimes(chooseIslandSquares, 3);
-                default:
-                    // handle unknown orientation
-                    System.out.println("unknown orientation!(generateIslandLayout)");
-                    break;
             }
         }
-        return new Square[0][];
+        return chooseIslandSquares;
     }
 
     private static void addFire(Square[][] board, String fireSubstring) {

@@ -13,25 +13,29 @@ public class IslandBoard {
 
     //constructor for 2 shape boards
     public IslandBoard(String islandStr){
-//        this.islandNum = islandNum;
-        System.out.println(islandStr.length());
-        if (islandStr.length() == 81) {//for square shape
+        //remove '\n' .etc
+        String islandStrNoSpace = islandStr.replaceAll("\\r\\n|\\r|\\n", "");
+
+        if (islandStrNoSpace.length() == 81) {//for square shape
             for (int s = 0; s < 81; s++) {//rotate islandStr
                 for (int i = 0; i < 9; i++) {//rotate squareShape row
                     for (int j = 0; j < 9; j++) {//rotate squareShape column
                         squareShape[i][j] = new Square();
-                        squareShape[i][j].setColour(Colour.fromChar(islandStr.charAt(s)));
+                        squareShape[i][j].setColour(Colour.fromChar(islandStrNoSpace.charAt(s)));
                         s++;
                     }
                 }
             }
 
         }else {//for rectangle shape
+//            System.out.println("在矩形分支");
             for (int s = 0; s < 54; s++) {//rotate islandStr
                 for (int i = 0; i < 6; i++) {//rotate rectangleShape row
                     for (int j = 0; j < 9; j++) {//rotate rectangleShape column
                         rectangleShape[i][j] = new Square();
-                        rectangleShape[i][j].setColour(Colour.fromChar(islandStr.charAt(s)));
+                        rectangleShape[i][j].setColour(Colour.fromChar(islandStrNoSpace.charAt(s)));
+//                        System.out.println("i,j "+i+j);
+//                        System.out.println(rectangleShape[i][j].getColour());
                         s++;
                     }
                 }
@@ -77,15 +81,11 @@ public class IslandBoard {
 
 
     public Square[][] getIslandSquares(){
-        if (this.squareShape != null){
+        if (this.squareShape[0][0] != null){
             return this.squareShape;
         }else{
             return this.rectangleShape;
         }
     }
 
-    //TODO
-    public String rotateIsland(){
-        return "";
-    }
 }

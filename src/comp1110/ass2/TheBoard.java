@@ -42,6 +42,9 @@ public class TheBoard {
         }
         return squareChar;
     }
+    public void setSquares(Square[][] squares){
+        this.squares = squares;
+    }
 
     public int getRows(){
         return rows;
@@ -65,9 +68,12 @@ public class TheBoard {
 
      String boardToString() {
         StringBuilder sb = new StringBuilder();
+         System.out.println(this.squares.length);
+         System.out.println(this.squares[0].length);
 
         for (int i = 0; i < this.squares.length; i++) {
-            for (int j = 0; j < this.squares[i].length; j++) {
+            for (int j = 0; j < this.squares[0].length; j++) {
+                System.out.println("i j: "+i+" "+j);
                 sb.append(this.squares[i][j].getColour().toChar());
             }
             sb.append("\n");
