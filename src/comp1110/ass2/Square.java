@@ -3,7 +3,7 @@ package comp1110.ass2;
 // author: Yu Ma and Aditya Arora
 public class Square {
 
-    private Colour colour;
+    Colour colour;
     boolean hasCat;
     boolean hasFire;
     Location location;
@@ -26,9 +26,10 @@ public class Square {
         this.colour = colour;
         return colour;
     }
-    public Colour getcolour(){
+    public Colour getColour(){
         return this.colour;
     }
+
     public void setHasCat(boolean hasCat){
         this.hasCat = hasCat;
     }
@@ -41,5 +42,6 @@ public class Square {
     public boolean getHasFire(){
         return hasFire;
     }
+
 
 }

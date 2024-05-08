@@ -51,7 +51,7 @@ public class IslandBoard {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 rotatedIslandSquares[j][i] = islandSquares[i][j];
-                rotatedIslandSquares[j][i].setColour(islandSquares[i][j].getcolour());//颜色也传过去
+                rotatedIslandSquares[j][i].setColour(islandSquares[i][j].getColour());//颜色也传过去
 
             }
         }

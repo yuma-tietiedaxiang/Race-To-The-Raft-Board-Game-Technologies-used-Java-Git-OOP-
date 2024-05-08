@@ -12,6 +12,7 @@ import java.util.*;
 public class RaceToTheRaft {
 
     public static HashMap<Integer, String[]> challenges = new HashMap<>();
+    public static TheBoard theBoard = new TheBoard();
 
     //copy two types of Island Board String[][]
     public static String[][] copiedSquareBoard = Arrays.copyOf(Utility.SQUARE_BOARDS, Utility.SQUARE_BOARDS.length);
@@ -297,6 +298,7 @@ public class RaceToTheRaft {
         String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
         Square[][] board = parseIsland(islandSubstring);
+        theBoard.squares = board;
 
         addFire(board, fireSubstring);
 
@@ -304,7 +306,8 @@ public class RaceToTheRaft {
 
         addRaft(board, raftSubstring);
 
-        return boardToString(board);
+        return theBoard.boardToString();
+
     }
     
 
@@ -313,6 +316,8 @@ public class RaceToTheRaft {
         int islandCount = islandSubstring.length() / 2; // 计算岛屿数量
         System.out.println("island count: "+ islandCount);
         Square[][] board = new Square[18][18]; // 创建游戏板字符数组，最大不会超过18*18
+        int countRow = 0;//计算各个island添加之后，board的行数，用来计算rowOffset
+        int countColumn = 0;//计算各个island添加之后，board的列数，用来计算columnOffset
 
         int rowOffset = 0;//记录偏移量？？
         int columnOffset = 0;
@@ -330,21 +335,34 @@ public class RaceToTheRaft {
             for (int r = 0; r < islandLayout.length; r++) {
                 for (int c = 0; c < islandLayout[0].length; c++) {
                     // 根据岛屿的旋转方向和偏移量计算在游戏板上的位置
-                    int row = r + rowOffset;
+                    int row = r + rowOffset;//
                     int column = c + columnOffset;
                     // 检查游戏板的边界，确保不会出现越界的情况
                     // 将岛屿的字符放置在游戏板上
                     board[row][column] = islandLayout[r][c];
-
                 }
             }
 
+            if(countRow == 0){
+                countRow = islandLayout.length;
+            }
+            if(countColumn == 0){
+                countColumn = islandLayout[0].length;
+            }
+
             // 更新行和列的偏移量
-            if (i % 2 == 0) {
-                rowOffset = (size == 'L') ? 9 : 6;
-            } else {
-                rowOffset = 0;
-                columnOffset = 9;
+            //第一个板偏移量0，第二个rowOffset变化，第三个columnOffset，第四个都变
+            if (i == 0) {//i=0时，要改变第二个板的rowOffset；
+                rowOffset += islandLayout.length;
+                columnOffset = 0;
+
+            } else if(i == 1){//i=1，要改变第三个板的columnOffset；
+                rowOffset = 0;//在i=0的时候被改成9or6了，要重新改成0
+                columnOffset = islandLayout[0].length;//根据第一个板的layout列数变化
+
+            }else if(i == 2){//i=2，要改变第4个板的rowOffset & columnOffset；
+                rowOffset = islandLayout.length;
+                columnOffset = countColumn;//根据第一个板的layout列数变化
             }
         }
         return board;
@@ -445,9 +463,9 @@ public class RaceToTheRaft {
             if (row >= 0 && row + 2 < board.length && column >= 0 && column + 2 < board[0].length) {
                 for (int r = row; r < row + 3; r++) {
                     for (int c = column; c < column + 3; c++) {
-                        if (!board[r][c].getcolour().equals(Colour.OBJECTIVE)) {
+                        if (!board[r][c].getColour().equals(Colour.OBJECTIVE)) {
 
-                            char catColorChar = board[r][c].getcolour().toChar();
+                            char catColorChar = board[r][c].getColour().toChar();
                             Colour catColor = Character.isLowerCase(catColorChar) ?
                                     board[r][c].setColour(Colour.fromChar(Character.toUpperCase(catColorChar))) : Colour.fromChar('W');
                             board[r][c].setColour(catColor);
@@ -476,18 +494,6 @@ public class RaceToTheRaft {
         } else {
             System.err.println("Raft location out of bounds: " + raftSubstring);
         }
-    }
-
-    private static String boardToString(Square[][] board) {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                sb.append(board[i][j].getcolour().toChar()).append("\n");
-            }
-
-        }
-        return sb.toString();
     }
 
 
