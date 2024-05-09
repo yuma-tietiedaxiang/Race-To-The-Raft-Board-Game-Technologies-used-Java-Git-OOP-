@@ -302,7 +302,7 @@ public class RaceToTheRaft {
         String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
 
-        System.out.println(islandSubstring);
+//        System.out.println(islandSubstring);
         Square[][] board = theBoard.formBoard(islandSubstring);
         theBoard.setSquares(board);
 //        System.out.println("检查raceToTheRaft新建板子"+'\n'+theBoard.boardToString());

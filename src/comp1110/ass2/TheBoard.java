@@ -313,14 +313,14 @@ public class TheBoard {
             }
         }
 
-        System.out.println("formBoard结束，板子生成");
+//        System.out.println("formBoard结束，板子生成");
         return board;
     }
 
 
      String boardToString() {
         StringBuilder sb = new StringBuilder();
-         System.out.println("大板行列"+this.squares.length+" "+this.squares[0].length);
+//         System.out.println("大板行列"+this.squares.length+" "+this.squares[0].length);
 
         for (int i = 0; i < this.squares.length; i++) {
             for (int j = 0; j < this.squares[0].length; j++) {
