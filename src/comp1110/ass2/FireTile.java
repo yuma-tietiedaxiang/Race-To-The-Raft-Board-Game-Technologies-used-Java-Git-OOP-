@@ -71,6 +71,26 @@ public class FireTile {
         return afterRotateLocation.toString();
     }
 
+    public static void addFire(Square[][] board, String fireSubstring) {
+        while (!fireSubstring.isEmpty()) {
+            int row = Integer.parseInt(fireSubstring.substring(0, 2));
+            int column = Integer.parseInt(fireSubstring.substring(2, 4));
+
+            if (row >= 0 && row + 2 < board.length && column >= 0 && column + 2 < board[0].length) {
+                for (int r = row; r < row + 3; r++) {
+                    for (int c = column; c < column + 3; c++) {
+                        board[r][c].setColour(Colour.FIRE);
+                    }
+                }
+            } else {
+                System.err.println("Fire location out of bounds: " + fireSubstring);
+            }
+
+            fireSubstring = fireSubstring.substring(4);
+        }
+    }
+
+
 
     public void flip(){}
 

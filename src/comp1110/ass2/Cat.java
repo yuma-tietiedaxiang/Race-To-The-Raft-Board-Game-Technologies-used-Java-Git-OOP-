@@ -37,6 +37,32 @@ move
 //
 //}
 
+    public static void addCats(Square[][] board, String catSubstring) {
+        while (!catSubstring.isEmpty()) {
+            int catId = Integer.parseInt(catSubstring.substring(0, 1));
+            int row = Integer.parseInt(catSubstring.substring(1, 3));
+            int column = Integer.parseInt(catSubstring.substring(3, 5));
+
+            if (row >= 0 && row + 2 < board.length && column >= 0 && column + 2 < board[0].length) {
+                for (int r = row; r < row + 3; r++) {
+                    for (int c = column; c < column + 3; c++) {
+                        if (!board[r][c].getColour().equals(Colour.OBJECTIVE)) {
+
+                            char catColorChar = board[r][c].getColour().toChar();
+                            Colour catColor = Character.isLowerCase(catColorChar) ?
+                                    board[r][c].setColour(Colour.fromChar(Character.toUpperCase(catColorChar))) : Colour.fromChar('W');
+                            board[r][c].setColour(catColor);
+                        }
+                    }
+                }
+            } else {
+                System.err.println("Cat location out of bounds: " + catSubstring);
+            }
+
+            catSubstring = catSubstring.substring(5);
+        }
+    }
+
     public Colour getColour() {
         return colour;
     }

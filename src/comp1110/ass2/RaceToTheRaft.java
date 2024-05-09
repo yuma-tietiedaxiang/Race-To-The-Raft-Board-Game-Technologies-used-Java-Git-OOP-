@@ -4,6 +4,11 @@ package comp1110.ass2;
 
 import java.util.*;
 
+import static comp1110.ass2.Cat.addCats;
+import static comp1110.ass2.FireTile.addFire;
+import static comp1110.ass2.Raft.addRaft;
+import static comp1110.ass2.TheBoard.formBoard;
+
 /**
  * This class is for testing purposes only. You should create and use your own objects to solve the tasks below
  * instead of directly using the strings provided. Note that Task 2 is the only task you are expected to use string
@@ -13,14 +18,8 @@ public class RaceToTheRaft {
 
     public static HashMap<Integer, String[]> challenges = new HashMap<>();
     public static TheBoard theBoard = new TheBoard();
-    public static Square[][] islandLayout01;
-    public static Square[][] islandLayout02;
-    public static Square[][] islandLayout03;
-    public static Square[][] islandLayout04;
 
-    //copy two types of Island Board String[][]
-    public static String[][] copiedSquareBoard = Arrays.copyOf(Utility.SQUARE_BOARDS, Utility.SQUARE_BOARDS.length);
-    public static String[][] copiedRectangleBoard = Arrays.copyOf(Utility.RECTANGLE_BOARDS, Utility.RECTANGLE_BOARDS.length);
+
 
     /**
      * Determine whether a boardState string is well-formed.
@@ -302,10 +301,8 @@ public class RaceToTheRaft {
         String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
         Square[][] board = formBoard(islandSubstring);
-        System.out.println("检查board是否有值："+ board[0][0].getColour());
         theBoard.setSquares(board);
-        System.out.println(theBoard.squares[0][5].getColour());
-        System.out.println(theBoard.boardToString());
+        System.out.println("检查raceToTheRaft新建板子"+'\n'+theBoard.boardToString());
 
         addFire(board, fireSubstring);
 
@@ -316,251 +313,6 @@ public class RaceToTheRaft {
         return theBoard.boardToString();
 
     }
-    
-
-    private static Square[][] formBoard(String islandSubstring) {
-        // 解析岛屿布局字符串并生成对应的字符数组
-        int islandCount = islandSubstring.length() / 2; // 计算岛屿数量
-        System.out.println("island count: " + islandCount);
-
-        int boardRow = 0;
-        int boardColumn = 0;
-        int usedRow = 0;//计算各个island添加之后，board的行数，用来计算rowOffset
-        int usedColumn = 0;//计算各个island添加之后，board的列数，用来计算columnOffset
-
-        int rowOffset = 0;//记录偏移量？？
-        int columnOffset = 0;
-
-//        System.out.println(Utility.SQUARE_BOARDS[0][0]);//看看是不是二维数组，都是4*2
-        Square[][] board = new Square[0][];
-
-
-        for (int i = 0; i < islandCount; i++) {//rotate all islands one by one
-            // 解析岛屿子字符串
-            char size = islandSubstring.charAt(i * 2);//should be L or S
-            char orientation = islandSubstring.charAt(i * 2 + 1);//the orientation of each island
-            System.out.println("现在i=" + i);
-            // 根据岛屿大小和旋转方向确定岛屿的具体布局
-            if(i == 0) {
-                islandLayout01 = generateIslandLayout(size, orientation, islandSubstring);
-                System.out.println("landLayout01有没有颜色？" + islandLayout01[0][0].getColour());
-                boardRow += islandLayout01.length;
-                boardColumn += islandLayout01[0].length;
-            } else if (i==1) {
-                islandLayout02 = generateIslandLayout(size, orientation, islandSubstring);
-                System.out.println("landLayout02有没有颜色？" + islandLayout02[0][0].getColour());
-                boardRow += islandLayout.length;
-            }else if (i==2) {
-                islandLayout03 = generateIslandLayout(size, orientation, islandSubstring);
-                System.out.println("landLayout03有没有颜色？" + islandLayout03[0][0].getColour());
-                boardColumn += islandLayout[0].length;
-            }
-
-            //initialize board
-            board = new Square[boardRow][boardColumn];
-            System.out.println("board row column "+boardRow+" "+boardColumn);
-
-            // 根据岛屿布局将岛屿放置在游戏板上
-            for (int r = 0; r < islandLayout.length; r++) {
-                for (int c = 0; c < islandLayout[0].length; c++) {
-                    // 根据岛屿的旋转方向和偏移量计算在游戏板上的位置
-                    int row = r + rowOffset;//
-                    int column = c + columnOffset;
-                    // 检查游戏板的边界，确保不会出现越界的情况
-                    // 将岛屿的字符放置在游戏板上
-//                    System.out.println("Board row column: "+row +" "+column);
-                    board[row][column] = new Square();
-                    board[row][column].setColour(islandLayout[r][c].getColour());
-                }
-            }
-                System.out.println("???"+board[0][0].getColour());
-
-            //update Offsets
-            if (usedRow == 0) {
-                usedRow = islandLayout.length;
-            }
-            if (usedColumn == 0) {
-                usedColumn = islandLayout[0].length;
-            }
-
-            //第一个板偏移量0，第二个rowOffset变化，第三个columnOffset，第四个都变
-            if (i == 0) {//i=0时，要改变第二个板的rowOffset；
-                rowOffset += islandLayout.length;
-                columnOffset = 0;
-
-            } else if (i == 1) {//i=1，要改变第三个板的columnOffset；
-                rowOffset = 0;//在i=0的时候被改成9or6了，要重新改成0
-                columnOffset = islandLayout[0].length;//根据第一个板的layout列数变化
-
-            } else if (i == 2) {//i=2，要改变第4个板的rowOffset & columnOffset；
-                rowOffset = islandLayout.length;
-                columnOffset = usedColumn;//根据第一个板的layout列数变化
-            }
-        }
-        return board;
-    }
-
-    
-    //在parseIsland遍历中对每个island进行旋转，得到一个island Square[][]
-    private static Square[][] generateIslandLayout(char size, char orientation, String islandSubstring) {
-        // 根据岛屿大小和旋转方向生成岛屿的具体布局
-        IslandBoard chooseIsland;
-        Square[][] chooseIslandSquares;
-        int indexRow = 0;
-        int indexColumn = 0;
-
-        //每次使用一个island Board，不能重复使用
-        boolean found = false; // 添加一个标志变量
-        for(indexRow = 0; indexRow < 4; indexRow++){
-            for(indexColumn = 0; indexColumn < 2; indexColumn++){
-                if(copiedSquareBoard[indexRow][indexColumn] != null){
-                    found = true; // 设置标志变量为 true
-                    break;
-                }
-            }
-            if (found) { // 如果标志变量为 true，则跳出外层循环
-                break;
-            }
-        }
-//        System.out.println("indexRow= "+indexRow + " indexColumn= "+indexColumn);
-//        System.out.println(copiedSquareBoard[indexRow][indexColumn]);
-
-        if (size == 'S') {
-            //从矩形板中随机选一个，并替换为null
-            String randomChooseIsland = copiedRectangleBoard[indexRow][indexColumn];
-//            System.out.println(randomChooseIsland);
-            chooseIsland = new IslandBoard(randomChooseIsland);//转化为IslandBoard对象
-            copiedRectangleBoard[indexRow][indexColumn] = null;//对应位置替换为null
-            chooseIslandSquares = chooseIsland.getIslandSquares();//将IslandBoard对象的Square赋值给local variable
-            System.out.println(chooseIsland.getIslandSquares()[0][0].getColour());
-            System.out.println("大小方向："+size+orientation);
-            // 根据旋转方向进行旋转
-            switch (orientation) {
-                case 'N', 'A':
-                    System.out.println(chooseIslandSquares[0][0].getColour());
-                    return chooseIslandSquares;
-                case 'S':
-                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 2);
-                case 'E':
-                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 1);
-                case 'W':
-                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 3);
-            }
-
-        } else { // 如果岛屿大小为 'L'
-            //从方形板中随机选一个，并替换为null
-            String randomChooseIsland = copiedSquareBoard[indexRow][indexColumn];
-            chooseIsland = new IslandBoard(randomChooseIsland);//转化为IslandBoard对象
-            copiedSquareBoard[indexRow][indexColumn] = null;//对应位置替换为null
-            chooseIslandSquares = chooseIsland.getIslandSquares();//将IslandBoard对象的Square赋值给local variable
-            System.out.println("大小方向："+size+orientation);
-            // 根据旋转方向进行旋转
-            switch (orientation) {
-                case 'N', 'A':
-                    return chooseIslandSquares;
-                case 'S':
-                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 2);
-                case 'E':
-                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 1);
-                case 'W':
-                    return chooseIsland.rotateIslandTimes(chooseIslandSquares, 3);
-            }
-        }
-        return chooseIslandSquares;
-    }
-
-    private static void addFire(Square[][] board, String fireSubstring) {
-        while (!fireSubstring.isEmpty()) {
-            int row = Integer.parseInt(fireSubstring.substring(0, 2));
-            int column = Integer.parseInt(fireSubstring.substring(2, 4));
-
-            if (row >= 0 && row + 2 < board.length && column >= 0 && column + 2 < board[0].length) {
-                for (int r = row; r < row + 3; r++) {
-                    for (int c = column; c < column + 3; c++) {
-                        board[r][c].setColour(Colour.FIRE);
-                    }
-                }
-            } else {
-                System.err.println("Fire location out of bounds: " + fireSubstring);
-            }
-
-            fireSubstring = fireSubstring.substring(4);
-        }
-    }
-
-    private static void addCats(Square[][] board, String catSubstring) {
-        while (!catSubstring.isEmpty()) {
-            int catId = Integer.parseInt(catSubstring.substring(0, 1));
-            int row = Integer.parseInt(catSubstring.substring(1, 3));
-            int column = Integer.parseInt(catSubstring.substring(3, 5));
-
-            if (row >= 0 && row + 2 < board.length && column >= 0 && column + 2 < board[0].length) {
-                for (int r = row; r < row + 3; r++) {
-                    for (int c = column; c < column + 3; c++) {
-                        if (!board[r][c].getColour().equals(Colour.OBJECTIVE)) {
-
-                            char catColorChar = board[r][c].getColour().toChar();
-                            Colour catColor = Character.isLowerCase(catColorChar) ?
-                                    board[r][c].setColour(Colour.fromChar(Character.toUpperCase(catColorChar))) : Colour.fromChar('W');
-                            board[r][c].setColour(catColor);
-                        }
-                    }
-                }
-            } else {
-                System.err.println("Cat location out of bounds: " + catSubstring);
-            }
-
-            catSubstring = catSubstring.substring(5);
-        }
-    }
-
-    private static void addRaft(Square[][] board, String raftSubstring) {
-        int raftId = Integer.parseInt(raftSubstring.substring(1, 2));
-        int row = Integer.parseInt(raftSubstring.substring(2, 4));
-        int column = Integer.parseInt(raftSubstring.substring(4, Math.min(6, raftSubstring.length())));
-
-        if (row >= 0 && row + 2 < board.length && column >= 0 && column + 2 < board[0].length) {
-            for (int r = row; r < row + 3; r++) {
-                for (int c = column; c < column + 3; c++) {
-                    board[r][c].setColour(Colour.WILD);
-                }
-            }
-        } else {
-            System.err.println("Raft location out of bounds: " + raftSubstring);
-        }
-    }
-
-
-    // Number facing north in physical game
-    public static final String[] CAT_CARDS = {
-            // This card is 1 in the game
-            "0rrfrRfrrf",
-            // This card is 3 in the game
-            "1fffbBbbbb",
-            // This card is 4 in the game
-            "2fffbBbbbY",
-            // This card is 5 in the game
-            "3gffgGfggg",
-            // This card is 7 in the game
-            "4ffyfYyyyy",
-            // This card is 9 in the game
-            "5fppfPpfpp",
-            // This card is 10 in the game
-            "6fppfPpfpR"
-    };
-
-    public static final String[] RAFT_CARDS = {
-            // Card A
-            "0wwwwowwww",
-            // Card B
-            "1gyprowbww",
-            // Card C
-            "2prpbowbyg",
-            // Card D
-            "3pbyrorgwg"
-    };
-
-
 
 
     /**

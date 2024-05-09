@@ -10,17 +10,17 @@ public class Square {
 
     public Square(){}
 
+    public Square(Colour colour){
+        this.colour = colour;
+    }
+
     // Yu Ma
     public Square(String location, Colour colour){
         int row = Character.getNumericValue(location.charAt(0));
         int column = Character.getNumericValue(location.charAt(1));
         this.location = new Location(row,column);
-//        this.location.setRow(row);
-//        this.location.setColumn(column);
-
         this.colour = colour;
     }
-
 
     public Colour setColour(Colour colour){
         this.colour = colour;
