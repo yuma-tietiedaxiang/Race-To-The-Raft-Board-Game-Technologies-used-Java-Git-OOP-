@@ -7,7 +7,7 @@ import java.util.*;
 import static comp1110.ass2.Cat.addCats;
 import static comp1110.ass2.FireTile.addFire;
 import static comp1110.ass2.Raft.addRaft;
-import static comp1110.ass2.TheBoard.formBoard;
+//import static comp1110.ass2.TheBoard.formBoard;
 
 /**
  * This class is for testing purposes only. You should create and use your own objects to solve the tasks below
@@ -19,6 +19,8 @@ public class RaceToTheRaft {
     public static HashMap<Integer, String[]> challenges = new HashMap<>();
     public static TheBoard theBoard = new TheBoard();
 
+//    static String[][] copiedSquareBoard = Arrays.copyOf(SQUARE_BOARDS, SQUARE_BOARDS.length);
+//    static String[][] copiedRectangleBoard = Arrays.copyOf(RECTANGLE_BOARDS, RECTANGLE_BOARDS.length);
 
 
     /**
@@ -300,7 +302,9 @@ public class RaceToTheRaft {
         String catSubstring = challengeString.substring(challengeString.indexOf('C') + 1, challengeString.indexOf('R'));
         String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
-        Square[][] board = formBoard(islandSubstring);
+//        System.out.println("在RaceToTheRaft方法里调用"+ copiedSquareBoard[0][0]);
+
+        Square[][] board = theBoard.formBoard(islandSubstring);
         theBoard.setSquares(board);
         System.out.println("检查raceToTheRaft新建板子"+'\n'+theBoard.boardToString());
 

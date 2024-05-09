@@ -1,8 +1,7 @@
 package comp1110.ass2;
 
-import java.util.Arrays;
+//import static comp1110.ass2.IslandBoard.generateIslandLayout;
 
-import static comp1110.ass2.IslandBoard.generateIslandLayout;
 
 // author: Aditya Arora
 public class TheBoard {
@@ -10,6 +9,8 @@ public class TheBoard {
     int rows;//total number of rows
     int columns;//total number of columns
     char[][] squareChar;
+
+    IslandBoard islandBoard = new IslandBoard();
     //four islandBoards store here. The 3rd and 4th may be null according to challenge string.
     public static Square[][] islandLayout01;
     public static Square[][] islandLayout02;
@@ -78,10 +79,182 @@ public class TheBoard {
 
     /**
      * this method is to form a board with 4 island boards
+     *
      * @param islandSubstring A string from challenge string that represents islands eg."LASNLESA"
      * @return The Square[][] represents all the squares on the play board
      */
-    public static Square[][] formBoard(String islandSubstring) {
+    public Square[][] formBoard(String islandSubstring) {
+        String[][] copiedSquareBoard = {
+                // Board 1
+                {""" 
+            fffgygbyr
+            fffgygpby
+            fffrrbrgp
+            fffbgypbr
+            fffpbrpgy
+            fffyrygyp
+            fffgbbrpb
+            fffpggbyg
+            fffpypgrr
+            """,
+                        """
+            gbygygbyr
+            brpgygpby
+            ygbrrbrgp
+            bypbgypbr
+            gprpbrpgy
+            rbgyrygyp
+            ybygbbrpb
+            ygrpggbyg
+            bbypypgrr
+            """
+                },
+                // Board 2
+                {""" 
+            fffyggybp
+            fffpyyrgy
+            fffrgbpgb
+            fffbrgyrp
+            fffppbgrb
+            fffbyrpby
+            fffbygbrp
+            fffprgryg
+            fffybyppy
+            """,
+                        """
+            gbbyggybp
+            rbgpyyrgy
+            ygyrgbpgb
+            bprbrgyrp
+            gbrppbgrb
+            pygbyrpby
+            gbybygbrp
+            pygprgryg
+            gbrybyppy
+            """},
+                // Board 3
+                {""" 
+            fffpybygr
+            fffrpgbyb
+            fffbrbgyr
+            fffgpypbg
+            fffrbgpry
+            fffpyrygb
+            fffrggbpg
+            fffpbyryb
+            fffgybrgy
+            """,
+                        """
+            grgpybygr
+            gyprpgbyb
+            brbbrbgyr
+            gypgpypbg
+            pbrrbgpry
+            ygppyrygb
+            bpyrggbpg
+            brypbyryb
+            gybgybrgy
+            """},
+                // Board 4
+                {"""
+            fffpgyyrb
+            fffpbbryp
+            fffbgypgb
+            fffyybyrg
+            fffbgrggy
+            fffgpgbgp
+            fffbgybpb
+            fffpyrgyg
+            fffgppbrr
+            """,
+                        """
+            rrbpgyyrb
+            ygypbbryp
+            bprbgypgb
+            rgbyybyrg
+            pypbgrggy
+            ygygpgbgp
+            bprbgybpb
+            rybpyrgyg
+            bgygppbrr
+            """}
+        };
+
+        /**
+         * Element [x][0] is the side of the board with fire, in the north orientation
+         * Element [x][1] is the side of the board without fire, in the north orientation
+         */
+        String[][] copiedRectangleBoard = {
+                // Board 1
+                {"""
+            fffbrgprg
+            fffrbpyby
+            fffpgybrr
+            fffbybgyp
+            fffbrgygg
+            fffybpbry
+            """,
+                        """
+            yypbrgprg
+            bpgrbpyby
+            gbypgybrr
+            grgbybgyp
+            rypbrgygg
+            bpgybpbry
+            """},
+                // Board 2
+                {"""
+            fffgrybbr
+            fffybgryp
+            fffbpbygg
+            fffyprypy
+            fffrygpbb
+            fffbpygyr
+            """,
+                        """
+            bbggrybbr
+            grpybgryp
+            pgrbpbygg
+            gpbyprypy
+            bygrygpbb
+            grybpygyr
+            """},
+                // Board 3
+                {"""
+            fffygybgy
+            fffgyrpbg
+            fffpbyyrp
+            fffgbrggr
+            fffpgbypb
+            fffgrpryb
+            """,
+                        """
+            brpygybgy
+            grbgyrpbg
+            gyppbyyrp
+            ybygbrggr
+            gyrpgbypb
+            pbbgrpryb
+            """},
+                // Board 4
+                {"""
+            fffbgpgpb
+            fffyrgbyr
+            fffgybpgy
+            fffbrrbgb
+            fffpygybp
+            fffgpbyry
+            """,
+                        """
+            gyybgpgpb
+            prbyrgbyr
+            yprgybpgy
+            ggybrrbgb
+            brgpygybp
+            bprgpbyry
+            """}
+        };
+
         // 解析岛屿布局字符串并生成对应的字符数组
         int islandCount = islandSubstring.length() / 2; // 计算岛屿数量
         System.out.println("island count: " + islandCount);
@@ -96,33 +269,25 @@ public class TheBoard {
             // 解析岛屿子字符串
             char size = islandSubstring.charAt(i * 2);//should be L or S
             char orientation = islandSubstring.charAt(i * 2 + 1);//the orientation of each island
-//            System.out.println("现在i=" + i);
 
             //get all four islands and calculate how big should the board be
             if (i == 0) {
-                islandLayout01 = generateIslandLayout(size, orientation, islandSubstring);
-//                System.out.println("landLayout01有没有颜色？" + islandLayout01[0][0].getColour());
+                islandLayout01 = islandBoard.generateIslandLayout(size, orientation, copiedSquareBoard,copiedRectangleBoard);
                 boardRow += islandLayout01.length;
                 boardColumn += islandLayout01[0].length;
             } else if (i == 1) {
-                islandLayout02 = generateIslandLayout(size, orientation, islandSubstring);
-//                System.out.println("landLayout02有没有颜色？" + islandLayout02[0][0].getColour());
+                islandLayout02 = islandBoard.generateIslandLayout(size, orientation, copiedSquareBoard, copiedRectangleBoard);
                 boardRow += islandLayout02.length;
             } else if (i == 2) {
-                islandLayout03 = generateIslandLayout(size, orientation, islandSubstring);
-//                System.out.println("landLayout03有没有颜色？" + islandLayout03[0][0].getColour());
+                islandLayout03 = islandBoard.generateIslandLayout(size, orientation, copiedSquareBoard, copiedRectangleBoard);
                 boardColumn += islandLayout03[0].length;
             } else if (i == 3) {
-                islandLayout04 = generateIslandLayout(size, orientation, islandSubstring);
-//                System.out.println("landLayout04有没有颜色？" + islandLayout04[0][0].getColour());
+                islandLayout04 = islandBoard.generateIslandLayout(size, orientation, copiedSquareBoard, copiedRectangleBoard);
             }
         }
 
         //initialize board
         board = new Square[boardRow][boardColumn];
-//        System.out.println("1&4 行和列 "+ islandLayout01.length +'\t'+ islandLayout04.length +'\t'
-//                + islandLayout01[0].length +'\t'+ islandLayout04[0].length +'\t');
-//        System.out.println("board row column "+boardRow+" "+boardColumn);
 
 
         //set colours to board squares, according to the order of 4 island boards
@@ -131,24 +296,18 @@ public class TheBoard {
 
                 if (row < islandLayout01.length && column < islandLayout01[0].length){
                     //1st island
-//                    System.out.println("1st位置: "+row+" "+column);
                     board[row][column] = new Square(islandLayout01[row][column].getColour());
 
                 }else if(row >= islandLayout01.length && column < islandLayout01[0].length){
                     //2nd island
-//                    System.out.println("2nd位置: "+(row-islandLayout01.length)+" "+column);
                     board[row][column] = new Square(islandLayout02[row-islandLayout01.length][column].getColour());
 
                 }else if(row < islandLayout01.length && column >= islandLayout01[0].length){
                     //3rd island
-//                    System.out.println("3rd位置: "+row+" "+(column-islandLayout01[0].length));
                     board[row][column] = new Square(islandLayout03[row][column-islandLayout01[0].length].getColour());
 
                 }else if(row >= islandLayout01.length && column >= islandLayout01[0].length){
                     //4th island
-//                    System.out.println();
-//                    System.out.println("板上位置："+row +" "+ column);
-//                    System.out.println("4st位置: "+(row-islandLayout01.length)+" "+(column-islandLayout01[0].length));
                     board[row][column] = new Square(islandLayout04[row-islandLayout01.length][column-islandLayout01[0].length].getColour());
                 }
             }
@@ -161,8 +320,7 @@ public class TheBoard {
 
      String boardToString() {
         StringBuilder sb = new StringBuilder();
-         System.out.println(this.squares.length);
-         System.out.println(this.squares[0].length);
+         System.out.println("大板行列"+this.squares.length+" "+this.squares[0].length);
 
         for (int i = 0; i < this.squares.length; i++) {
             for (int j = 0; j < this.squares[0].length; j++) {
