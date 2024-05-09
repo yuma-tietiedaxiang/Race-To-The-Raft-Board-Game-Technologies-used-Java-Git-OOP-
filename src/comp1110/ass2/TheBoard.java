@@ -257,7 +257,7 @@ public class TheBoard {
 
         // 解析岛屿布局字符串并生成对应的字符数组
         int islandCount = islandSubstring.length() / 2; // 计算岛屿数量
-        System.out.println("island count: " + islandCount);
+//        System.out.println("island count: " + islandCount);
 
         int boardRow = 0;
         int boardColumn = 0;

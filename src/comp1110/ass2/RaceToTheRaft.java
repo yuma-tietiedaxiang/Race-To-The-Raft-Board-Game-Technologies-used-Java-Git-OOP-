@@ -294,19 +294,18 @@ public class RaceToTheRaft {
      * @return A board string for this challenge.
      */
     public static String initialiseChallenge(String challengeString) {// FIXME 10
-//        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009R01215";
+//        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009 R01215";
         // find substrings for different parts
         String islandSubstring = challengeString.substring(0, challengeString.indexOf('F'));
-        System.out.println(islandSubstring);
         String fireSubstring = challengeString.substring(challengeString.indexOf('F') + 1, challengeString.indexOf('C'));
         String catSubstring = challengeString.substring(challengeString.indexOf('C') + 1, challengeString.indexOf('R'));
         String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
-//        System.out.println("在RaceToTheRaft方法里调用"+ copiedSquareBoard[0][0]);
 
+        System.out.println(islandSubstring);
         Square[][] board = theBoard.formBoard(islandSubstring);
         theBoard.setSquares(board);
-        System.out.println("检查raceToTheRaft新建板子"+'\n'+theBoard.boardToString());
+//        System.out.println("检查raceToTheRaft新建板子"+'\n'+theBoard.boardToString());
 
         addFire(board, fireSubstring);
 

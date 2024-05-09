@@ -87,7 +87,7 @@ public class IslandBoard {
     //在formBoard遍历中对每个island进行旋转，得到一个island Square[][]
     public Square[][] generateIslandLayout(char size, char orientation, String[][] copiedSquareBoard, String[][] copiedRectangleBoard) {
 
-        System.out.println("进入generateIslandLayout");
+//        System.out.println("进入generateIslandLayout");
         IslandBoard chooseIsland;
         Square[][] chooseIslandSquares = new Square[0][];
         int indexRow;
