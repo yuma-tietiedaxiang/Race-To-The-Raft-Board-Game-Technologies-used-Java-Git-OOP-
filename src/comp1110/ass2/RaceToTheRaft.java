@@ -270,9 +270,61 @@ public class RaceToTheRaft {
      * @param movementString A string representing the movement of a cat and the cards discarded to allow this move.
      * @return the updated gameState array after this movement has been made.
      */
+//    public static String[] moveCat(String[] gameState, String movementString) {
+//        return new String[0]; // FIXME TASK 9
+//    }
+
     public static String[] moveCat(String[] gameState, String movementString) {
-        return new String[0]; // FIXME TASK 9
+        String[] newState = gameState.clone(); // Clone the gameState array to avoid modifying the original
+
+        // Parsing the movement string to extract numeric values
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\\d+").matcher(movementString);
+        java.util.List<Integer> numbers = new java.util.ArrayList<>();
+        while (matcher.find()) {
+            numbers.add(Integer.parseInt(matcher.group()));
+        }
+
+        // Ensure we have exactly four numbers (two pairs of coordinates)
+        if (numbers.size() < 4) {
+            // Log error or throw an exception as appropriate
+            throw new IllegalArgumentException("Invalid movement string: expected four numbers, got " + numbers.size());
+        }
+
+        // Extract coordinates
+        int x0 = numbers.get(0);
+        int y0 = numbers.get(1);
+        int x1 = numbers.get(2);
+        int y1 = numbers.get(3);
+
+        // Convert the board string to a character array for manipulation
+        char[][] board = new char[15][];
+        for (int i = 0; i < 15; i++) {
+            board[i] = newState[0].substring(i * 17, (i + 1) * 17 - 1).toCharArray(); // Adjusting for newlines
+        }
+
+        // Move the cat on the board
+        board[y1][x1] = board[y0][x0];
+        board[y0][x0] = 'f'; // assuming 'f' represents a free spot or similar
+
+        // Reconstruct the board state from the character array
+        StringBuilder sb = new StringBuilder();
+        for (char[] row : board) {
+            sb.append(new String(row)).append("\n"); // add newline for each row
+        }
+        newState[0] = sb.toString().trim(); // remove the last newline
+
+        // Handle the exhausted cats list
+        char cat = movementString.charAt(0);
+        if (!newState[3].contains(String.valueOf(cat))) {
+            newState[3] += cat; // Append the cat if not already exhausted
+        } else {
+            // If further action is needed when cat is already exhausted, handle here
+        }
+
+        return newState;
     }
+
+
 
     /**
      * Given a challengeString, construct a board string that satisfies the challenge requirements.
