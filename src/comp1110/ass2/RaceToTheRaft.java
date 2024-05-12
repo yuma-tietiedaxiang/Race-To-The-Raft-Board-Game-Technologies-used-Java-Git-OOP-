@@ -264,8 +264,90 @@ public class RaceToTheRaft {
      * @return the updated gameState array after this placement has been made
      */
     public static String[] applyPlacement(String[] gameState, String placementString) {
-        return new String[0]; // FIXME TASK 8
-    }
+
+        if (Character.isLetter(placementString.charAt(1)) && Character.isLetter(placementString.charAt(6))) {
+                // 放置卡片
+                char deckType = placementString.charAt(0);
+                char cardID = placementString.charAt(1);
+                int row = Integer.parseInt(placementString.substring(2, 4));
+                int col = Integer.parseInt(placementString.substring(4, 6));
+                char orientation = placementString.charAt(6);
+
+                // 根据卡片的类型和ID获取卡片数据
+                String[] cardData;
+                DeckType deckType1 = DeckType.fromChar(placementString.charAt(0));
+                switch (deckType1) {
+                    case CIRCLE:
+                    case CROSS:
+                    case SQUARE:
+                    case TRIANGLE:
+                        String[][] deckData = new String[][]{Utility.DECK_A, Utility.DECK_B, Utility.DECK_C, Utility.DECK_D};
+                        cardData = new String[]{deckData[deckType1.ordinal()][cardID - 'a']};
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid deck type: " + deckType);
+                }
+
+                // 创建 PlacedCard 对象
+                PlacedCard card = new PlacedCard(cardData[0], orientation, row, col);
+
+                // 更新 Board 字符串
+                StringBuilder boardBuilder = new StringBuilder(gameState[0]);
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        int boardRow = row + i;
+                        int boardCol = col + j;
+                        if (boardRow >= 0 && boardRow < boardLength(boardBuilder) && boardCol >= 0 && boardCol < boardLength(boardBuilder)) {
+                            char squareColor = card.getColorAt(i, j);
+                            int index = boardRow * (boardLength(boardBuilder) + 1) + boardCol;
+                            boardBuilder.setCharAt(index, squareColor);
+                        }
+                    }
+                }
+                gameState[0] = boardBuilder.toString();
+
+                // 从 Hand 字符串中移除卡片
+                String handString = gameState[2];
+                int cardIndex = handString.indexOf(deckType + String.valueOf(cardID));
+                if (cardIndex != -1) {
+                // 此处假设每个卡牌条目长度恒定，例如 "Aj"
+                gameState[2] = handString.substring(0, cardIndex) + handString.substring(cardIndex + 2);
+            }
+
+        } else {
+                // 放置火焰块
+                char fireID = placementString.charAt(0);
+                int row = Integer.parseInt(placementString.substring(1, 3));
+                int col = Integer.parseInt(placementString.substring(3, 5));
+                boolean flipped = placementString.charAt(5) == 'T';
+                char orientation = placementString.charAt(6);
+
+                // 创建 FireTile 对象
+                PlacedFireTile fireTile = new PlacedFireTile(fireID, row, col, flipped, orientation);
+
+                // 更新 Board 字符串
+                StringBuilder boardBuilder = new StringBuilder(gameState[0]);
+                for (Square square : fireTile.getSquares()) {
+                    int boardRow = square.getLocation().getRow();
+                    int boardCol = square.getLocation().getColumn();
+                    if (boardRow >= 0 && boardRow < boardLength(boardBuilder) && boardCol >= 0 && boardCol < boardLength(boardBuilder)) {
+                        int index = boardRow * (boardLength(boardBuilder) + 1) + boardCol;
+                        char originalChar = boardBuilder.charAt(index);
+                        if (originalChar != 'f') {
+                            boardBuilder.setCharAt(index, 'f');
+                        }
+                    }
+                }
+                gameState[0] = boardBuilder.toString();
+            }
+
+            return gameState;
+        }
+
+        private static int boardLength(StringBuilder boardBuilder) {
+            return boardBuilder.toString().split("\\r?\\n")[0].length();
+        }
+
 
     /**
      * Move the given cat as described by the cat movement string and return the updated gameState array. You may

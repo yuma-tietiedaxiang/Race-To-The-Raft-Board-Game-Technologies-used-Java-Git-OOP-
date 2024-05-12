@@ -37,6 +37,14 @@ public class Pathway extends Card{
         }
     }
 
+    public Colour getColour(int row, int col) {
+        if (row >= 0 && row < 3 && col >= 0 && col < 3) {
+            return squares[row][col].getColour();
+        }
+        return null;
+    }
+
+
     @Override
     public void setMainLocation(int b,int a){}//set main location
 
