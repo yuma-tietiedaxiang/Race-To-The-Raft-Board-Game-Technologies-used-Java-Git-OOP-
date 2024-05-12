@@ -306,12 +306,25 @@ public class RaceToTheRaft {
                 }
                 gameState[0] = boardBuilder.toString();
 
-                // 从 Hand 字符串中移除卡片
-                String handString = gameState[2];
-                int cardIndex = handString.indexOf(deckType + String.valueOf(cardID));
+            // 从 Hand 字符串中移除卡片
+
+            String handString = gameState[2];
+            char deckType2 = placementString.charAt(0);
+            char cardID1 = placementString.charAt(1);
+
+            // 找到 handString 中表示卡组的大写字母的位置
+            int deckIndex = handString.indexOf(deckType);
+
+            // 如果找到了卡组标识
+            if (deckIndex != -1) {
+                // 在卡组标识后搜索与 cardID 匹配的小写字母
+                int cardIndex = handString.indexOf(cardID, deckIndex + 1);
+
+                // 如果找到了匹配的卡牌
                 if (cardIndex != -1) {
-                // 此处假设每个卡牌条目长度恒定，例如 "Aj"
-                gameState[2] = handString.substring(0, cardIndex) + handString.substring(cardIndex + 2);
+                    // 从 handString 中移除匹配的卡牌
+                    gameState[2] = handString.substring(0, cardIndex) + handString.substring(cardIndex + 1);
+                }
             }
 
         } else {
