@@ -1,6 +1,9 @@
 package comp1110.ass2;
 
 public class Utility {
+    public static void main(String[] args) {
+        System.out.println(SQUARE_BOARDS[0][0]);
+    }
 
     /**
      * Element [x][0] is the side of the board with fire, in the north orientation

@@ -4,7 +4,10 @@ package comp1110.ass2;
 
 import java.util.*;
 
-import static comp1110.ass2.Utility.*;
+import static comp1110.ass2.Cat.addCats;
+import static comp1110.ass2.FireTile.addFire;
+import static comp1110.ass2.Raft.addRaft;
+//import static comp1110.ass2.TheBoard.formBoard;
 
 /**
  * This class is for testing purposes only. You should create and use your own objects to solve the tasks below
@@ -14,6 +17,11 @@ import static comp1110.ass2.Utility.*;
 public class RaceToTheRaft {
 
     public static HashMap<Integer, String[]> challenges = new HashMap<>();
+    public static TheBoard theBoard = new TheBoard();
+
+//    static String[][] copiedSquareBoard = Arrays.copyOf(SQUARE_BOARDS, SQUARE_BOARDS.length);
+//    static String[][] copiedRectangleBoard = Arrays.copyOf(RECTANGLE_BOARDS, RECTANGLE_BOARDS.length);
+
 
     /**
      * Determine whether a boardState string is well-formed.
@@ -337,10 +345,28 @@ public class RaceToTheRaft {
      * @param challengeString A string representing the challenge to initialise
      * @return A board string for this challenge.
      */
-    public static String initialiseChallenge(String challengeString) {
-//        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009R01215";
+    public static String initialiseChallenge(String challengeString) {// FIXME 10
+//        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009 R01215";
+        // find substrings for different parts
+        String islandSubstring = challengeString.substring(0, challengeString.indexOf('F'));
+        String fireSubstring = challengeString.substring(challengeString.indexOf('F') + 1, challengeString.indexOf('C'));
+        String catSubstring = challengeString.substring(challengeString.indexOf('C') + 1, challengeString.indexOf('R'));
+        String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
-        return "";  // FIXME 10
+
+//        System.out.println(islandSubstring);
+        Square[][] board = theBoard.formBoard(islandSubstring);
+        theBoard.setSquares(board);
+//        System.out.println("检查raceToTheRaft新建板子"+'\n'+theBoard.boardToString());
+
+        addFire(board, fireSubstring);
+
+        addCats(board, catSubstring);
+
+        addRaft(board, raftSubstring);
+
+        return theBoard.boardToString();
+
     }
 
 
