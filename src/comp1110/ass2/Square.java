@@ -3,31 +3,56 @@ package comp1110.ass2;
 // author: Yu Ma and Aditya Arora
 public class Square {
 
-    private Colour colour;
+    Colour colour;
     boolean hasCat;
     boolean hasFire;
     Location location;
 
-    public Square(){}
+    public Square(){
+        this.location = new Location(0, 0);
+    }
+
+    public Square(Colour colour){
+        this.colour = colour;
+        this.location = new Location(0, 0);
+    }
 
     // Yu Ma
     public Square(String location, Colour colour){
+        if (location.length() != 2 || !Character.isDigit(location.charAt(0)) || !Character.isDigit(location.charAt(1))) {
+            throw new IllegalArgumentException("Invalid location string: " + location);
+        }
         int row = Character.getNumericValue(location.charAt(0));
         int column = Character.getNumericValue(location.charAt(1));
         this.location = new Location(row,column);
-//        this.location.setRow(row);
-//        this.location.setColumn(column);
-
         this.colour = colour;
     }
 
-
-    public void setColour(Colour colour){
+    public Square(Location location, Colour colour) {
+        this.location = location;
         this.colour = colour;
     }
-    public Colour getcolour(){
+
+    public Colour setColour(Colour colour){
+        this.colour = colour;
         return colour;
     }
+
+    public Colour getColour(){
+        return this.colour;
+    }
+
+    public Location setLocation(Colour colour){
+        this.location = location;
+        return location;
+    }
+
+    public Location getLocation(){
+        return this.location;
+    }
+
+
+
     public void setHasCat(boolean hasCat){
         this.hasCat = hasCat;
     }
@@ -41,4 +66,6 @@ public class Square {
         return hasFire;
     }
 
+
 }
+
