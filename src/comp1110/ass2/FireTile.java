@@ -27,10 +27,11 @@ public class FireTile {
 
         fireSquares = new Square[(info.length() - 1) / 2];
         for (int i = 0; i < fireSquares.length; i++) {
-            String location = info.substring(2 * i + 1, 2 * i + 3);
-            int row = Integer.parseInt(String.valueOf(location.charAt(0)));
-            int col = Integer.parseInt(String.valueOf(location.charAt(1)));
-            fireSquares[i] = new Square(new Location(row, col), Colour.FIRE);
+            String locationString = info.substring(2 * i + 1, 2 * i + 3);
+            int row = Integer.parseInt(locationString.substring(0, 1));
+            int col = Integer.parseInt(locationString.substring(1, 2));
+            Location location = new Location(row, col);
+            fireSquares[i] = new Square(location, Colour.FIRE);
         }
     }
 
