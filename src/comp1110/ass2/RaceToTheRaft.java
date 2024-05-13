@@ -381,11 +381,77 @@ public class RaceToTheRaft {
      *
      * @param gameState      An array representing the game state.
      * @param movementString A string representing the movement of a cat and the cards discarded to allow this move.
+     *                       "B01100710Bm"
      * @return the updated gameState array after this movement has been made.
      */
     public static String[] moveCat(String[] gameState, String movementString) {
-        return new String[0]; // FIXME TASK 9
+
+        TheBoard currentBoardState = new TheBoard();
+
+        Square[][] boardSquares = new Square[15][18];
+        String boardWithSpace = gameState[0];
+        String boardWithoutSpace = boardWithSpace.replaceAll("\\r\\n|\\r|\\n", "");
+        int indexForWitoutSpace = 0;
+
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 18; j++) {
+                boardSquares[i][j] = new Square(Colour.fromChar(boardWithoutSpace.charAt(indexForWitoutSpace)));
+                indexForWitoutSpace++;
+            }
+        }
+        currentBoardState.setSquares(boardSquares);
+
+        // Example movementString: "Y01100610Cv"
+        // Cat 'Y' moves from position (01, 10) to (06, 10) using card 'Cv'
+        char cat = movementString.charAt(0);
+        int fromRow = Integer.parseInt(movementString.substring(1, 3));
+        int fromCol = Integer.parseInt(movementString.substring(3, 5));
+        int toRow = Integer.parseInt(movementString.substring(5, 7));
+        int toCol = Integer.parseInt(movementString.substring(7, 9));
+
+        //update board state after cat moved
+        Colour normalColour = boardSquares[fromRow][fromCol].getColour();
+        boardSquares[fromRow][fromCol].setColour(Colour.catColourToNormalColour(normalColour));
+        boardSquares[toRow][toCol].setColour(Colour.fromChar(cat));
+
+        //update catPosition string of moved cat
+        String catPosition = ""+cat;
+        if(toRow<10 && toCol<10){
+            catPosition += "" + 0 + toRow + 0 + toCol;
+        }else if(toRow>9 && toCol<10){
+            catPosition += ""+toRow+0+toCol;
+        }else if(toRow<10 && toCol>9){
+            catPosition += ""+0+toRow+toCol;
+        }else if(toRow>9 && toCol>9){
+            catPosition += ""+toRow+toCol;
+        }
+
+        //update exhaustedCats
+        String exhaustedCats = gameState[3];//like "P0709"
+        if (exhaustedCats.contains(String.valueOf(cat))) {
+            // If cat is already in the list, update its position
+            exhaustedCats = exhaustedCats.replaceAll(cat + "\\d{4}", catPosition);
+        } else {
+            // Find the right position to insert the new catPosition based on the order of cats
+            int index = 0;
+            for (; index < exhaustedCats.length(); index += 5) {
+                if (exhaustedCats.charAt(index) > cat) {
+                    break;
+                }
+            }
+            exhaustedCats = exhaustedCats.substring(0, index) + catPosition + exhaustedCats.substring(index);
+        }
+
+        gameState[0] = currentBoardState.boardToString();
+        gameState[3] = exhaustedCats;
+
+        return gameState;
+
+//        return new String[0]; // FIXME TASK 9
     }
+
+
+
 
     /**
      * Given a challengeString, construct a board string that satisfies the challenge requirements.
