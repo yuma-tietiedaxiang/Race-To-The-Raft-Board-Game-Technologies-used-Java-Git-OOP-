@@ -278,59 +278,56 @@ public class RaceToTheRaft {
      * @param movementString A string representing the movement of a cat and the cards discarded to allow this move.
      * @return the updated gameState array after this movement has been made.
      */
-//    public static String[] moveCat(String[] gameState, String movementString) {
-//        return new String[0]; // FIXME TASK 9
-//    }
-
     public static String[] moveCat(String[] gameState, String movementString) {
-        String[] newState = gameState.clone(); // Clone the gameState array to avoid modifying the original
 
-        // Parsing the movement string to extract numeric values
-        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\\d+").matcher(movementString);
-        java.util.List<Integer> numbers = new java.util.ArrayList<>();
-        while (matcher.find()) {
-            numbers.add(Integer.parseInt(matcher.group()));
-        }
+        System.out.println("Namaste Mummy and Papa!! " + Arrays.toString(gameState));
+        System.out.println("Namaste Mummy and Papa!! " + movementString);
 
-        // Ensure we have exactly four numbers (two pairs of coordinates)
-        if (numbers.size() < 4) {
-            // Log error or throw an exception as appropriate
-            throw new IllegalArgumentException("Invalid movement string: expected four numbers, got " + numbers.size());
-        }
+        String board = gameState[0];
+        String exhaustedCats = gameState[3];
 
-        // Extract coordinates
-        int x0 = numbers.get(0);
-        int y0 = numbers.get(1);
-        int x1 = numbers.get(2);
-        int y1 = numbers.get(3);
-
-        // Convert the board string to a character array for manipulation
-        char[][] board = new char[15][];
-        for (int i = 0; i < 15; i++) {
-            board[i] = newState[0].substring(i * 17, (i + 1) * 17 - 1).toCharArray(); // Adjusting for newlines
-        }
-
-        // Move the cat on the board
-        board[y1][x1] = board[y0][x0];
-        board[y0][x0] = 'f'; // assuming 'f' represents a free spot or similar
-
-        // Reconstruct the board state from the character array
-        StringBuilder sb = new StringBuilder();
-        for (char[] row : board) {
-            sb.append(new String(row)).append("\n"); // add newline for each row
-        }
-        newState[0] = sb.toString().trim(); // remove the last newline
-
-        // Handle the exhausted cats list
+        // Example movementString: "Y01100610Cv"
+        // Cat 'Y' moves from position (11, 00) to (06, 10) using card 'Cv'
         char cat = movementString.charAt(0);
-        if (!newState[3].contains(String.valueOf(cat))) {
-            newState[3] += cat; // Append the cat if not already exhausted
+        int fromRow = Integer.parseInt(movementString.substring(1, 3));
+        int fromCol = Integer.parseInt(movementString.substring(3, 5));
+        int toRow = Integer.parseInt(movementString.substring(5, 7));
+        int toCol = Integer.parseInt(movementString.substring(7, 9));
+
+        // Calculate linear indices based on a board size, assuming 15x15 as given in the test case
+        int fromIndex = fromRow * 15 + fromCol;
+        int toIndex = toRow * 15 + toCol;
+
+        // Move cat on the board
+        board = board.substring(0, fromIndex) + 'f' + board.substring(fromIndex + 1); // Replace old position with 'f'
+        board = board.substring(0, toIndex) + cat + board.substring(toIndex + 1); // Place cat at new position
+
+        // Update exhausted cats list
+        String newPosition = String.format("%02d%02d", toRow, toCol);
+        String catPosition = cat + newPosition;
+
+        if (exhaustedCats.contains(String.valueOf(cat))) {
+            // If cat is already in the list, update its position
+            exhaustedCats = exhaustedCats.replaceAll(cat + "\\d{4}", catPosition);
         } else {
-            // If further action is needed when cat is already exhausted, handle here
+            // Find the right position to insert the new catPosition based on the order of cats
+            int index = 0;
+            for (; index < exhaustedCats.length(); index += 5) {
+                if (exhaustedCats.charAt(index) > cat) {
+                    break;
+                }
+            }
+            exhaustedCats = exhaustedCats.substring(0, index) + catPosition + exhaustedCats.substring(index);
         }
 
-        return newState;
+        gameState[0] = board;
+        gameState[3] = exhaustedCats;
+
+        return gameState;
+
+//        return new String[0]; // FIXME TASK 9
     }
+
 
 
 
