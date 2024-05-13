@@ -4,7 +4,10 @@ package comp1110.ass2;
 
 import java.util.*;
 
-import static comp1110.ass2.Utility.*;
+import static comp1110.ass2.Cat.addCats;
+import static comp1110.ass2.FireTile.addFire;
+import static comp1110.ass2.Raft.addRaft;
+//import static comp1110.ass2.TheBoard.formBoard;
 
 /**
  * This class is for testing purposes only. You should create and use your own objects to solve the tasks below
@@ -14,6 +17,11 @@ import static comp1110.ass2.Utility.*;
 public class RaceToTheRaft {
 
     public static HashMap<Integer, String[]> challenges = new HashMap<>();
+    public static TheBoard theBoard = new TheBoard();
+
+//    static String[][] copiedSquareBoard = Arrays.copyOf(SQUARE_BOARDS, SQUARE_BOARDS.length);
+//    static String[][] copiedRectangleBoard = Arrays.copyOf(RECTANGLE_BOARDS, RECTANGLE_BOARDS.length);
+
 
     /**
      * Determine whether a boardState string is well-formed.
@@ -256,8 +264,113 @@ public class RaceToTheRaft {
      * @return the updated gameState array after this placement has been made
      */
     public static String[] applyPlacement(String[] gameState, String placementString) {
-        return new String[0]; // FIXME TASK 8
+
+        if (Character.isLetter(placementString.charAt(1)) && Character.isLetter(placementString.charAt(6))) {
+            // 放置卡片
+            char deckType = placementString.charAt(0);
+            char cardID = placementString.charAt(1);
+            int row = Integer.parseInt(placementString.substring(2, 4));
+            int col = Integer.parseInt(placementString.substring(4, 6));
+            char orientation = placementString.charAt(6);
+
+            // 根据卡片的类型和ID获取卡片数据
+            String[] cardData;
+            DeckType deckType1 = DeckType.fromChar(placementString.charAt(0));
+            switch (deckType1) {
+                case CIRCLE:
+                case CROSS:
+                case SQUARE:
+                case TRIANGLE:
+                    String[][] deckData = new String[][]{Utility.DECK_A, Utility.DECK_B, Utility.DECK_C, Utility.DECK_D};
+                    cardData = new String[]{deckData[deckType1.ordinal()][cardID - 'a']};
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid deck type: " + deckType);
+            }
+
+            // 创建 PlacedCard 对象
+            PlacedCard card = new PlacedCard(cardData[0], orientation, row, col);
+
+            // 更新 Board 字符串
+            StringBuilder boardBuilder = new StringBuilder(gameState[0]);
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    int boardRow = row + i;
+                    int boardCol = col + j;
+                    if (boardRow >= 0 && boardRow < boardLength(boardBuilder) && boardCol >= 0 && boardCol < boardLength(boardBuilder)) {
+                        char squareColor = card.getColorAt(i, j);
+                        int index = boardRow * (boardLength(boardBuilder) + 1) + boardCol;
+                        boardBuilder.setCharAt(index, squareColor);
+                    }
+                }
+            }
+            gameState[0] = boardBuilder.toString();
+
+            // 从 Hand 字符串中移除卡片
+
+            String handString = gameState[2];
+            char deckType2 = placementString.charAt(0);
+            char cardID1 = placementString.charAt(1);
+
+            // 找到 handString 中表示卡组的大写字母的位置
+            int deckIndex = handString.indexOf(deckType);
+
+            // 如果找到了卡组标识
+            if (deckIndex != -1) {
+                // 在卡组标识后搜索与 cardID 匹配的小写字母
+                int cardIndex = handString.indexOf(cardID, deckIndex + 1);
+
+                // 如果找到了匹配的卡牌
+                if (cardIndex != -1) {
+                    // 从 handString 中移除匹配的卡牌
+                    gameState[2] = handString.substring(0, cardIndex) + handString.substring(cardIndex + 1);
+                }
+            }
+
+        } else {
+            // 放置火焰块
+            char fireID = placementString.charAt(0);
+            int row = Integer.parseInt(placementString.substring(1, 3));
+            int col = Integer.parseInt(placementString.substring(3, 5));
+            boolean flipped = placementString.charAt(5) == 'T';
+            char orientation = placementString.charAt(6);
+
+            // 创建 FireTile 对象
+            StringBuilder boardBuilder = new StringBuilder(gameState[0]);
+            int boardRows = boardLength(boardBuilder);
+            int boardCols = boardRows;
+            PlacedFireTile fireTile = new PlacedFireTile(fireID, row, col, flipped, orientation, boardRows, boardCols);
+
+            // 更新 Board 字符串
+            Set<Location> affectedSquares = new HashSet<>();
+            for (Square square : fireTile.getSquares()) {
+                int boardRow = square.getLocation().getRow();
+                int boardCol = square.getLocation().getColumn();
+                if (boardRow >= 0 && boardRow < boardRows && boardCol >= 0 && boardCol < boardCols) {
+                    affectedSquares.add(square.getLocation());
+                }
+            }
+
+            for (Location loc : affectedSquares) {
+                int index = boardCols * loc.getRow() + loc.getColumn();
+                boardBuilder.setCharAt(index, 'f');
+            }
+
+            gameState[0] = boardBuilder.toString();
+
+
+
+        }
+        return gameState;
     }
+
+        private static int boardLength (StringBuilder boardBuilder){
+            return boardBuilder.toString().split("\\r?\\n")[0].length();
+        }
+    // FIXME TASK 8
+
+
+
 
     /**
      * Move the given cat as described by the cat movement string and return the updated gameState array. You may
@@ -285,10 +398,28 @@ public class RaceToTheRaft {
      * @param challengeString A string representing the challenge to initialise
      * @return A board string for this challenge.
      */
-    public static String initialiseChallenge(String challengeString) {
-//        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009R01215";
+    public static String initialiseChallenge(String challengeString) {// FIXME 10
+//        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009 R01215";
+        // find substrings for different parts
+        String islandSubstring = challengeString.substring(0, challengeString.indexOf('F'));
+        String fireSubstring = challengeString.substring(challengeString.indexOf('F') + 1, challengeString.indexOf('C'));
+        String catSubstring = challengeString.substring(challengeString.indexOf('C') + 1, challengeString.indexOf('R'));
+        String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
-        return "";  // FIXME 10
+
+//        System.out.println(islandSubstring);
+        Square[][] board = theBoard.formBoard(islandSubstring);
+        theBoard.setSquares(board);
+//        System.out.println("检查raceToTheRaft新建板子"+'\n'+theBoard.boardToString());
+
+        addFire(board, fireSubstring);
+
+        addCats(board, catSubstring);
+
+        addRaft(board, raftSubstring);
+
+        return theBoard.boardToString();
+
     }
 
 
@@ -317,8 +448,90 @@ public class RaceToTheRaft {
      * @return True if the placement is valid, otherwise false.
      */
     public static boolean isPlacementValid(String[] gameState, String placementString) {
-        return false; // FIXME TASK 12
+        // 解析放置字符串,确定是卡片放置还是火焰块放置
+        if (Character.isLetter(placementString.charAt(1)) && Character.isLetter(placementString.charAt(6))) {
+            // 卡片放置
+            int row = Integer.parseInt(placementString.substring(2, 4));
+            int col = Integer.parseInt(placementString.substring(4, 6));
+            char orientation = placementString.charAt(6);
+
+            // 创建 PlacedCard 对象
+            String[] cardData = new String[]{Utility.DECK_A[placementString.charAt(1) - 'a']};
+            PlacedCard card = new PlacedCard(cardData[0], orientation, row, col);
+
+            // 检查卡片是否超出棋盘边界
+            if (row < 0 || row + 2 >= boardLength(gameState[0]) || col < 0 || col + 2 >= boardLength(gameState[0])) {
+                return false;
+            }
+
+            // 检查卡片是否与火焰、猫或筏子卡片重叠
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    int boardRow = row + i;
+                    int boardCol = col + j;
+                    char squareColor = gameState[0].charAt(boardRow * (boardLength(gameState[0]) + 1) + boardCol);
+                    if (squareColor == 'f' || Character.isUpperCase(squareColor) || squareColor == 'o') {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+
+        } else {
+            // 火焰块放置
+            int row = Integer.parseInt(placementString.substring(1, 3));
+            int col = Integer.parseInt(placementString.substring(3, 5));
+            boolean flipped = placementString.charAt(5) == 'T';
+            char orientation = placementString.charAt(6);
+
+            // 创建 PlacedFireTile 对象
+            PlacedFireTile fireTile = new PlacedFireTile(placementString.charAt(0), row, col, flipped, orientation, boardLength(gameState[0]), boardLength(gameState[0]));
+
+            // 检查火焰块是否超出棋盘边界
+            for (Square square : fireTile.getSquares()) {
+                int boardRow = square.getLocation().getRow();
+                int boardCol = square.getLocation().getColumn();
+                if (boardRow < 0 || boardRow >= boardLength(gameState[0]) || boardCol < 0 || boardCol >= boardLength(gameState[0])) {
+                    return false;
+                }
+            }
+
+            // 检查火焰块是否与火焰、猫或筏子卡片重叠
+            for (Square square : fireTile.getSquares()) {
+                int boardRow = square.getLocation().getRow();
+                int boardCol = square.getLocation().getColumn();
+                char squareColor = gameState[0].charAt(boardRow * (boardLength(gameState[0]) + 1) + boardCol);
+                if (squareColor == 'f' || Character.isUpperCase(squareColor) || squareColor == 'o') {
+                    return false;
+                }
+            }
+
+            // 检查火焰块是否与现有火焰正交相邻
+            boolean isAdjacent = false;
+            for (Square square : fireTile.getSquares()) {
+                int boardRow = square.getLocation().getRow();
+                int boardCol = square.getLocation().getColumn();
+                if ((boardRow > 0 && gameState[0].charAt((boardRow - 1) * (boardLength(gameState[0]) + 1) + boardCol) == 'f') ||
+                        (boardRow < boardLength(gameState[0]) - 1 && gameState[0].charAt((boardRow + 1) * (boardLength(gameState[0]) + 1) + boardCol) == 'f') ||
+                        (boardCol > 0 && gameState[0].charAt(boardRow * (boardLength(gameState[0]) + 1) + boardCol - 1) == 'f') ||
+                        (boardCol < boardLength(gameState[0]) - 1 && gameState[0].charAt(boardRow * (boardLength(gameState[0]) + 1) + boardCol + 1) == 'f')) {
+                    isAdjacent = true;
+                    break;
+                }
+            }
+            if (!isAdjacent) {
+                return false;
+            }
+
+            return true;
+        }
     }
+
+    private static int boardLength(String boardString) {
+        return boardString.split("\\r?\\n")[0].length();
+    }// FIXME TASK 12
+
 
     /**
      * Given a cat movement string, check if the cat movement is valid.
@@ -334,8 +547,50 @@ public class RaceToTheRaft {
      * @return True if the cat movement is valid, otherwise false
      */
     public static boolean isCatMovementValid(String[] gameState, String catMovementString) {
-        return false; // FIXME TASK 14
-    }
+        // 解析猫移动字符串
+        char catColor = catMovementString.charAt(0);
+        int startRow = Integer.parseInt(catMovementString.substring(1, 3));
+        int startCol = Integer.parseInt(catMovementString.substring(3, 5));
+        int endRow = Integer.parseInt(catMovementString.substring(5, 7));
+        int endCol = Integer.parseInt(catMovementString.substring(7, 9));
+
+        // 检查终点位置是否与猫的颜色匹配
+        char endSquareColor = gameState[0].charAt(endRow * (boardLength(gameState[0]) + 1) + endCol);
+        if (Character.toLowerCase(endSquareColor) != Character.toLowerCase(catColor)) {
+            return false;
+        }
+
+        // 检查是否存在一条由相同颜色的方块组成的路径,不包括对角线移动
+        // 可以使用广度优先搜索(BFS)或深度优先搜索(DFS)实现
+        // 这里简单起见,只检查是否存在一条直线路径
+        if (startRow == endRow) {
+            // 水平移动
+            int minCol = Math.min(startCol, endCol);
+            int maxCol = Math.max(startCol, endCol);
+            for (int col = minCol + 1; col < maxCol; col++) {
+                char squareColor = gameState[0].charAt(startRow * (boardLength(gameState[0]) + 1) + col);
+                if (Character.toLowerCase(squareColor) != Character.toLowerCase(catColor)) {
+                    return false;
+                }
+            }
+        } else if (startCol == endCol) {
+            // 垂直移动
+            int minRow = Math.min(startRow, endRow);
+            int maxRow = Math.max(startRow, endRow);
+            for (int row = minRow + 1; row < maxRow; row++) {
+                char squareColor = gameState[0].charAt(row * (boardLength(gameState[0]) + 1) + startCol);
+                if (Character.toLowerCase(squareColor) != Character.toLowerCase(catColor)) {
+                    return false;
+                }
+            }
+        } else {
+            // 对角线移动
+            return false;
+        }
+
+        return true;
+    } // FIXME TASK 14
+
 
 
     /**
@@ -358,8 +613,151 @@ public class RaceToTheRaft {
      * @return True if the game is over (regardless of whether it is won or lost), otherwise False.
      */
     public static boolean isGameOver(String[] gameState, String action) {
-        return false;     // FIXME TASK 15
+        if (gameState == null || gameState.length == 0 || gameState[0] == null || gameState[0].isEmpty()) {
+            return false; // 游戏状态为空或无效,视为游戏未结束
+        }
+
+        // 解析操作字符串
+        if (action.length() == 7 && Character.isLetter(action.charAt(0)) && Character.isLetter(action.charAt(6))) {
+            // 火焰块放置
+            if (!isPlacementValid(gameState, action)) {
+                // 如果当前放置无效,检查是否还有其他有效放置位置
+                boolean hasValidPlacement = false;
+                for (char fireID : gameState[4].toCharArray()) {
+                    for (int row = 0; row < boardLength(gameState[0]); row++) {
+                        for (int col = 0; col < boardLength(gameState[0]); col++) {
+                            for (boolean flipped : new boolean[]{false, true}) {
+                                for (char orientation : new char[]{'N', 'E', 'S', 'W'}) {
+                                    String placementString = String.format("%c%02d%02d%c%c", fireID, row, col, flipped ? 'T' : 'F', orientation);
+                                    if (isPlacementValid(gameState, placementString)) {
+                                        hasValidPlacement = true;
+                                        break;
+                                    }
+                                }
+                                if (hasValidPlacement) break;
+                            }
+                            if (hasValidPlacement) break;
+                        }
+                        if (hasValidPlacement) break;
+                    }
+                    if (hasValidPlacement) break;
+                }
+                if (!hasValidPlacement) {
+                    return true; // 游戏结束,放置火焰块无效且没有其他有效放置位置
+                }
+            }
+            // 检查放置火焰块后是否有猫无法到达筏子
+            String[] updatedGameState = applyPlacement(gameState, action);
+            if (updatedGameState == null || updatedGameState.length == 0 || updatedGameState[0] == null || updatedGameState[0].isEmpty()) {
+                return false; // 更新后的游戏状态为空或无效,视为游戏未结束
+            }
+            for (int catRow = 0; catRow < boardLength(updatedGameState[0]); catRow++) {
+                for (int catCol = 0; catCol < boardLength(updatedGameState[0]); catCol++) {
+                    char catSquare = updatedGameState[0].charAt(catRow * (boardLength(updatedGameState[0]) + 1) + catCol);
+                    if (Character.isUpperCase(catSquare)) {
+                        boolean canReachRaft = false;
+                        for (int raftRow = 0; raftRow < boardLength(updatedGameState[0]); raftRow++) {
+                            for (int raftCol = 0; raftCol < boardLength(updatedGameState[0]); raftCol++) {
+                                if (updatedGameState[0].charAt(raftRow * (boardLength(updatedGameState[0]) + 1) + raftCol) == 'o') {
+                                    // 使用广度优先搜索(BFS)检查是否存在有效路径
+                                    canReachRaft = hasPathToRaft(updatedGameState[0], catRow, catCol, raftRow, raftCol);
+                                    if (canReachRaft) break;
+                                }
+                            }
+                            if (canReachRaft) break;
+                        }
+                        if (!canReachRaft) {
+                            return true; // 游戏结束,某只猫无法到达筏子
+                        }
+                    }
+                }
+            }
+        } else if (action.length() == 10 || action.length() == 12) {
+            // 猫移动
+            String[] updatedGameState = moveCat(gameState, action);
+            if (updatedGameState == null || updatedGameState.length == 0 || updatedGameState[0] == null || updatedGameState[0].isEmpty()) {
+                return false; // 更新后的游戏状态为空或无效,视为游戏未结束
+            }
+            // 检查所有猫是否都到达了筏子
+            boolean allCatsOnRaft = true;
+            for (int catRow = 0; catRow < boardLength(updatedGameState[0]); catRow++) {
+                for (int catCol = 0; catCol < boardLength(updatedGameState[0]); catCol++) {
+                    char catSquare = updatedGameState[0].charAt(catRow * (boardLength(updatedGameState[0]) + 1) + catCol);
+                    if (Character.isUpperCase(catSquare)) {
+                        boolean catOnRaft = false;
+                        for (int raftRow = catRow - 1; raftRow <= catRow + 1; raftRow++) {
+                            for (int raftCol = catCol - 1; raftCol <= catCol + 1; raftCol++) {
+                                if (raftRow >= 0 && raftRow < boardLength(updatedGameState[0]) && raftCol >= 0 && raftCol < boardLength(updatedGameState[0])) {
+                                    if (updatedGameState[0].charAt(raftRow * (boardLength(updatedGameState[0]) + 1) + raftCol) == 'o') {
+                                        catOnRaft = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (catOnRaft) break;
+                        }
+                        if (!catOnRaft) {
+                            allCatsOnRaft = false;
+                            break;
+                        }
+                    }
+                }
+                if (!allCatsOnRaft) break;
+            }
+            if (allCatsOnRaft) {
+                return true; // 游戏结束,所有猫都到达了筏子
+            }
+        } else if (action.length() == 7 && Character.isLetter(action.charAt(0)) && Character.isLetter(action.charAt(1)) && Character.isLetter(action.charAt(6))) {
+            // 卡片放置
+            String[] updatedGameState = applyPlacement(gameState, action);
+            if (updatedGameState == null || updatedGameState.length < 5 || updatedGameState[4] == null) {
+                return false; // 更新后的游戏状态为空或无效,视为游戏未结束
+            }
+            // 检查火焰块背包是否为空
+            if (updatedGameState[4].isEmpty()) {
+                return true; // 游戏结束,火焰块背包为空
+            }
+        }
+
+        return false; // 游戏未结束
     }
+
+    private static boolean hasPathToRaft(String boardString, int startRow, int startCol, int endRow, int endCol) {
+        int rows = boardLength(boardString);
+        int cols = rows;
+        boolean[][] visited = new boolean[rows][cols];
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{startRow, startCol});
+        visited[startRow][startCol] = true;
+
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // 上、下、左、右
+
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int row = current[0];
+            int col = current[1];
+
+            if (row == endRow && col == endCol) {
+                return true; // 找到有效路径
+            }
+
+            for (int[] direction : directions) {
+                int newRow = row + direction[0];
+                int newCol = col + direction[1];
+
+                if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && !visited[newRow][newCol]) {
+                    char square = boardString.charAt(newRow * (cols + 1) + newCol);
+                    if (square != 'f' && !Character.isUpperCase(square)) {
+                        queue.offer(new int[]{newRow, newCol});
+                        visited[newRow][newCol] = true;
+                    }
+                }
+            }
+        }
+
+        return false; // 没有找到有效路径
+    }// FIXME TASK 15
+
 
 
     public static void main(String[] args) {
