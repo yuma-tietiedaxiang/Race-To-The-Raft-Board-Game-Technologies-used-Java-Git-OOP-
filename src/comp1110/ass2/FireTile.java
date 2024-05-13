@@ -55,7 +55,7 @@ public class FireTile {
         String fireLocation = drawFireTile.substring(1);
         StringBuilder afterRotateLocation = new StringBuilder();
         for (int i = 0; i < fireLocation.length(); i += 2) {
-            int newj = 4 - fireLocation.charAt(i) + 48 - 1;
+            int newj = 5 - fireLocation.charAt(i) + 48 - 1;
             afterRotateLocation.append(fireLocation.charAt(i + 1)).append(newj);
         }
 //        System.out.println(afterRotateLocation);
