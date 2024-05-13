@@ -385,8 +385,8 @@ public class RaceToTheRaft {
      */
     public static String[] moveCat(String[] gameState, String movementString) {
 
-        System.out.println("Namaste Mummy and Papa!! " + Arrays.toString(gameState));
-        System.out.println("Namaste Mummy and Papa!! " + movementString);
+//        System.out.println("Namaste Mummy and Papa!! " + Arrays.toString(gameState));
+//        System.out.println("Namaste Mummy and Papa!! " + movementString);
 
         String board = gameState[0];
         String exhaustedCats = gameState[3];
