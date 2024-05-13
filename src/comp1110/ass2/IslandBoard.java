@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+// author: Yu Ma
 public class IslandBoard {
 //    public static void main(String[] args) {
 //        IslandBoard i = new IslandBoard("brpygybgygrbgyrpbggyppbyyrpybygbrggrgyrpgbypbpbbgrpryb",1);
@@ -36,5 +37,10 @@ public class IslandBoard {
                 }
             }
         }
+    }
+
+    //TODO
+    public String rotateIsland(){
+        return "";
     }
 }

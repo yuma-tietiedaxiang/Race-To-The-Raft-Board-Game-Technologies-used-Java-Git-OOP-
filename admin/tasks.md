@@ -44,17 +44,11 @@ Aditya: fix bugs arised
 
 Yu: record w4 meetings
 
-
 ## Week 5
 
-[//]: #
-[//]: # "Zhang San: Task 3 isPlayerStateWellFormed - 23 Mar"
 
-[//]: #
-[//]: # "Jane Bloggs: Task 5 drawTileFromBag - 23 Mar"
 
-[//]: #
-[//]: # "Erika Mustermann: Task 6 refillFactories - 25 Mar &#40;depends on Task 5&#41;"
+
 
 ## Week 6
 

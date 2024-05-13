@@ -17,16 +17,11 @@ public class RaceToTheRaft {
 
     /**
      * Determine whether a boardState string is well-formed.
-     * 判断boardState字符串是否格式良好
      * To be well-formed the string must satisfy all the following conditions:
-     * 要成为格式良好的字符串，必须满足以下所有条件:
      * <p>
      * 1. Each line is terminated by a newline character `\n`
-     * 每行以换行符' \n '结束
      * 2. The number of printable (non-newline) characters in each line is equal AND is either 9 or 18.
-     * 每行中可打印(非换行)字符的数量相等且为9或18。
      * 3. Each character (except the newline character) is one of the following:
-     * 每个字符(换行符除外)是下列字符之一:
      * - 'b' (blue)
      * - 'B' (blue with blue cat)
      * - 'f' (fire)
@@ -43,13 +38,10 @@ public class RaceToTheRaft {
      * - 'y' (yellow)
      * - 'Y' (yellow with yellow cat)
      * 4. The number of lines is either 12, 15 or 18.
-     * 行数是12、15或18
      * </p>
      *
      * @param boardString A string representing the boardState
-     *                    表示boardState的字符串
      * @return True if the boardState is well-formed, otherwise false.
-     * 如果boardState格式良好，则为True，否则为false
      */
     public static boolean isBoardStringWellFormed(String boardString) {
 
@@ -103,6 +95,8 @@ public class RaceToTheRaft {
      * @return a random fire tile from those remaining, in string form. If there are no tiles remaining, return the
      * empty string.
      */
+
+    // Yu Ma
     public static String drawFireTile(String[] gameState) {//A not represented
         if (gameState[4].isEmpty()) {
             return "";
@@ -122,46 +116,11 @@ public class RaceToTheRaft {
      * @param difficulty the desired difficulty of the challenge
      * @return a random challenge of the given difficulty
      */
+
+    // Weiqi Huang
     public static String chooseChallenge(int difficulty) {
         // FIXME TASK 6 - Done!!
-        // init challenges
-        // difficulty0
-//        String[] difficulty0 = new String[4];
-//        System.arraycopy(CHALLENGES, 0, difficulty0, 0, 4);
-//        challenges.put(0, difficulty0);
-//        // difficulty1
-//        String[] difficulty1 = new String[4];
-//        System.arraycopy(CHALLENGES, 4, difficulty1, 0, 4);
-//        challenges.put(1, difficulty1);
-//        // difficulty2
-//        String[] difficulty2 = new String[8];
-//        System.arraycopy(CHALLENGES, 8, difficulty2, 0, 8);
-//        challenges.put(2, difficulty2);
-//        // difficulty3
-//        String[] difficulty3 = new String[8];
-//        System.arraycopy(CHALLENGES, 16, difficulty3, 0, 8);
-//        challenges.put(3, difficulty3);
-//        // difficulty4
-//        String[] difficulty4 = new String[8];
-//        System.arraycopy(CHALLENGES, 24, difficulty4, 0, 8);
-//        challenges.put(4, difficulty4);
-//        // difficulty5
-//        String[] difficulty5 = new String[7];
-//        System.arraycopy(CHALLENGES, 32, difficulty5, 0, 7);
-//        challenges.put(5, difficulty5);
-//
-//        // Create a random number generator
-//        Random random = new Random();
-//        //        random.setSeed(22);
-//
-//        //根据难度来选择关卡
-//        String[] difficulties = challenges.get(difficulty);
-//
-//        // Generate random index
-//        int randomIndex = random.nextInt(difficulties.length);
-//
-//        // Gets the element at the random index
-//        String randomElement = difficulties[randomIndex];
+
         Challenge challenge = new Challenge(difficulty);
 
         // Returns randomly selected elements
@@ -203,9 +162,11 @@ public class RaceToTheRaft {
      * @return The updated gameState array after the cards have been drawn. (Remove all cards drawn from decks and add them to the Hand string). If it is not possible to draw all the specified cards, you should return the original gameState.
      * 在抽完牌后更新的gameState数组。(从牌组中取出所有牌并将其添加到手牌串中)。如果不能抽到所有指定的牌，你应该返回原始的gameState。
      */
+
+    // Weiqi Huang
     public static String[] drawHand(String[] gameState, String drawRequest) {
         // FIXME TASK 7 Done!
-        // 获取牌组的当前状态
+        // Get the current state of the decks 获取牌组的当前状态
         Map<Character, Deck> deckMap = new HashMap<>();
         String deckState = gameState[1];
         for (char c = 'A'; c <= 'D'; c++) {
@@ -218,17 +179,17 @@ public class RaceToTheRaft {
             deckMap.put(c, new Deck(c,tempDeckInfo));
         }
 
-        // 最终抽取的手牌
+        // The final drawn hand 最终抽取的手牌
         StringBuilder handDeck = new StringBuilder();
 
-        // 遍历 drawRequest 字符串，依次记录每个牌组请求
+        // Iterate over the drawRequest string and record each deck request 遍历 drawRequest 字符串，依次记录每个牌组请求
         HashMap<Character, Integer> drawRequestMap = new HashMap();
         drawRequestMap.put('A', 0);
         drawRequestMap.put('B', 0);
         drawRequestMap.put('C', 0);
         drawRequestMap.put('D', 0);
         for (int i = 0; i < drawRequest.length(); i += 2) {
-            // 获取当前牌组和需要抽取的牌数
+            // Get the current deck and the number of cards to draw 获取当前牌组和需要抽取的牌数
             char deckChar = drawRequest.charAt(i);
             int count = Character.getNumericValue(drawRequest.charAt(i + 1));
             //            System.out.println("从牌组" + deckChar + "中抽取" + count + "张牌：");
@@ -236,39 +197,39 @@ public class RaceToTheRaft {
         }
 
 
-        // 从对应的牌组中随机抽取牌
+        // Randomly draw cards from the corresponding decks 从对应的牌组中随机抽取牌
         for (char deckChar = 'A'; deckChar <= 'D'; deckChar++) {
 
             StringBuilder tempHand = new StringBuilder();
-            // 从该牌组获取的次数
+            // Number of times to draw from this deck 从该牌组获取的次数
             int count = drawRequestMap.get(deckChar);
             for (int j = 0; j < count; j++) {
-                // 该牌组的状态
+                // The state of this deck 该牌组的状态
                 String deckInfo = deckMap.get(deckChar).getDeckInfo();
 
                 Deck deck = deckMap.get(deckChar);
-                // 如果该牌组没有牌可以抽取
+                // If there are no cards to draw from this deck 如果该牌组没有牌可以抽取
                 if (deck.hasNoCard()) {
                     return gameState;
                 }
-                // 随机取牌
-                /*Random random = new Random();
+                // Randomly draw a card 随机取牌
+                /*Random = new Random();
                 int index = random.nextInt(deckInfo.toCharArray().length);
                 char randomChar = deckInfo.charAt(index);*/
-                //加入到手牌中
+                //Add it to the hand 加入到手牌中
                 tempHand.append(deck.drawCards());
-                //取牌之后, 将该牌组中已经取走的牌删掉,
+                //After drawing the card, remove it from the deck 取牌之后, 将该牌组中已经取走的牌删掉,
                 deckMap.put(deckChar, deck);
             }
-            //排序
+            //Sort the cards 排序
             String str = tempHand.toString();
             char[] chars = str.toCharArray();
             Arrays.sort(chars);
             String sortedString = new String(chars);
-            //拼接结果: AabdBaDs
+            //the result: AabdBaDs
             handDeck.append(deckChar).append(sortedString);
         }
-        //将最新的牌组状态更新到 gameState
+        //Update the latest deck state to gameState 将最新的牌组状态更新到 gameState
         StringBuilder newDeckState = new StringBuilder();
         for (Character deckChar : deckMap.keySet()) {
             String deckInfo = deckMap.get(deckChar).getDeckInfo();
@@ -276,192 +237,10 @@ public class RaceToTheRaft {
         }
         gameState[1] = newDeckState.toString();
 
-        //将手牌赋值给 gameState
+        //Assign the hand to gameState 将手牌赋值给 gameState
         gameState[2] = handDeck.toString();
 
         return gameState;
-
-
-//                //修改 gameState中的牌组内容
-//                String deckInfo = gameState[1];
-//                StringBuilder newDeckInfo = new StringBuilder();
-//                for (char c = 'A'; c <= 'D'; c++) {
-//                    String tempDeckInfo = "";
-//                    if (c == 'D') {
-//                        tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c));
-//                    } else {
-//                        tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c), deckInfo.indexOf(c + 1));
-//                    }
-//                    //
-//                    if (c == 'A') {
-//                        tempDeckInfo = tempDeckInfo.replace(select, "");
-//                    }
-//                    newDeckInfo.append(tempDeckInfo);
-//                }
-//                gameState[1] = newDeckInfo.toString();
-//            }
-//
-//
-//
-//            StringBuilder builder = new StringBuilder();
-//            switch (deckChar) {
-//                case 'A':
-//                    //取牌操作
-//                    for (int j = 0; j < count; j++) {
-//                        int index = random.nextInt(DECK_A.length);
-//                        String select = String.valueOf(DECK_A[index].toCharArray()[0]);
-//                        builder.append(select);
-//                        //取牌之后, 将DECK中已经取走的牌删掉,
-//                        //创建一个新的数组，大小比原数组小1
-//                        String[] newDeck = new String[DECK_A.length - 1];
-//                        // 将原数组中除要删除的元素外的所有元素复制到新数组中
-//                        for (int m = 0, n = 0; m < DECK_A.length; m++) {
-//                            if (m != index) {
-//                                newDeck[n++] = DECK_A[m];
-//                            }
-//                        }
-//                        //修改 gameState中的牌组内容
-//                        String deckInfo = gameState[1];
-//                        StringBuilder newDeckInfo = new StringBuilder();
-//                        for (char c = 'A'; c <= 'D'; c++) {
-//                            String tempDeckInfo = "";
-//                            if (c == 'D') {
-//                                tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c));
-//                            } else {
-//                                tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c), deckInfo.indexOf(c + 1));
-//                            }
-//                            //
-//                            if (c == 'A') {
-//                                tempDeckInfo = tempDeckInfo.replace(select, "");
-//                            }
-//                            newDeckInfo.append(tempDeckInfo);
-//                        }
-//                        gameState[1] = newDeckInfo.toString();
-//                    }
-//                    break;
-//                case 'B':
-//                    //取牌操作
-//                    for (int j = 0; j < count; j++) {
-//                        int index = random.nextInt(DECK_B.length);
-//                        String select = String.valueOf(DECK_B[index].toCharArray()[0]);
-//                        builder.append(select);
-//                        //取牌之后, 将DECK中已经取走的牌删掉,
-//                        //创建一个新的数组，大小比原数组小1
-//                        String[] newDeck = new String[DECK_B.length - 1];
-//                        // 将原数组中除要删除的元素外的所有元素复制到新数组中
-//                        for (int m = 0, n = 0; m < DECK_B.length; m++) {
-//                            if (m != index) {
-//                                newDeck[n++] = DECK_B[m];
-//                            }
-//                        }
-//                        //修改 gameState中的牌组内容
-//                        String deckInfo = gameState[1];
-//                        StringBuilder newDeckInfo = new StringBuilder();
-//                        for (char c = 'A'; c <= 'D'; c++) {
-//                            String tempDeckInfo = "";
-//                            if (c == 'D') {
-//                                tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c));
-//                            } else {
-//                                tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c), deckInfo.indexOf(c + 1));
-//                            }
-//                            //
-//                            if (c == 'B') {
-//                                tempDeckInfo = tempDeckInfo.replace(select, "");
-//                            }
-//                            newDeckInfo.append(tempDeckInfo);
-//                        }
-//                        gameState[1] = newDeckInfo.toString();
-//                    }
-//                    break;
-//                case 'C':
-//                    //取牌操作
-//                    for (int j = 0; j < count; j++) {
-//                        int index = random.nextInt(DECK_C.length);
-//                        String select = String.valueOf(DECK_C[index].toCharArray()[0]);
-//                        builder.append(select);
-//                        //取牌之后, 将DECK中已经取走的牌删掉,
-//                        //创建一个新的数组，大小比原数组小1
-//                        String[] newDeck = new String[DECK_C.length - 1];
-//                        // 将原数组中除要删除的元素外的所有元素复制到新数组中
-//                        for (int m = 0, n = 0; m < DECK_C.length; m++) {
-//                            if (m != index) {
-//                                newDeck[n++] = DECK_C[m];
-//                            }
-//                        }
-//                        //修改 gameState中的牌组内容
-//                        String deckInfo = gameState[1];
-//                        StringBuilder newDeckInfo = new StringBuilder();
-//                        for (char c = 'A'; c <= 'D'; c++) {
-//                            String tempDeckInfo = "";
-//                            if (c == 'D') {
-//                                tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c));
-//                            } else {
-//                                tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c), deckInfo.indexOf(c + 1));
-//                            }
-//                            //
-//                            if (c == 'C') {
-//                                tempDeckInfo = tempDeckInfo.replace(select, "");
-//                            }
-//                            newDeckInfo.append(tempDeckInfo);
-//                        }
-//                        gameState[1] = newDeckInfo.toString();
-//                    }
-//                    break;
-//                case 'D':
-//                    //取牌操作
-//                    for (int j = 0; j < count; j++) {
-//                        int index = random.nextInt(DECK_D.length);
-//                        String select = String.valueOf(DECK_D[index].toCharArray()[0]);
-//                        builder.append(select);
-//                        //取牌之后, 将DECK中已经取走的牌删掉,
-//                        //创建一个新的数组，大小比原数组小1
-//                        String[] newDeck = new String[DECK_D.length - 1];
-//                        // 将原数组中除要删除的元素外的所有元素复制到新数组中
-//                        for (int m = 0, n = 0; m < DECK_D.length; m++) {
-//                            if (m != index) {
-//                                newDeck[n++] = DECK_D[m];
-//                            }
-//                        }
-//                        //修改 gameState中的牌组内容
-//                        String deckInfo = gameState[1];
-//                        StringBuilder newDeckInfo = new StringBuilder();
-//                        for (char c = 'A'; c <= 'D'; c++) {
-//                            String tempDeckInfo = "";
-//                            if (c == 'D') {
-//                                tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c));
-//                            } else {
-//                                tempDeckInfo = deckInfo.substring(deckInfo.indexOf(c), deckInfo.indexOf(c + 1));
-//                            }
-//                            //
-//                            if (c == 'D') {
-//                                tempDeckInfo = tempDeckInfo.replace(select, "");
-//                            }
-//                            newDeckInfo.append(tempDeckInfo);
-//                        }
-//                        gameState[1] = newDeckInfo.toString();
-//                    }
-//                    break;
-//                default:
-//                    System.out.println("无效的牌组：" + deckChar);
-//                    return gameState;
-//            }
-            //排序
-//            String str = builder.toString();
-//            char[] chars = str.toCharArray();
-//            Arrays.sort(chars);
-//            String sortedString = new String(chars);
-            //拼接结果: AabdBaDs
-//            handDeck.append(deckChar + sortedString);
-
-        // 在抽完牌后更新的gameState数组
-//        // 创建一个新的数组，大小比原数组大1
-//        String[] newGameState = new String[gameState.length + 1];
-//        // 将原数组的元素复制到新数组中
-//        System.arraycopy(gameState, 0, newGameState, 0, gameState.length);
-//        // 在新数组的末尾添加新元素
-//        newGameState[newGameState.length - 1] = handDeck.toString();
-//        gameState[2] = handDeck.toString();
-//        return gameState;
     }
 
     /**
@@ -507,6 +286,8 @@ public class RaceToTheRaft {
      * @return A board string for this challenge.
      */
     public static String initialiseChallenge(String challengeString) {
+//        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009R01215";
+
         return "";  // FIXME 10
     }
 
@@ -566,9 +347,7 @@ public class RaceToTheRaft {
      * 2. If placing this fire tile makes it impossible for any one cat to reach the raft (the game is lost).
      * <p>
      * Cat movement:
-     * 1. If after moving this cat, there are greater than or equal to 4 cards in the disaster pile and there are
-     * no more file tiles left in the bag (the game is lost).
-     * 2. If after moving this cat, all cats have safely reached the raft (the game is won).
+     * 1. If after moving this cat, all cats have safely reached the raft (the game is won).
      * <p>
      * Card placement:
      * 1. If after placing this card, there are no more fire tiles left in the bag (the game is lost).

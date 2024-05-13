@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+// author: Yu Ma and Aditya Arora
 public class Square {
 
     private Colour colour;
@@ -9,7 +10,7 @@ public class Square {
 
     public Square(){}
 
-
+    // Yu Ma
     public Square(String location, Colour colour){
         int row = Character.getNumericValue(location.charAt(0));
         int column = Character.getNumericValue(location.charAt(1));

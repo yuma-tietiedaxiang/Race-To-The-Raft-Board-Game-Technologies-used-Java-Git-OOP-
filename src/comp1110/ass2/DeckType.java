@@ -8,6 +8,8 @@ import javax.lang.model.type.NullType;
  * Notice that this is an enumeration type, so none of the fields change once the type is created (they are all declared final).
  * </p>
  */
+
+// author: Weiqi Huang
 public enum DeckType {
     CIRCLE, CROSS, SQUARE, TRIANGLE,NONE;
 

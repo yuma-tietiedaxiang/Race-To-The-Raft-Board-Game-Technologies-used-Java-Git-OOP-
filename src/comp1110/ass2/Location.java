@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+// author: Yu Ma
 public class Location {
     /*
     this is a type called Location
