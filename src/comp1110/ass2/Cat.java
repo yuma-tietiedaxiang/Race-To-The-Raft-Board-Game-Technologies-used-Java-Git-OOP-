@@ -2,6 +2,9 @@ package comp1110.ass2;
 
 // author: Weiqi Huang
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cat {
     /*
     fields:
@@ -26,17 +29,33 @@ move
         this.colour = colour;
     }
 
-//    public Location initialLocation(Location l){
-//        return null;
-//    }//set initial location
-//
-//    public void move(Cat cat){}
-//
-//    public boolean overLap(BigBoard b){
-//        return false;
-//    }//not on fire or cat
-//
-//}
+
+    /**
+     * this method can be called independently. Creats cats using challengeString
+     *
+     * @author Yu Ma
+     * @param challengeString the same challengeString as used in initialization
+     * @return a list of Cat initialized
+     */
+    public static List<Cat> creatCatFromChallenge(String challengeString){
+
+        String catSubstring = challengeString.substring(challengeString.indexOf('C') + 1, challengeString.indexOf('R'));
+        List<Cat> catList = new ArrayList<>();
+
+        while (!catSubstring.isEmpty()) {
+            int catId = Integer.parseInt(catSubstring.substring(0, 1));
+            int cardAtRow = Integer.parseInt(catSubstring.substring(1, 3));
+            int cardAtColumn = Integer.parseInt(catSubstring.substring(3, 5));
+            Location catLocation = new Location(cardAtRow,cardAtColumn);
+            Colour catColour = Colour.fromChar(Utility.CAT_CARDS[catId].charAt(5));
+
+            Cat cat = new Cat(catId,catColour,false,catLocation);
+            catList.add(cat);
+            catSubstring = catSubstring.substring(5);
+        }
+        return catList;
+    }
+
 
     /**
      *This method is to add catTiles to the board according to challenge string.
@@ -57,7 +76,7 @@ move
             int catId = Integer.parseInt(catSubstring.substring(0, 1));
             int cardAtRow = Integer.parseInt(catSubstring.substring(1, 3));
             int cardAtColumn = Integer.parseInt(catSubstring.substring(3, 5));
-            //this is a length of 9 string
+            //this is a length of 9 string, represents the colours on a cat card
             String catCardString = Utility.CAT_CARDS[catId].substring(1);
 
             //iterate through a 3*3 cat card
@@ -68,6 +87,7 @@ move
                     index++;
                 }
             }
+
             catSubstring = catSubstring.substring(5);
         }
     }

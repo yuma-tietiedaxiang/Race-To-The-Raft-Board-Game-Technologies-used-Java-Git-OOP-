@@ -331,48 +331,79 @@ public class RaceToTheRaft {
             }
         } else {
             // 放置火焰块
+
+            //解析placement sring
+//            System.out.println("放置命令 "+placementString);
             char fireID = placementString.charAt(0);
             String fireTileString = Utility.FIRE_TILES[fireID - 'a'];
-            int row = Integer.parseInt(placementString.substring(1, 3));
-            int col = Integer.parseInt(placementString.substring(3, 5));
+            int placementRow = Integer.parseInt(placementString.substring(1, 3));//placement placementRow
+            int placementCol = Integer.parseInt(placementString.substring(3, 5));//placement placementCol
             boolean flipped = placementString.charAt(5) == 'T';
             char orientation = placementString.charAt(6);
 
-            // 创建 FireTile 对象
+
+            //计算板子最大行列
             StringBuilder boardBuilder = new StringBuilder(gameState[0]);
             String[] boardRows = boardBuilder.toString().split("\\r?\\n");
-            int boardHeight = boardRows.length;
-            int boardWidth = boardRows[0].length();
-            PlacedFireTile fireTile = new PlacedFireTile(fireTileString, row, col, flipped, orientation, boardHeight, boardWidth);
+            int boardMaxRow = boardRows.length;
+            int boardMaxColumn = boardRows[0].length();
+
+            TheBoard currentBoardState = new TheBoard();
+            Square[][] boardSquares = new Square[boardMaxRow][boardMaxColumn];
+            String boardWithSpace = gameState[0];
+            String boardWithoutSpace = boardWithSpace.replaceAll("\\r\\n|\\r|\\n", "");
+            int indexForWitoutSpace = 0;
+
+            for (int i = 0; i < boardMaxRow; i++) {
+                for (int j = 0; j < boardMaxColumn; j++) {
+                    boardSquares[i][j] = new Square(Colour.fromChar(boardWithoutSpace.charAt(indexForWitoutSpace)));
+                    indexForWitoutSpace++;
+                }
+            }
+
+//            System.out.println(currentBoardState.boardToString());
+
+            //
+//            System.out.println();
+            PlacedFireTile placedFireTile = new PlacedFireTile(fireTileString, placementRow, placementCol, flipped, orientation, boardMaxRow, boardMaxColumn);
+
 
             // 更新 Board 字符串
             Set<Location> affectedSquares = new HashSet<>();
-            for (Square square : fireTile.getSquares()) {
-                int boardRow = square.getLocation().getRow();
-                int boardCol = square.getLocation().getColumn();
-                if (boardRow >= 0 && boardRow < boardHeight && boardCol >= 0 && boardCol < boardWidth) {
-                    affectedSquares.add(square.getLocation());
+            Square[] readyOnBoard = placedFireTile.getSquares();
+
+
+
+            for (int i = 0; i < readyOnBoard.length; i++) {
+//                System.out.println("i= "+ i);
+//                System.out.println("i<"+readyOnBoard.length);
+//                System.out.println("finalr = "+(readyOnBoard[i].getLocation().getRow()+ placementRow)+" "+readyOnBoard[i].getLocation().getColumn()+ placementCol);
+//                System.out.println(boardSquares.length);
+
+                int finalRow = readyOnBoard[i].getLocation().getRow()+ placementRow;
+                int finalCol = readyOnBoard[i].getLocation().getColumn()+ placementCol;
+                if(finalRow == boardSquares.length){
+                    return gameState;
+                }else {
+                    boardSquares[finalRow][finalCol].setColour(Colour.FIRE);
                 }
+
             }
 
-            for (Location loc : affectedSquares) {
-                int index = boardWidth * loc.getRow() + loc.getColumn();
-                char originalChar = boardBuilder.charAt(index);
-                if (originalChar != 'f') {
-                    boardBuilder.setCharAt(index, 'f');
-                }
-            }
+            currentBoardState.setSquares(boardSquares);
 
-            gameState[0] = boardBuilder.toString();
+            gameState[0] = currentBoardState.boardToString();
+
+
         }
-
         return gameState;
     }
+
 
         private static int boardLength (StringBuilder boardBuilder){
             return boardBuilder.toString().split("\\r?\\n")[0].length();
         }
-    // FIXME TASK 8
+    // FIXME TASK 8 done!
 
 
 
@@ -395,7 +426,13 @@ public class RaceToTheRaft {
         //gameState[0] is a string representing a current board state.
         //So create a TheBoard to make it actually a game board.
         TheBoard currentBoardState = new TheBoard();
-        Square[][] boardSquares = new Square[15][18];
+
+        StringBuilder boardBuilder = new StringBuilder(gameState[0]);
+        String[] boardRows = boardBuilder.toString().split("\\r?\\n");
+        int boardMaxRow = boardRows.length;
+        int boardMaxColumn = boardRows[0].length();
+
+        Square[][] boardSquares = new Square[boardMaxRow][boardMaxColumn];
         String boardWithSpace = gameState[0];
         String boardWithoutSpace = boardWithSpace.replaceAll("\\r\\n|\\r|\\n", "");
         int indexForWitoutSpace = 0;
