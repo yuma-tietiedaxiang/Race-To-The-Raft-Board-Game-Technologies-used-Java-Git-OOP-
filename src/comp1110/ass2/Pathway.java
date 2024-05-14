@@ -6,12 +6,7 @@ import comp1110.ass2.Card;
 
 // author: Yu Ma
 public class Pathway extends Card{
-//    public static void main(String[] args) {
-//        Pathway p = new Pathway("abgbbgybby",1);
-//        System.out.println(p.pathwayId);
-//        System.out.println(p.squares[2][2].getcolour());
-//
-//    }
+
 
     char pathwayId;
     int pathwayNum;
@@ -23,12 +18,11 @@ public class Pathway extends Card{
     // Yu Ma
     //constructor
     public Pathway(String pathwayStr){
-        //"abgbbgybby"
+        //pathwayStr looks like "abgbbgybby"
         pathwayId = pathwayStr.charAt(0);
-//        this.pathwayNum = pathwayNum;
-        for (int s = 1; s < 10; s++) {//rotate pathwayStr
-            for (int i = 0; i < 3; i++) {//rotate squares row
-                for (int j = 0; j < 3; j++) {//rotate squares column
+        for (int s = 1; s < 10; s++) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
                     squares[i][j] = new Square();
                     squares[i][j].setColour(Colour.fromChar(pathwayStr.charAt(s)));
                     s++;
@@ -37,6 +31,7 @@ public class Pathway extends Card{
         }
     }
 
+    //getter
     public Colour getColour(int row, int col) {
         if (row >= 0 && row < 3 && col >= 0 && col < 3) {
             return squares[row][col].getColour();

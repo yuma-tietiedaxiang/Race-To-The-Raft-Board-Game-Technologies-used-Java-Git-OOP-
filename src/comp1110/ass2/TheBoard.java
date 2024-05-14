@@ -3,7 +3,7 @@ package comp1110.ass2;
 //import static comp1110.ass2.IslandBoard.generateIslandLayout;
 
 
-// author: Aditya Arora
+// author: Aditya Arora and Yu Ma
 public class TheBoard {
     Square[][] squares;
     int rows;//total number of rows
@@ -80,10 +80,13 @@ public class TheBoard {
     /**
      * this method is to form a board with 4 island boards
      *
+     * @author Yu Ma
      * @param islandSubstring A string from challenge string that represents islands eg."LASNLESA"
      * @return The Square[][] represents all the squares on the play board
      */
     public Square[][] formBoard(String islandSubstring) {
+        //sorry for this duplication of utility strings. But this method is called in the third layer
+        // by another method, and Utility seems to refuse access. I have to copy them here.
         String[][] copiedSquareBoard = {
                 // Board 1
                 {""" 
@@ -255,9 +258,8 @@ public class TheBoard {
             """}
         };
 
-        // 解析岛屿布局字符串并生成对应的字符数组
-        int islandCount = islandSubstring.length() / 2; // 计算岛屿数量
-//        System.out.println("island count: " + islandCount);
+        // Parses island layout strings and generates corresponding character arrays
+        int islandCount = islandSubstring.length() / 2; // Calculation of the number of islands
 
         int boardRow = 0;
         int boardColumn = 0;
@@ -265,8 +267,8 @@ public class TheBoard {
         Square[][] board;
 
 
-        for (int i = 0; i < islandCount; i++) {//rotate all islands one by one
-            // 解析岛屿子字符串
+        for (int i = 0; i < islandCount; i++) {//iterate all islands one by one
+
             char size = islandSubstring.charAt(i * 2);//should be L or S
             char orientation = islandSubstring.charAt(i * 2 + 1);//the orientation of each island
 
@@ -313,14 +315,12 @@ public class TheBoard {
             }
         }
 
-//        System.out.println("formBoard结束，板子生成");
         return board;
     }
 
 
      String boardToString() {
         StringBuilder sb = new StringBuilder();
-//         System.out.println("大板行列"+this.squares.length+" "+this.squares[0].length);
 
         for (int i = 0; i < this.squares.length; i++) {
             for (int j = 0; j < this.squares[0].length; j++) {

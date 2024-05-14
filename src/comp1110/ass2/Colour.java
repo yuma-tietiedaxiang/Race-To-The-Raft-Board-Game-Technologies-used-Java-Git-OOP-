@@ -51,4 +51,24 @@ public enum Colour {
             default -> 'x';
         };
     }
+
+    /**
+     * This method is to quickly recover the colour after cat moved
+     *
+     * @author Yu MA
+     * @param catColour is the uppercase colour
+     * @return a lowercase colour
+     */
+    public static Colour catColourToNormalColour(Colour catColour){
+        return switch (catColour) {
+
+            case PURPLECAT -> PURPLE;
+            case BLUECAT -> BLUE;
+            case GREENCAT -> GREEN;
+            case REDCAT -> RED;
+            case YELLOWCAT -> YELLOW;
+
+            default -> throw new IllegalStateException("Unexpected value: " + catColour);
+        };
+    }
 }
