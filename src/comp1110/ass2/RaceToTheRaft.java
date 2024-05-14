@@ -91,7 +91,7 @@ public class RaceToTheRaft {
     /**
      * Make Constructors for each of your objects.
      */
-    // FIXME TASK 3
+    // FIXME TASK 3 done!
 
 
 
@@ -115,7 +115,7 @@ public class RaceToTheRaft {
         FireTile fireTile = new FireTile(fireID);
         String fireToStr = fireTile.toString();
         return fireToStr;
-        // FIXME TASK 5
+        // FIXME TASK 5 done!
     }
 
     /**
@@ -381,36 +381,53 @@ public class RaceToTheRaft {
      *
      * @param gameState      An array representing the game state.
      * @param movementString A string representing the movement of a cat and the cards discarded to allow this move.
+     *                       "B01100710Bm"
      * @return the updated gameState array after this movement has been made.
      */
     public static String[] moveCat(String[] gameState, String movementString) {
 
-//        System.out.println("Namaste Mummy and Papa!! " + Arrays.toString(gameState));
-//        System.out.println("Namaste Mummy and Papa!! " + movementString);
+        TheBoard currentBoardState = new TheBoard();
 
-        String board = gameState[0];
-        String exhaustedCats = gameState[3];
+        Square[][] boardSquares = new Square[15][18];
+        String boardWithSpace = gameState[0];
+        String boardWithoutSpace = boardWithSpace.replaceAll("\\r\\n|\\r|\\n", "");
+        int indexForWitoutSpace = 0;
+
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 18; j++) {
+                boardSquares[i][j] = new Square(Colour.fromChar(boardWithoutSpace.charAt(indexForWitoutSpace)));
+                indexForWitoutSpace++;
+            }
+        }
+        currentBoardState.setSquares(boardSquares);
 
         // Example movementString: "Y01100610Cv"
-        // Cat 'Y' moves from position (11, 00) to (06, 10) using card 'Cv'
+        // Cat 'Y' moves from position (01, 10) to (06, 10) using card 'Cv'
         char cat = movementString.charAt(0);
         int fromRow = Integer.parseInt(movementString.substring(1, 3));
         int fromCol = Integer.parseInt(movementString.substring(3, 5));
         int toRow = Integer.parseInt(movementString.substring(5, 7));
         int toCol = Integer.parseInt(movementString.substring(7, 9));
 
-        // Calculate linear indices based on a board size, assuming 15x15 as given in the test case
-        int fromIndex = fromRow * 15 + fromCol;
-        int toIndex = toRow * 15 + toCol;
+        //update board state after cat moved
+        Colour normalColour = boardSquares[fromRow][fromCol].getColour();
+        boardSquares[fromRow][fromCol].setColour(Colour.catColourToNormalColour(normalColour));
+        boardSquares[toRow][toCol].setColour(Colour.fromChar(cat));
 
-        // Move cat on the board
-        board = board.substring(0, fromIndex) + 'f' + board.substring(fromIndex + 1); // Replace old position with 'f'
-        board = board.substring(0, toIndex) + cat + board.substring(toIndex + 1); // Place cat at new position
+        //update catPosition string of moved cat
+        String catPosition = ""+cat;
+        if(toRow<10 && toCol<10){
+            catPosition += "" + 0 + toRow + 0 + toCol;
+        }else if(toRow>9 && toCol<10){
+            catPosition += ""+toRow+0+toCol;
+        }else if(toRow<10 && toCol>9){
+            catPosition += ""+0+toRow+toCol;
+        }else if(toRow>9 && toCol>9){
+            catPosition += ""+toRow+toCol;
+        }
 
-        // Update exhausted cats list
-        String newPosition = String.format("%02d%02d", toRow, toCol);
-        String catPosition = cat + newPosition;
-
+        //update exhaustedCats
+        String exhaustedCats = gameState[3];//like "P0709"
         if (exhaustedCats.contains(String.valueOf(cat))) {
             // If cat is already in the list, update its position
             exhaustedCats = exhaustedCats.replaceAll(cat + "\\d{4}", catPosition);
@@ -425,12 +442,12 @@ public class RaceToTheRaft {
             exhaustedCats = exhaustedCats.substring(0, index) + catPosition + exhaustedCats.substring(index);
         }
 
-        gameState[0] = board;
+        gameState[0] = currentBoardState.boardToString();
         gameState[3] = exhaustedCats;
 
         return gameState;
 
-//        return new String[0]; // FIXME TASK 9
+//        return new String[0]; // FIXME TASK 9 done!
     }
 
 
@@ -447,7 +464,7 @@ public class RaceToTheRaft {
      * @param challengeString A string representing the challenge to initialise
      * @return A board string for this challenge.
      */
-    public static String initialiseChallenge(String challengeString) {// FIXME 10
+    public static String initialiseChallenge(String challengeString) {// FIXME 10 done!
 //        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009 R01215";
         // find substrings for different parts
         String islandSubstring = challengeString.substring(0, challengeString.indexOf('F'));
