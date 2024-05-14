@@ -333,7 +333,7 @@ public class RaceToTheRaft {
             // 放置火焰块
 
             //解析placement sring
-            System.out.println("放置命令 "+placementString);
+//            System.out.println("放置命令 "+placementString);
             char fireID = placementString.charAt(0);
             String fireTileString = Utility.FIRE_TILES[fireID - 'a'];
             int placementRow = Integer.parseInt(placementString.substring(1, 3));//placement placementRow
@@ -364,7 +364,7 @@ public class RaceToTheRaft {
 //            System.out.println(currentBoardState.boardToString());
 
             //
-            System.out.println();
+//            System.out.println();
             PlacedFireTile placedFireTile = new PlacedFireTile(fireTileString, placementRow, placementCol, flipped, orientation, boardMaxRow, boardMaxColumn);
 
 
@@ -377,8 +377,8 @@ public class RaceToTheRaft {
             for (int i = 0; i < readyOnBoard.length; i++) {
 //                System.out.println("i= "+ i);
 //                System.out.println("i<"+readyOnBoard.length);
-                System.out.println("finalr = "+(readyOnBoard[i].getLocation().getRow()+ placementRow)+" "+readyOnBoard[i].getLocation().getColumn()+ placementCol);
-                System.out.println(boardSquares.length);
+//                System.out.println("finalr = "+(readyOnBoard[i].getLocation().getRow()+ placementRow)+" "+readyOnBoard[i].getLocation().getColumn()+ placementCol);
+//                System.out.println(boardSquares.length);
 
                 int finalRow = readyOnBoard[i].getLocation().getRow()+ placementRow;
                 int finalCol = readyOnBoard[i].getLocation().getColumn()+ placementCol;

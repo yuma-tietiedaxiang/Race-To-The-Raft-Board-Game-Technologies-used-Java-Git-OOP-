@@ -29,8 +29,8 @@ public class PlacedFireTile {
     //获得被翻转旋转之后的 Square[]
     public Square[] getSquares() {
         char[][] fireTile = readFireTile(fireTileString);
-        System.out.println(fireTileString);
-        System.out.println(countSquares(fireTile));
+//        System.out.println(fireTileString);
+//        System.out.println(countSquares(fireTile));
         Square[] originalSquares = new Square[countSquares(fireTile)];//Square[6]
         int squareIndex = 0;
 
