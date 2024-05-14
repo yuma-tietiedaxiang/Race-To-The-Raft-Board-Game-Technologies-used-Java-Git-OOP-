@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -113,10 +115,25 @@ public class Viewer extends Application {
         boardGridPane.setHgap(2);
         boardGridPane.setVgap(2);
 
+
         //For board
         for (int row = 0; row < theBoard.getRows(); row++) {
 
             for (int col = 0; col < theBoard.getColumns(); col++) {
+
+
+                String imagePath = "file:src/comp1110/ass2/gui/assets/blue.png";
+                Image image = new Image(imagePath);
+
+                // Create an ImageView to display the image
+                ImageView imageView = new ImageView(image);
+
+                imageView.setFitHeight(35);
+                imageView.setFitWidth(35);
+
+                root.getChildren().add(imageView);
+
+
 
                 Rectangle rectangle = new Rectangle(35, 35);
                 StackPane stack = new StackPane();
@@ -149,6 +166,30 @@ public class Viewer extends Application {
     Color getColourFromChar(char ch){
 
         Colour colour = Colour.fromChar(ch);
+        if (colour == Colour.BLUE) {
+            return Color.BLUE;
+        } else if (colour == Colour.RED) {
+            return Color.RED;
+        } else if (colour == Colour.YELLOW) {
+            return Color.YELLOW;
+        } else if (colour == Colour.PURPLE) {
+            return Color.PURPLE;
+        }else if (colour == Colour.GREEN) {
+            return Color.GREEN;
+        }else if (colour == Colour.OBJECTIVE) {
+            return Color.GOLD;
+        }else if (colour == Colour.WILD) {
+            return Color.BROWN;
+        }else{
+            return Color.BLACK;
+        }
+    }
+
+    String getImageByColour(Colour colour){
+
+
+        //String imagePath = "file:src/comp1110/ass2/gui/assets/blue.png";
+        String imagePath = "file:src/comp1110/ass2/gui/assets/";
 
         if (colour == Colour.BLUE) {
             return Color.BLUE;
@@ -167,6 +208,7 @@ public class Viewer extends Application {
         }else{
             return Color.BLACK;
         }
+
     }
 
     // author: Aditya Arora

@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Challenge;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ public class Game extends Application {
     private final Group root = new Group();
     private static final int WINDOW_WIDTH = 1100;
     private static final int WINDOW_HEIGHT = 650;
+
+    private final String initialChallenge = "0";
 
     // FIXME TASK 11 Basic game
     // FIXME TASK 13 Fully working game
@@ -29,21 +32,22 @@ public class Game extends Application {
     void createDropdownMenu() {
         // Create a ComboBox (dropdown menu)
         ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("1", "2", "3", "4", "5", "6");
+        comboBox.getItems().addAll("0","1", "2", "3", "4", "5");
 
-        // Set a prompt text
 //        comboBox.setPromptText("Select the Difficulty Level");
-        comboBox.setValue("1");
+        comboBox.setValue(initialChallenge);
+        setupChallenge(initialChallenge);
+
         Label selectedOptionLabel = new Label();
 
-        // Add an event handler to the ComboBox
+        // Event handler to the ComboBox
         comboBox.setOnAction(event -> {
             // Get the selected item
             String selectedItem = comboBox.getSelectionModel().getSelectedItem();
-            // Display the selected item in the Label
             selectedOptionLabel.setText("Difficulty Level Selected: " + selectedItem);
-            // Perform any other action here
-            System.out.println("Difficulty Level selected: " + selectedItem);
+
+            setupChallenge(selectedItem);
+
         });
 
         // Create a VBox to hold the ComboBox and Label
@@ -51,9 +55,17 @@ public class Game extends Application {
 
         // Set spacing for VBox
         vbox.setSpacing(10);
-
         root.getChildren().add(vbox);
 
     }
+
+    void setupChallenge(String difficulty){
+
+        Challenge challenge = new Challenge(Integer.parseInt(difficulty));
+
+//        System.out.println("Namaste Mummy and Papa!! " + challenge.getChallenge());
+
+    }
+
 
 }
