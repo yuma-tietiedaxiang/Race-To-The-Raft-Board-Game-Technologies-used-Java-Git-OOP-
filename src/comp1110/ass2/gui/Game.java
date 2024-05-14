@@ -4,6 +4,7 @@ import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,6 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static comp1110.ass2.Cat.addCats;
 import static comp1110.ass2.FireTile.addFire;
@@ -22,10 +27,24 @@ public class Game extends Application {
     private static final int WINDOW_WIDTH = 1100;
     private static final int WINDOW_HEIGHT = 650;
 
+    private static final int MARGIN_X = 20;
+    private static final int MARGIN_Y = 20;
+
     private final Group controls = new Group();
 
     private final String initialChallenge = "0";
     private final int squareSideSize = 35;
+
+    private final List<String> deckAList = new ArrayList<>(List.of(Utility.DECK_A));
+    private final List<String> deckBList = new ArrayList<>(List.of(Utility.DECK_B));
+    private final List<String> deckCList = new ArrayList<>(List.of(Utility.DECK_C));
+    private final List<String> deckDList = new ArrayList<>(List.of(Utility.DECK_D));
+
+
+    private Label deckALabel;
+    private Label deckBLabel;
+    private Label deckCLabel;
+    private Label deckDLabel;
 
     // FIXME TASK 11 Basic game
     // FIXME TASK 13 Fully working game
@@ -33,7 +52,7 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        makeControls();
+//        makeControls();
         root.getChildren().add(controls);
         String boardState = setupChallengeAndReturnBoardState(initialChallenge);
         displayState(boardState);
@@ -52,6 +71,7 @@ public class Game extends Application {
         comboBox.setValue(initialChallenge);
 
         Label selectedOptionLabel = new Label();
+        selectedOptionLabel.setText("Difficulty Level Selected: " + initialChallenge);
 
         // Event handler to the ComboBox
         comboBox.setOnAction(event -> {
@@ -68,13 +88,63 @@ public class Game extends Application {
 
         });
 
+
+        GridPane decksGridPane = new GridPane();
+        decksGridPane.setHgap(10);
+        decksGridPane.setVgap(10);
+
+        Button deckAButton = new Button("Deck A");
+        Button deckBButton = new Button("Deck B");
+        Button deckCButton = new Button("Deck C");
+        Button deckDButton = new Button("Deck D");
+
+        deckALabel = new Label("Cards left in A: " + deckAList.size());
+        deckBLabel = new Label("Cards left in B: " + deckBList.size());
+        deckCLabel = new Label("Cards left in C: " + deckCList.size());
+        deckDLabel = new Label("Cards left in D: " + deckDList.size());
+
+
+        deckAButton.setOnAction(event -> drawCard(deckAList, deckALabel, 'A'));
+        deckBButton.setOnAction(event -> drawCard(deckBList, deckBLabel, 'B'));
+        deckCButton.setOnAction(event -> drawCard(deckCList, deckCLabel, 'C'));
+        deckDButton.setOnAction(event -> drawCard(deckDList, deckDLabel,'D'));
+
+
+        // Add buttons to the GridPane
+        decksGridPane.add(deckAButton, 0, 0);
+        decksGridPane.add(deckBButton, 1, 0);
+        decksGridPane.add(deckCButton, 0, 1);
+        decksGridPane.add(deckDButton, 1, 1);
+
+
+        decksGridPane.add(deckALabel, 0, 2);
+        decksGridPane.add(deckBLabel, 1, 2);
+        decksGridPane.add(deckCLabel, 0, 3);
+        decksGridPane.add(deckDLabel, 1, 3);
+
+
+
         // Create a VBox to hold the ComboBox and Label
-        VBox vbox = new VBox(comboBox, selectedOptionLabel);
+        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane);
 
         // Set spacing for VBox
         vbox.setSpacing(10);
+        vbox.setLayoutX(MARGIN_X);
+        vbox.setLayoutY(MARGIN_Y);
+
         controls.getChildren().add(vbox);
 
+    }
+
+    private void drawCard(List<String> deck, Label label, char deckName) {
+        if (!deck.isEmpty()) {
+            Collections.shuffle(deck);
+            String card = deck.remove(deck.size() - 1);
+            System.out.println("Drawn card: " + card);
+            label.setText("Cards left in " + deckName + ": " + deck.size());
+        } else {
+            System.out.println("No more cards left in the deck!");
+        }
     }
 
     void displayState(String boardstate) {
@@ -125,7 +195,7 @@ public class Game extends Application {
         }
 
         boardGridPane.setLayoutX(400);
-        boardGridPane.setLayoutY(20);
+        boardGridPane.setLayoutY(MARGIN_Y);
 
         root.getChildren().add(boardGridPane);
 
@@ -193,7 +263,7 @@ public class Game extends Application {
         Challenge challenge = new Challenge(Integer.parseInt(difficulty));
 
         String boardStateFromChallenge = setBoardStateFromSelectedChallenge(challenge.getChallenge());
-        System.out.println("Hello!! " + boardStateFromChallenge);
+        System.out.println("Namaste Mummy and Papa!! " + boardStateFromChallenge);
 
         return boardStateFromChallenge;
 
