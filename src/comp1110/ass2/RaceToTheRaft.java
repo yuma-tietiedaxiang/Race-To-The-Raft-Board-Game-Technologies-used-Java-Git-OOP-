@@ -91,7 +91,7 @@ public class RaceToTheRaft {
     /**
      * Make Constructors for each of your objects.
      */
-    // FIXME TASK 3
+    // FIXME TASK 3 done!
 
 
 
@@ -115,7 +115,7 @@ public class RaceToTheRaft {
         FireTile fireTile = new FireTile(fireID);
         String fireToStr = fireTile.toString();
         return fireToStr;
-        // FIXME TASK 5
+        // FIXME TASK 5 done!
     }
 
     /**
