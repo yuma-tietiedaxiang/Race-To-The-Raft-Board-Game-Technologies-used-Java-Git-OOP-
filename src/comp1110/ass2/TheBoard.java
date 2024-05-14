@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+
 //import static comp1110.ass2.IslandBoard.generateIslandLayout;
 
 
@@ -76,6 +77,16 @@ public class TheBoard {
         char square = squareChar[row][column];
         return Character.isUpperCase(square);
     }
+
+    public Colour getColour(int row, int col) {
+        return squares[row][col].getColour();
+    }
+
+    public char getColourChar(int row, int col) {
+        return squares[row][col].getColour().toChar();
+    }
+
+
 
 
     /**
@@ -331,6 +342,14 @@ public class TheBoard {
         }
         return sb.toString();
     }
+
+//    public Colour getColour(int row, int col) {
+//        if (row < 0 || row >= rows || col < 0 || col >= columns) {
+//            // 如果传入的行列索引超出了棋盘边界,则抛出异常或返回默认值
+//            return Colour.NONE;
+//        }
+//        return squares[row][col].getColour();
+//    }
 
 }
 
