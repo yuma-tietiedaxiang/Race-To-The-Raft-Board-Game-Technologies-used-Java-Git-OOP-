@@ -94,8 +94,6 @@ public class RaceToTheRaft {
     // FIXME TASK 3 done!
 
 
-
-
     /**
      * Draws a random fire tile from those remaining in the bag.
      *
@@ -110,7 +108,7 @@ public class RaceToTheRaft {
             return "";
         }
         Random random = new Random();
-        int index= random.nextInt(gameState[4].length());
+        int index = random.nextInt(gameState[4].length());
         char fireID = gameState[4].charAt(index);
         FireTile fireTile = new FireTile(fireID);
         String fireToStr = fireTile.toString();
@@ -180,11 +178,11 @@ public class RaceToTheRaft {
         for (char c = 'A'; c <= 'D'; c++) {
             String tempDeckInfo;
             if (c == 'D') {
-                tempDeckInfo = deckState.substring(deckState.indexOf(c)+1);
+                tempDeckInfo = deckState.substring(deckState.indexOf(c) + 1);
             } else {
-                tempDeckInfo = deckState.substring(deckState.indexOf(c)+1, deckState.indexOf(c + 1));
+                tempDeckInfo = deckState.substring(deckState.indexOf(c) + 1, deckState.indexOf(c + 1));
             }
-            deckMap.put(c, new Deck(c,tempDeckInfo));
+            deckMap.put(c, new Deck(c, tempDeckInfo));
         }
 
         // The final drawn hand 最终抽取的手牌
@@ -359,17 +357,14 @@ public class RaceToTheRaft {
             gameState[0] = boardBuilder.toString();
 
 
-
         }
         return gameState;
     }
 
-        private static int boardLength (StringBuilder boardBuilder){
-            return boardBuilder.toString().split("\\r?\\n")[0].length();
-        }
+    private static int boardLength(StringBuilder boardBuilder) {
+        return boardBuilder.toString().split("\\r?\\n")[0].length();
+    }
     // FIXME TASK 8
-
-
 
 
     /**
@@ -415,15 +410,15 @@ public class RaceToTheRaft {
         boardSquares[toRow][toCol].setColour(Colour.fromChar(cat));
 
         //update catPosition string of moved cat
-        String catPosition = ""+cat;
-        if(toRow<10 && toCol<10){
+        String catPosition = "" + cat;
+        if (toRow < 10 && toCol < 10) {
             catPosition += "" + 0 + toRow + 0 + toCol;
-        }else if(toRow>9 && toCol<10){
-            catPosition += ""+toRow+0+toCol;
-        }else if(toRow<10 && toCol>9){
-            catPosition += ""+0+toRow+toCol;
-        }else if(toRow>9 && toCol>9){
-            catPosition += ""+toRow+toCol;
+        } else if (toRow > 9 && toCol < 10) {
+            catPosition += "" + toRow + 0 + toCol;
+        } else if (toRow < 10 && toCol > 9) {
+            catPosition += "" + 0 + toRow + toCol;
+        } else if (toRow > 9 && toCol > 9) {
+            catPosition += "" + toRow + toCol;
         }
 
         //update exhaustedCats
@@ -449,8 +444,6 @@ public class RaceToTheRaft {
 
 //        return new String[0]; // FIXME TASK 9 done!
     }
-
-
 
 
     /**
@@ -658,7 +651,6 @@ public class RaceToTheRaft {
     } // FIXME TASK 14
 
 
-
     /**
      * Determine whether the game is over. The game ends if any of the following conditions are met:
      * <p>
@@ -823,7 +815,6 @@ public class RaceToTheRaft {
 
         return false; // 没有找到有效路径
     }// FIXME TASK 15
-
 
 
     public static void main(String[] args) {
