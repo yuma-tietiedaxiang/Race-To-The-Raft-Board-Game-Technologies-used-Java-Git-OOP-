@@ -86,6 +86,10 @@ public class PlacedFireTile {
         char id = fireTileString.charAt(0);
         int[] coords = new int[fireTileString.length() - 1];
 
+        for (int i = 0; i < fireTileString.length(); i++) {
+            coords[i] = fireTileString.charAt(i) - '0';
+        }
+
         int maxRow = 0;
         int maxCol = 0;
 
@@ -99,9 +103,9 @@ public class PlacedFireTile {
 
         char[][] fireTile = new char[maxRow + 1][maxCol + 1];
 
-        for (int i = 0; i < coords.length; i++) {
-            int row = coords[i] < 10 ? coords[i] : coords[i] / 10;
-            int col = coords[i] < 10 ? 0 : coords[i] % 10;
+        for (int i = 0; i < coords.length; i += 2) {
+            int row = coords[i];
+            int col = i + 1 < coords.length ? coords[i + 1] : 0;
             fireTile[row][col] = '#';
         }
 
