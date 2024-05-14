@@ -51,6 +51,7 @@ public class TheBoard {
                 squareChar[i][j] = squares[i][j].getColour().toChar();
             }
         }
+        //wht happened
         return squareChar;
     }
     public void setSquares(Square[][] squares){
