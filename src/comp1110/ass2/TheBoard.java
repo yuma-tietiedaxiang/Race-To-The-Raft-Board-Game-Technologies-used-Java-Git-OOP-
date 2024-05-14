@@ -82,7 +82,7 @@ public class TheBoard {
     /**
      * this method is to form a board with 4 island boards
      *
-     * @param islandSubstring A string from challenge string that represents islands eg."LASNLESA"
+     * @param islandSubstring A string from challenge string that represents islands e.g."LASNLESA"
      * @return The Square[][] represents all the squares on the play board
      */
     public Square[][] formBoard(String islandSubstring) {
@@ -182,7 +182,7 @@ public class TheBoard {
             """}
         };
 
-        /**
+        /*
          * Element [x][0] is the side of the board with fire, in the north orientation
          * Element [x][1] is the side of the board without fire, in the north orientation
          */
@@ -324,9 +324,9 @@ public class TheBoard {
         StringBuilder sb = new StringBuilder();
 //         System.out.println("大板行列"+this.squares.length+" "+this.squares[0].length);
 
-        for (int i = 0; i < this.squares.length; i++) {
+        for (Square[] square : this.squares) {
             for (int j = 0; j < this.squares[0].length; j++) {
-                sb.append(this.squares[i][j].getColour().toChar());
+                sb.append(square[j].getColour().toChar());
             }
             sb.append("\n");
         }
