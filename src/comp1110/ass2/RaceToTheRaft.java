@@ -19,8 +19,6 @@ public class RaceToTheRaft {
     public static HashMap<Integer, String[]> challenges = new HashMap<>();
     public static TheBoard theBoard = new TheBoard();
 
-//    static String[][] copiedSquareBoard = Arrays.copyOf(SQUARE_BOARDS, SQUARE_BOARDS.length);
-//    static String[][] copiedRectangleBoard = Arrays.copyOf(RECTANGLE_BOARDS, RECTANGLE_BOARDS.length);
 
 
     /**
@@ -104,8 +102,16 @@ public class RaceToTheRaft {
      * empty string.
      */
 
-    // Yu Ma
-    public static String drawFireTile(String[] gameState) {//A not represented
+
+    /**
+     * this method is to draw a fireTile from a fire bag. The fire bag is defined in a String[] gameState
+     *
+     * @author Yu Ma
+     * @param gameState the length is 5, follow the order of [Board, Decks, Hand, Exhausted Cats,Fire tile bag].
+     *                  each element is a string representing its current state
+     * @return a fire tile string like "a000110111221"
+     */
+    public static String drawFireTile(String[] gameState) {
         if (gameState[4].isEmpty()) {
             return "";
         }
@@ -379,6 +385,7 @@ public class RaceToTheRaft {
      * You should both move the cat (updating the Board string) and also add the cat to the Exhausted Cats string, or
      * update that cat's reference in the Exhausted Cats string if it was already exhausted.
      *
+     * @author Yu Ma
      * @param gameState      An array representing the game state.
      * @param movementString A string representing the movement of a cat and the cards discarded to allow this move.
      *                       "B01100710Bm"
@@ -386,8 +393,9 @@ public class RaceToTheRaft {
      */
     public static String[] moveCat(String[] gameState, String movementString) {
 
+        //gameState[0] is a string representing a current board state.
+        //So create a TheBoard to make it actually a game board.
         TheBoard currentBoardState = new TheBoard();
-
         Square[][] boardSquares = new Square[15][18];
         String boardWithSpace = gameState[0];
         String boardWithoutSpace = boardWithSpace.replaceAll("\\r\\n|\\r|\\n", "");
@@ -427,7 +435,7 @@ public class RaceToTheRaft {
         }
 
         //update exhaustedCats
-        String exhaustedCats = gameState[3];//like "P0709"
+        String exhaustedCats = gameState[3];//gameState[3] like "P0709"
         if (exhaustedCats.contains(String.valueOf(cat))) {
             // If cat is already in the list, update its position
             exhaustedCats = exhaustedCats.replaceAll(cat + "\\d{4}", catPosition);
@@ -447,7 +455,7 @@ public class RaceToTheRaft {
 
         return gameState;
 
-//        return new String[0]; // FIXME TASK 9 done!
+        // FIXME TASK 9 done!
     }
 
 
@@ -461,31 +469,33 @@ public class RaceToTheRaft {
      * twice, even in different orientations.
      * The cat, fire card and raft card placements should all match the challenge string.
      *
+     * @author Yu Ma
      * @param challengeString A string representing the challenge to initialise
      * @return A board string for this challenge.
      */
     public static String initialiseChallenge(String challengeString) {// FIXME 10 done!
-//        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009 R01215";
+        //example challengeString = "LNSNLASA F000300060012001503030903 C112033060340009 R01215";
+
         // find substrings for different parts
         String islandSubstring = challengeString.substring(0, challengeString.indexOf('F'));
         String fireSubstring = challengeString.substring(challengeString.indexOf('F') + 1, challengeString.indexOf('C'));
         String catSubstring = challengeString.substring(challengeString.indexOf('C') + 1, challengeString.indexOf('R'));
         String raftSubstring = challengeString.substring(challengeString.indexOf('R') + 1);
 
-
-//        System.out.println(islandSubstring);
+        // initialize the game board with island substring
         Square[][] board = theBoard.formBoard(islandSubstring);
         theBoard.setSquares(board);
-//        System.out.println("检查raceToTheRaft新建板子"+'\n'+theBoard.boardToString());
 
+        // add fires to the game board according to fire substring
         addFire(board, fireSubstring);
 
+        // add cats area to the game board according to cat substring
         addCats(board, catSubstring);
 
+        // add raft area to the game board according to raft substring
         addRaft(board, raftSubstring);
 
         return theBoard.boardToString();
-
     }
 
 
