@@ -18,7 +18,8 @@ public class TheBoard {
     public static Square[][] islandLayout04;
 
 
-    public TheBoard(){}
+    public TheBoard() {
+    }
 
     // Constructor
     public TheBoard(String boardString) {
@@ -26,7 +27,7 @@ public class TheBoard {
 
         rows = list.length;
         columns = list[0].length();
-        System.out.println(rows+" "+ columns);
+        System.out.println(rows + " " + columns);
         this.squares = new Square[rows][columns];
         System.out.println(this.squares[0].length);
 
@@ -53,15 +54,16 @@ public class TheBoard {
         }
         return squareChar;
     }
-    public void setSquares(Square[][] squares){
+
+    public void setSquares(Square[][] squares) {
         this.squares = squares;
     }
 
-    public int getRows(){
+    public int getRows() {
         return rows;
     }
 
-    public int getColumns(){
+    public int getColumns() {
         return columns;
     }
 
@@ -272,7 +274,7 @@ public class TheBoard {
 
             //get all four islands and calculate how big should the board be
             if (i == 0) {
-                islandLayout01 = islandBoard.generateIslandLayout(size, orientation, copiedSquareBoard,copiedRectangleBoard);
+                islandLayout01 = islandBoard.generateIslandLayout(size, orientation, copiedSquareBoard, copiedRectangleBoard);
                 boardRow += islandLayout01.length;
                 boardColumn += islandLayout01[0].length;
             } else if (i == 1) {
@@ -294,21 +296,21 @@ public class TheBoard {
         for (int row = 0; row < boardRow; row++) {
             for (int column = 0; column < boardColumn; column++) {
 
-                if (row < islandLayout01.length && column < islandLayout01[0].length){
+                if (row < islandLayout01.length && column < islandLayout01[0].length) {
                     //1st island
                     board[row][column] = new Square(islandLayout01[row][column].getColour());
 
-                }else if(row >= islandLayout01.length && column < islandLayout01[0].length){
+                } else if (row >= islandLayout01.length && column < islandLayout01[0].length) {
                     //2nd island
-                    board[row][column] = new Square(islandLayout02[row-islandLayout01.length][column].getColour());
+                    board[row][column] = new Square(islandLayout02[row - islandLayout01.length][column].getColour());
 
-                }else if(row < islandLayout01.length && column >= islandLayout01[0].length){
+                } else if (row < islandLayout01.length && column >= islandLayout01[0].length) {
                     //3rd island
-                    board[row][column] = new Square(islandLayout03[row][column-islandLayout01[0].length].getColour());
+                    board[row][column] = new Square(islandLayout03[row][column - islandLayout01[0].length].getColour());
 
-                }else if(row >= islandLayout01.length && column >= islandLayout01[0].length){
+                } else if (row >= islandLayout01.length && column >= islandLayout01[0].length) {
                     //4th island
-                    board[row][column] = new Square(islandLayout04[row-islandLayout01.length][column-islandLayout01[0].length].getColour());
+                    board[row][column] = new Square(islandLayout04[row - islandLayout01.length][column - islandLayout01[0].length].getColour());
                 }
             }
         }
@@ -318,7 +320,7 @@ public class TheBoard {
     }
 
 
-     String boardToString() {
+    String boardToString() {
         StringBuilder sb = new StringBuilder();
 //         System.out.println("大板行列"+this.squares.length+" "+this.squares[0].length);
 
