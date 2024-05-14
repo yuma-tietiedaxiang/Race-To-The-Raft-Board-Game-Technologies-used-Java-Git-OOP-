@@ -426,7 +426,13 @@ public class RaceToTheRaft {
         //gameState[0] is a string representing a current board state.
         //So create a TheBoard to make it actually a game board.
         TheBoard currentBoardState = new TheBoard();
-        Square[][] boardSquares = new Square[15][18];
+
+        StringBuilder boardBuilder = new StringBuilder(gameState[0]);
+        String[] boardRows = boardBuilder.toString().split("\\r?\\n");
+        int boardMaxRow = boardRows.length;
+        int boardMaxColumn = boardRows[0].length();
+
+        Square[][] boardSquares = new Square[boardMaxRow][boardMaxColumn];
         String boardWithSpace = gameState[0];
         String boardWithoutSpace = boardWithSpace.replaceAll("\\r\\n|\\r|\\n", "");
         int indexForWitoutSpace = 0;
