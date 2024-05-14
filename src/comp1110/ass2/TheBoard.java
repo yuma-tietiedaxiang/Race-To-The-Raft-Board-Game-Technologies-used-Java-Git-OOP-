@@ -320,7 +320,7 @@ public class TheBoard {
     }
 
 
-    String boardToString() {
+    public String boardToString() {
         StringBuilder sb = new StringBuilder();
 //         System.out.println("大板行列"+this.squares.length+" "+this.squares[0].length);
 
