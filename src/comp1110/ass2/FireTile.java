@@ -50,17 +50,7 @@ public class FireTile {
     }
 
 
-    public String rotate(String drawFireTile) {//input str like "a000110111221"
 
-        String fireLocation = drawFireTile.substring(1);
-        StringBuilder afterRotateLocation = new StringBuilder();
-        for (int i = 0; i < fireLocation.length(); i += 2) {
-            int newj = 4 - fireLocation.charAt(i) + 48 - 1;
-            afterRotateLocation.append(fireLocation.charAt(i + 1)).append(newj);
-        }
-//        System.out.println(afterRotateLocation);
-        return afterRotateLocation.toString();
-    }
 
     /**
      * This method is to add fireTiles to the board according to challenge string.
@@ -113,5 +103,17 @@ public class FireTile {
 
     public Square[] getSquares() {
         return fireSquares;
+    }
+
+    public String rotate(String drawFireTile) {//input str like "a000110111221"
+
+        String fireLocation = drawFireTile.substring(1);
+        StringBuilder afterRotateLocation = new StringBuilder();
+        for (int i = 0; i < fireLocation.length(); i += 2) {
+            int newj = 4 - fireLocation.charAt(i) + 48 - 1;
+            afterRotateLocation.append(fireLocation.charAt(i + 1)).append(newj);
+        }
+//        System.out.println(afterRotateLocation);
+        return afterRotateLocation.toString();
     }
 }
