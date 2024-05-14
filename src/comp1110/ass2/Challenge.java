@@ -38,7 +38,7 @@ public class Challenge {
             max =31;
             min =24;
         }
-        else if (difficulty==5) {
+        else {
             max =38;
             min =32;
         }
