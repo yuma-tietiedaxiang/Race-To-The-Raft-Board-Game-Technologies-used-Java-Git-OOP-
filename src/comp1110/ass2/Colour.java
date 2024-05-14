@@ -51,4 +51,17 @@ public enum Colour {
             default -> 'x';
         };
     }
+
+    public static Colour catColourToNormalColour(Colour catColour){
+        return switch (catColour) {
+
+            case PURPLECAT -> PURPLE;
+            case BLUECAT -> BLUE;
+            case GREENCAT -> GREEN;
+            case REDCAT -> RED;
+            case YELLOWCAT -> YELLOW;
+
+            default -> throw new IllegalStateException("Unexpected value: " + catColour);
+        };
+    }
 }
