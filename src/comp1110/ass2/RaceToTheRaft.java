@@ -111,8 +111,7 @@ public class RaceToTheRaft {
         int index = random.nextInt(gameState[4].length());
         char fireID = gameState[4].charAt(index);
         FireTile fireTile = new FireTile(fireID);
-        String fireToStr = fireTile.toString();
-        return fireToStr;
+        return fireTile.toString();
         // FIXME TASK 5 done!
     }
 
@@ -152,7 +151,6 @@ public class RaceToTheRaft {
      * <p>
      * Decks should be listed in alphabetical order, with cards drawn from that deck also listed in alphabetical order.
      * 牌组应按字母顺序排列，从牌组中抽取的牌也应按字母顺序排列。
-     *
      * </p>
      * Recall the mapping between deck and char:
      * 回想一下deck和char之间的映射:
@@ -189,7 +187,7 @@ public class RaceToTheRaft {
         StringBuilder handDeck = new StringBuilder();
 
         // Iterate over the drawRequest string and record each deck request 遍历 drawRequest 字符串，依次记录每个牌组请求
-        HashMap<Character, Integer> drawRequestMap = new HashMap();
+        HashMap<Character, Integer> drawRequestMap = new HashMap<>();
         drawRequestMap.put('A', 0);
         drawRequestMap.put('B', 0);
         drawRequestMap.put('C', 0);
@@ -274,17 +272,13 @@ public class RaceToTheRaft {
             // 根据卡片的类型和ID获取卡片数据
             String[] cardData;
             DeckType deckType1 = DeckType.fromChar(placementString.charAt(0));
-            switch (deckType1) {
-                case CIRCLE:
-                case CROSS:
-                case SQUARE:
-                case TRIANGLE:
+            cardData = switch (deckType1) {
+                case CIRCLE, CROSS, SQUARE, TRIANGLE -> {
                     String[][] deckData = new String[][]{Utility.DECK_A, Utility.DECK_B, Utility.DECK_C, Utility.DECK_D};
-                    cardData = new String[]{deckData[deckType1.ordinal()][cardID - 'a']};
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid deck type: " + deckType);
-            }
+                    yield new String[]{deckData[deckType1.ordinal()][cardID - 'a']};
+                }
+                default -> throw new IllegalArgumentException("Invalid deck type: " + deckType);
+            };
 
             // 创建 PlacedCard 对象
             PlacedCard card = new PlacedCard(cardData[0], orientation, row, col);
@@ -336,21 +330,20 @@ public class RaceToTheRaft {
             // 创建 FireTile 对象
             StringBuilder boardBuilder = new StringBuilder(gameState[0]);
             int boardRows = boardLength(boardBuilder);
-            int boardCols = boardRows;
-            PlacedFireTile fireTile = new PlacedFireTile(fireID, row, col, flipped, orientation, boardRows, boardCols);
+            PlacedFireTile fireTile = new PlacedFireTile(fireID, row, col, flipped, orientation, boardRows, boardRows);
 
             // 更新 Board 字符串
             Set<Location> affectedSquares = new HashSet<>();
             for (Square square : fireTile.getSquares()) {
                 int boardRow = square.getLocation().getRow();
                 int boardCol = square.getLocation().getColumn();
-                if (boardRow >= 0 && boardRow < boardRows && boardCol >= 0 && boardCol < boardCols) {
+                if (boardRow >= 0 && boardRow < boardRows && boardCol >= 0 && boardCol < boardRows) {
                     affectedSquares.add(square.getLocation());
                 }
             }
 
             for (Location loc : affectedSquares) {
-                int index = boardCols * loc.getRow() + loc.getColumn();
+                int index = boardRows * loc.getRow() + loc.getColumn();
                 boardBuilder.setCharAt(index, 'f');
             }
 
@@ -579,11 +572,7 @@ public class RaceToTheRaft {
                     break;
                 }
             }
-            if (!isAdjacent) {
-                return false;
-            }
-
-            return true;
+            return isAdjacent;
         }
     }
 
@@ -762,9 +751,7 @@ public class RaceToTheRaft {
                 }
                 if (!allCatsOnRaft) break;
             }
-            if (allCatsOnRaft) {
-                return true; // 游戏结束,所有猫都到达了筏子
-            }
+            return allCatsOnRaft; // 游戏结束,所有猫都到达了筏子
         } else if (action.length() == 7 && Character.isLetter(action.charAt(0)) && Character.isLetter(action.charAt(1)) && Character.isLetter(action.charAt(6))) {
             // 卡片放置
             String[] updatedGameState = applyPlacement(gameState, action);
@@ -772,9 +759,7 @@ public class RaceToTheRaft {
                 return false; // 更新后的游戏状态为空或无效,视为游戏未结束
             }
             // 检查火焰块背包是否为空
-            if (updatedGameState[4].isEmpty()) {
-                return true; // 游戏结束,火焰块背包为空
-            }
+            return updatedGameState[4].isEmpty(); // 游戏结束,火焰块背包为空
         }
 
         return false; // 游戏未结束
