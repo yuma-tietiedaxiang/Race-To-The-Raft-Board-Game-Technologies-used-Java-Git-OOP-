@@ -25,6 +25,7 @@ public class Game extends Application {
     private final Group controls = new Group();
 
     private final String initialChallenge = "0";
+    private final int squareSideSize = 35;
 
     // FIXME TASK 11 Basic game
     // FIXME TASK 13 Fully working game
@@ -101,8 +102,8 @@ public class Game extends Application {
                     // Create an ImageView to display the image
                     ImageView imageView = new ImageView(image);
 
-                    imageView.setFitHeight(35);
-                    imageView.setFitWidth(35);
+                    imageView.setFitHeight(squareSideSize);
+                    imageView.setFitWidth(squareSideSize);
 
                     boardGridPane.add(imageView, col, row);
 
@@ -114,8 +115,8 @@ public class Game extends Application {
                     // Create an ImageView to display the image
                     ImageView imageView = new ImageView(image);
 
-                    imageView.setFitHeight(35);
-                    imageView.setFitWidth(35);
+                    imageView.setFitHeight(squareSideSize);
+                    imageView.setFitWidth(squareSideSize);
 
                     boardGridPane.add(imageView, col, row);
 
@@ -192,7 +193,7 @@ public class Game extends Application {
         Challenge challenge = new Challenge(Integer.parseInt(difficulty));
 
         String boardStateFromChallenge = setBoardStateFromSelectedChallenge(challenge.getChallenge());
-        System.out.println("Namaste Mummy and Papa!! " + boardStateFromChallenge);
+        System.out.println("Hello!! " + boardStateFromChallenge);
 
         return boardStateFromChallenge;
 
