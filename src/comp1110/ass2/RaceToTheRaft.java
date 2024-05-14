@@ -450,7 +450,7 @@ public class RaceToTheRaft {
      * @param challengeString A string representing the challenge to initialise
      * @return A board string for this challenge.
      */
-    public static String initialiseChallenge(String challengeString) {// FIXME 10 done!
+    public static String initialiseChallenge(String challengeString) {
 //        String challengeString = "LNSNLASA F000300060012001503030903 C112033060340009 R01215";
         // find substrings for different parts
         String islandSubstring = challengeString.substring(0, challengeString.indexOf('F'));
@@ -471,7 +471,7 @@ public class RaceToTheRaft {
         addRaft(board, raftSubstring);
 
         return theBoard.boardToString();
-
+        // FIXME 10 done!
     }
 
 
