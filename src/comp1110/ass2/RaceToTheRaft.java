@@ -270,9 +270,9 @@ public class RaceToTheRaft {
      * @return the updated gameState array after this placement has been made
      */
     public static String[] applyPlacement(String[] gameState, String placementString) {
-
         if (Character.isLetter(placementString.charAt(1)) && Character.isLetter(placementString.charAt(6))) {
             // 放置卡片
+            // 字符串是否既不是火牌也不是路径卡
             char deckType = placementString.charAt(0);
             char cardID = placementString.charAt(1);
             int row = Integer.parseInt(placementString.substring(2, 4));
@@ -313,10 +313,7 @@ public class RaceToTheRaft {
             gameState[0] = boardBuilder.toString();
 
             // 从 Hand 字符串中移除卡片
-
             String handString = gameState[2];
-            char deckType2 = placementString.charAt(0);
-            char cardID1 = placementString.charAt(1);
 
             // 找到 handString 中表示卡组的大写字母的位置
             int deckIndex = handString.indexOf(deckType);
@@ -332,48 +329,81 @@ public class RaceToTheRaft {
                     gameState[2] = handString.substring(0, cardIndex) + handString.substring(cardIndex + 1);
                 }
             }
-
         } else {
             // 放置火焰块
+
+            //解析placement sring
+//            System.out.println("放置命令 "+placementString);
             char fireID = placementString.charAt(0);
-            int row = Integer.parseInt(placementString.substring(1, 3));
-            int col = Integer.parseInt(placementString.substring(3, 5));
+            String fireTileString = Utility.FIRE_TILES[fireID - 'a'];
+            int placementRow = Integer.parseInt(placementString.substring(1, 3));//placement placementRow
+            int placementCol = Integer.parseInt(placementString.substring(3, 5));//placement placementCol
             boolean flipped = placementString.charAt(5) == 'T';
             char orientation = placementString.charAt(6);
 
-            // 创建 FireTile 对象
-            StringBuilder boardBuilder = new StringBuilder(gameState[0]);
-            int boardRows = boardLength(boardBuilder);
-            int boardCols = boardRows;
-            PlacedFireTile fireTile = new PlacedFireTile(fireID, row, col, flipped, orientation, boardRows, boardCols);
 
-            // 更新 Board 字符串
-            Set<Location> affectedSquares = new HashSet<>();
-            for (Square square : fireTile.getSquares()) {
-                int boardRow = square.getLocation().getRow();
-                int boardCol = square.getLocation().getColumn();
-                if (boardRow >= 0 && boardRow < boardRows && boardCol >= 0 && boardCol < boardCols) {
-                    affectedSquares.add(square.getLocation());
+            //计算板子最大行列
+            StringBuilder boardBuilder = new StringBuilder(gameState[0]);
+            String[] boardRows = boardBuilder.toString().split("\\r?\\n");
+            int boardMaxRow = boardRows.length;
+            int boardMaxColumn = boardRows[0].length();
+
+            TheBoard currentBoardState = new TheBoard();
+            Square[][] boardSquares = new Square[boardMaxRow][boardMaxColumn];
+            String boardWithSpace = gameState[0];
+            String boardWithoutSpace = boardWithSpace.replaceAll("\\r\\n|\\r|\\n", "");
+            int indexForWitoutSpace = 0;
+
+            for (int i = 0; i < boardMaxRow; i++) {
+                for (int j = 0; j < boardMaxColumn; j++) {
+                    boardSquares[i][j] = new Square(Colour.fromChar(boardWithoutSpace.charAt(indexForWitoutSpace)));
+                    indexForWitoutSpace++;
                 }
             }
 
-            for (Location loc : affectedSquares) {
-                int index = boardCols * loc.getRow() + loc.getColumn();
-                boardBuilder.setCharAt(index, 'f');
+//            System.out.println(currentBoardState.boardToString());
+
+            //
+//            System.out.println();
+            PlacedFireTile placedFireTile = new PlacedFireTile(fireTileString, placementRow, placementCol, flipped, orientation, boardMaxRow, boardMaxColumn);
+
+
+            // 更新 Board 字符串
+            Set<Location> affectedSquares = new HashSet<>();
+            Square[] readyOnBoard = placedFireTile.getSquares();
+
+
+
+            for (int i = 0; i < readyOnBoard.length; i++) {
+//                System.out.println("i= "+ i);
+//                System.out.println("i<"+readyOnBoard.length);
+//                System.out.println("finalr = "+(readyOnBoard[i].getLocation().getRow()+ placementRow)+" "+readyOnBoard[i].getLocation().getColumn()+ placementCol);
+//                System.out.println(boardSquares.length);
+
+                int finalRow = readyOnBoard[i].getLocation().getRow()+ placementRow;
+                int finalCol = readyOnBoard[i].getLocation().getColumn()+ placementCol;
+                if(finalRow == boardSquares.length){
+                    return gameState;
+                }else {
+                    boardSquares[finalRow][finalCol].setColour(Colour.FIRE);
+                }
+
             }
 
-            gameState[0] = boardBuilder.toString();
+            currentBoardState.setSquares(boardSquares);
 
+            gameState[0] = currentBoardState.boardToString();
 
 
         }
         return gameState;
     }
 
+
         private static int boardLength (StringBuilder boardBuilder){
             return boardBuilder.toString().split("\\r?\\n")[0].length();
         }
-    // FIXME TASK 8
+    // FIXME TASK 8 done!
 
 
 
@@ -555,6 +585,8 @@ public class RaceToTheRaft {
             return true;
 
         } else {
+            char fireID = placementString.charAt(0);
+            String fireTileString = Utility.FIRE_TILES[fireID - 'a'];
             // 火焰块放置
             int row = Integer.parseInt(placementString.substring(1, 3));
             int col = Integer.parseInt(placementString.substring(3, 5));
@@ -562,7 +594,7 @@ public class RaceToTheRaft {
             char orientation = placementString.charAt(6);
 
             // 创建 PlacedFireTile 对象
-            PlacedFireTile fireTile = new PlacedFireTile(placementString.charAt(0), row, col, flipped, orientation, boardLength(gameState[0]), boardLength(gameState[0]));
+            PlacedFireTile fireTile = new PlacedFireTile(fireTileString, row, col, flipped, orientation, boardLength(gameState[0]), boardLength(gameState[0]));
 
             // 检查火焰块是否超出棋盘边界
             for (Square square : fireTile.getSquares()) {
