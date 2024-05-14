@@ -9,8 +9,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class Game extends Application {
     private final List<String> deckCList = new ArrayList<>(List.of(Utility.DECK_C));
     private final List<String> deckDList = new ArrayList<>(List.of(Utility.DECK_D));
 
+    private GridPane cardDisplayGrid;
+    private int cardCount = 0;
 
     private Label deckALabel;
     private Label deckBLabel;
@@ -90,42 +94,16 @@ public class Game extends Application {
 
 
         GridPane decksGridPane = new GridPane();
+        cardDisplayGrid = new GridPane(); // Grid to display cards
+
         decksGridPane.setHgap(10);
         decksGridPane.setVgap(10);
 
-        Button deckAButton = new Button("Deck A");
-        Button deckBButton = new Button("Deck B");
-        Button deckCButton = new Button("Deck C");
-        Button deckDButton = new Button("Deck D");
-
-        deckALabel = new Label("Cards left in A: " + deckAList.size());
-        deckBLabel = new Label("Cards left in B: " + deckBList.size());
-        deckCLabel = new Label("Cards left in C: " + deckCList.size());
-        deckDLabel = new Label("Cards left in D: " + deckDList.size());
-
-
-        deckAButton.setOnAction(event -> drawCard(deckAList, deckALabel, 'A'));
-        deckBButton.setOnAction(event -> drawCard(deckBList, deckBLabel, 'B'));
-        deckCButton.setOnAction(event -> drawCard(deckCList, deckCLabel, 'C'));
-        deckDButton.setOnAction(event -> drawCard(deckDList, deckDLabel,'D'));
-
-
-        // Add buttons to the GridPane
-        decksGridPane.add(deckAButton, 0, 0);
-        decksGridPane.add(deckBButton, 1, 0);
-        decksGridPane.add(deckCButton, 0, 1);
-        decksGridPane.add(deckDButton, 1, 1);
-
-
-        decksGridPane.add(deckALabel, 0, 2);
-        decksGridPane.add(deckBLabel, 1, 2);
-        decksGridPane.add(deckCLabel, 0, 3);
-        decksGridPane.add(deckDLabel, 1, 3);
-
+        setupButtonGrid(decksGridPane);
 
 
         // Create a VBox to hold the ComboBox and Label
-        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane);
+        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid);
 
         // Set spacing for VBox
         vbox.setSpacing(10);
@@ -136,12 +114,75 @@ public class Game extends Application {
 
     }
 
+    private void setupButtonGrid(GridPane gridPane) {
+        Button deckAButton = new Button("Deck A");
+        Button deckBButton = new Button("Deck B");
+        Button deckCButton = new Button("Deck C");
+        Button deckDButton = new Button("Deck D");
+
+        deckALabel = new Label("Cards left: " + deckAList.size());
+        deckBLabel = new Label("Cards left: " + deckBList.size());
+        deckCLabel = new Label("Cards left: " + deckCList.size());
+        deckDLabel = new Label("Cards left: " + deckDList.size());
+
+        deckAButton.setOnAction(event -> drawCard(deckAList, deckALabel, 'A'));
+        deckBButton.setOnAction(event -> drawCard(deckBList, deckBLabel, 'B'));
+        deckCButton.setOnAction(event -> drawCard(deckCList, deckCLabel, 'C'));
+        deckDButton.setOnAction(event -> drawCard(deckDList, deckDLabel, 'D'));
+
+        gridPane.add(deckAButton, 0, 0);
+        gridPane.add(deckBButton, 1, 0);
+        gridPane.add(deckCButton, 0, 1);
+        gridPane.add(deckDButton, 1, 1);
+
+        gridPane.add(deckALabel, 0, 2);
+        gridPane.add(deckBLabel, 1, 2);
+        gridPane.add(deckCLabel, 0, 3);
+        gridPane.add(deckDLabel, 1, 3);
+    }
+
+    private void displayCard(String card) {
+        GridPane cardGrid = new GridPane();
+        for (int i = 0; i < 9; i++) {
+            int row = i / 3;
+            int col = i % 3;
+            Text text = new Text(String.valueOf(card.charAt(i)));
+            cardGrid.add(text, col, row);
+        }
+
+        cardGrid.setOnMousePressed(this::handleMousePress);
+        cardGrid.setOnMouseDragged(this::handleMouseDrag);
+
+        int rowPosition = cardCount / 3;
+        int colPosition = cardCount % 3;
+        cardDisplayGrid.add(cardGrid, colPosition, rowPosition);
+        cardCount++;
+    }
+
+    private void handleMousePress(MouseEvent event) {
+        GridPane grid = (GridPane) event.getSource();
+        grid.toFront(); // Bring to front on press
+        grid.setCursor(javafx.scene.Cursor.MOVE);
+        grid.setUserData(new double[]{event.getSceneX() - grid.getLayoutX(), event.getSceneY() - grid.getLayoutY()});
+    }
+
+    private void handleMouseDrag(MouseEvent event) {
+        GridPane grid = (GridPane) event.getSource();
+        double[] offset = (double[]) grid.getUserData();
+        grid.setLayoutX(event.getSceneX() - offset[0]);
+        grid.setLayoutY(event.getSceneY() - offset[1]);
+    }
+
+
     private void drawCard(List<String> deck, Label label, char deckName) {
         if (!deck.isEmpty()) {
+
             Collections.shuffle(deck);
             String card = deck.remove(deck.size() - 1);
-            System.out.println("Drawn card: " + card);
             label.setText("Cards left in " + deckName + ": " + deck.size());
+            displayCard(card.substring(1)); // Ignore the first character
+            System.out.println("Drawn card: " + card);
+
         } else {
             System.out.println("No more cards left in the deck!");
         }
