@@ -320,7 +320,7 @@ public class TheBoard {
     }
 
 
-     String boardToString() {
+     public String boardToString() {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < this.squares.length; i++) {
