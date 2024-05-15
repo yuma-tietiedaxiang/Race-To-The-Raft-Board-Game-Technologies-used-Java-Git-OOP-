@@ -6,11 +6,14 @@ package comp1110.ass2;
 // author: Aditya Arora and Yu Ma
 public class TheBoard {
     Square[][] squares;
+    public int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // 上、下、左、右
+
     int rows;//total number of rows
     int columns;//total number of columns
     char[][] squareChar;
 
     IslandBoard islandBoard = new IslandBoard();
+    public boolean[][] visited;
     //four islandBoards store here. The 3rd and 4th may be null according to challenge string.
     public static Square[][] islandLayout01;
     public static Square[][] islandLayout02;
@@ -18,7 +21,8 @@ public class TheBoard {
     public static Square[][] islandLayout04;
 
 
-    public TheBoard(){}
+    public TheBoard() {
+    }
 
     // Constructor
     public TheBoard(String boardString) {
@@ -26,9 +30,9 @@ public class TheBoard {
 
         rows = list.length;
         columns = list[0].length();
-        System.out.println(rows+" "+ columns);
+//        System.out.println(rows+" "+ columns);
         this.squares = new Square[rows][columns];
-        System.out.println(this.squares[0].length);
+//        System.out.println(this.squares[0].length);
 
         for (int i = 0; i < rows; i++) {
             String rowString = list[i];
@@ -38,6 +42,7 @@ public class TheBoard {
             }
         }
         this.squareChar = getSquares();
+        visited=new boolean[rows][columns];
     }
 
     //here converts Square[][] into char[][]
@@ -75,6 +80,14 @@ public class TheBoard {
     public boolean hasCat(int row, int column) {
         char square = squareChar[row][column];
         return Character.isUpperCase(square);
+    }
+
+    public Colour getColour(int row, int col) {
+        return squares[row][col].getColour();
+    }
+
+    public char getColourChar(int row, int col) {
+        return squares[row][col].getColour().toChar();
     }
 
 
@@ -320,7 +333,7 @@ public class TheBoard {
     }
 
 
-     String boardToString() {
+     public String boardToString() {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < this.squares.length; i++) {
@@ -332,5 +345,39 @@ public class TheBoard {
         return sb.toString();
     }
 
+
+    public boolean dfs(int startrow, int startcolumn, int endRow, int endCol, char catColor) {
+        if (startrow == endRow && startcolumn == endCol) {
+            return true;
+        }
+
+        for (int[] direction : directions) {
+            int newRow = startrow + direction[0];
+            int newCol = startcolumn + direction[1];
+
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < columns && !visited[newRow][newCol]) {
+                char squareColor = getColour(newRow, newCol).toChar();
+                if (Character.toLowerCase(squareColor) == catColor) {
+                    if (!visited[newRow][newCol]) {
+                        visited[newRow][newCol] = true;
+                        if (dfs(newRow, newCol, endRow, endCol, catColor)) return true;
+                        visited[newRow][newCol] = false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public Colour getRaftColour(int row, int col) {
+        int raftStartRow = getRows() - 3;
+        int raftStartCol = getColumns() - 3;
+
+        if (row >= raftStartRow && row < getRows() && col >= raftStartCol && col < getColumns()) {
+            // Return the color of the raft square
+            return getColour(row, col);
+        }
+        return null;
+    }
 }
 
