@@ -197,8 +197,6 @@ public class Game extends Application {
 
 //        setupGridDragHandlers(cardGrid);
 
-
-
         cardCount++;
     }
 
