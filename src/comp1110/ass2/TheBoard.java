@@ -3,14 +3,17 @@ package comp1110.ass2;
 //import static comp1110.ass2.IslandBoard.generateIslandLayout;
 
 
-// author: Aditya Arora
+// author: Aditya Arora and Yu Ma
 public class TheBoard {
     Square[][] squares;
+    public int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // 上、下、左、右
+
     int rows;//total number of rows
     int columns;//total number of columns
     char[][] squareChar;
 
     IslandBoard islandBoard = new IslandBoard();
+    public boolean[][] visited;
     //four islandBoards store here. The 3rd and 4th may be null according to challenge string.
     public static Square[][] islandLayout01;
     public static Square[][] islandLayout02;
@@ -27,9 +30,9 @@ public class TheBoard {
 
         rows = list.length;
         columns = list[0].length();
-//        System.out.println(rows + " " + columns);
+        System.out.println(rows + " " + columns);
         this.squares = new Square[rows][columns];
-//        System.out.println(this.squares[0].length);
+        System.out.println(this.squares[0].length);
 
         for (int i = 0; i < rows; i++) {
             String rowString = list[i];
@@ -39,6 +42,7 @@ public class TheBoard {
             }
         }
         this.squareChar = getSquares();
+        visited = new boolean[rows][columns];
     }
 
     //here converts Square[][] into char[][]
@@ -52,6 +56,7 @@ public class TheBoard {
                 squareChar[i][j] = squares[i][j].getColour().toChar();
             }
         }
+        //wht happened
         return squareChar;
     }
 
@@ -78,14 +83,25 @@ public class TheBoard {
         return Character.isUpperCase(square);
     }
 
+    public Colour getColour(int row, int col) {
+        return squares[row][col].getColour();
+    }
+
+    public char getColourChar(int row, int col) {
+        return squares[row][col].getColour().toChar();
+    }
+
 
     /**
      * this method is to form a board with 4 island boards
      *
-     * @param islandSubstring A string from challenge string that represents islands e.g."LASNLESA"
+     * @param islandSubstring A string from challenge string that represents islands eg."LASNLESA"
      * @return The Square[][] represents all the squares on the play board
+     * @author Yu Ma
      */
     public Square[][] formBoard(String islandSubstring) {
+        //sorry for this duplication of utility strings. But this method is called in the third layer
+        // by another method, and Utility seems to refuse access. I have to copy them here.
         String[][] copiedSquareBoard = {
                 // Board 1
                 {""" 
@@ -182,7 +198,7 @@ public class TheBoard {
             """}
         };
 
-        /*
+        /**
          * Element [x][0] is the side of the board with fire, in the north orientation
          * Element [x][1] is the side of the board without fire, in the north orientation
          */
@@ -257,9 +273,8 @@ public class TheBoard {
             """}
         };
 
-        // 解析岛屿布局字符串并生成对应的字符数组
-        int islandCount = islandSubstring.length() / 2; // 计算岛屿数量
-//        System.out.println("island count: " + islandCount);
+        // Parses island layout strings and generates corresponding character arrays
+        int islandCount = islandSubstring.length() / 2; // Calculation of the number of islands
 
         int boardRow = 0;
         int boardColumn = 0;
@@ -267,8 +282,8 @@ public class TheBoard {
         Square[][] board;
 
 
-        for (int i = 0; i < islandCount; i++) {//rotate all islands one by one
-            // 解析岛屿子字符串
+        for (int i = 0; i < islandCount; i++) {//iterate all islands one by one
+
             char size = islandSubstring.charAt(i * 2);//should be L or S
             char orientation = islandSubstring.charAt(i * 2 + 1);//the orientation of each island
 
@@ -315,23 +330,42 @@ public class TheBoard {
             }
         }
 
-//        System.out.println("formBoard结束，板子生成");
         return board;
     }
 
 
     public String boardToString() {
         StringBuilder sb = new StringBuilder();
-//         System.out.println("大板行列"+this.squares.length+" "+this.squares[0].length);
 
-        for (Square[] square : this.squares) {
+        for (int i = 0; i < this.squares.length; i++) {
             for (int j = 0; j < this.squares[0].length; j++) {
-                sb.append(square[j].getColour().toChar());
+                sb.append(this.squares[i][j].getColour().toChar());
             }
             sb.append("\n");
         }
         return sb.toString();
     }
 
+
+    public boolean dfs(int startrow, int startcolumn, int endRow, int endCol) {
+        if (startrow == endRow && startcolumn == endCol) {
+            return true;
+
+        }
+        for (int[] direction : directions) {
+            int newRow = startrow + direction[0];
+            int newCol = startcolumn + direction[1];
+
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < columns && !visited[newRow][newCol]) {
+
+                if (!visited[newRow][newCol]) {
+                    visited[newRow][newCol] = true;
+                    if (dfs(newRow, newCol, endRow, endCol)) return true;
+                    visited[newRow][newCol] = false;
+                }
+            }
+        }
+        return false;
+    }
 }
 

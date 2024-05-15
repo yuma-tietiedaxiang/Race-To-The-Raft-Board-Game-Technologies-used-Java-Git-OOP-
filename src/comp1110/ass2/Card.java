@@ -55,7 +55,7 @@ public class Card {
     public void setMainLocation(int row, int column){
     }
 
-    public boolean overLap(BigBoard b){
-        return false;
-    }// all card cannot overlap fire or cat
+//    public boolean overLap(BigBoard b){
+//        return false;
+//    }// all card cannot overlap fire or cat
 }
