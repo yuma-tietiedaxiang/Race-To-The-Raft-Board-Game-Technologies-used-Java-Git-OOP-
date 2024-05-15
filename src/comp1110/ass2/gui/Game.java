@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -126,15 +127,6 @@ public class Game extends Application {
         Button drawFireTileButton = new Button("Draw Fire Tile");
 
         drawFireTileButton.setOnAction(e -> drawFireTile());
-
-//        drawFireTileButton.setOnAction(e -> {
-//            if (!firetilesRemainingInBag.isEmpty()) {
-//                Random rand = new Random();
-//                firetileDrawn = firetilesRemainingInBag.get(rand.nextInt(firetilesRemainingInBag.size()));
-////                GridPane tileGrid = createTileGrid(tileString);
-////                root.getChildren().add(tileGrid);
-//            }
-//        });
 
 //        GridPane tileGrid = createTileGrid(firetileDrawn);
 
@@ -333,21 +325,14 @@ public class Game extends Application {
 
         cardGrid.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasString()) {
-                // Perform the move operation here
-                success = true;
-            }
+            boolean success = db.hasString();
+            // Perform the move operation here
             event.setDropCompleted(success);
             event.consume();
         });
 
-        cardGrid.setOnDragDone(event -> {
-            if (event.getTransferMode() == TransferMode.MOVE) {
-                // Additional cleanup if needed
-            }
-            event.consume();
-        });
+        // Additional cleanup if needed
+        cardGrid.setOnDragDone(Event::consume);
     }
 
 
