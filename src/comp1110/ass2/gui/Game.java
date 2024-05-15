@@ -183,9 +183,13 @@ public class Game extends Application {
 
 
         cardGrid.setOnMouseClicked(this::handleCardSelection);
-        cardGrid.setBorder(null); // Ensure no border unless selected
-        cardDisplayGrid.add(cardGrid, cardDisplayGrid.getChildren().size() % 3, cardDisplayGrid.getChildren().size() / 3);
-
+        cardGrid.setBorder(null); // To Ensure no border unless selected
+        cardDisplayGrid.setVgap(10);
+        cardDisplayGrid.setHgap(10);
+//        cardDisplayGrid.add(cardGrid, cardDisplayGrid.getChildren().size() % 3, cardDisplayGrid.getChildren().size() / 3);
+        int rowPosition = cardCount / 3;
+        int colPosition = cardCount % 3;
+        cardDisplayGrid.add(cardGrid, colPosition, rowPosition);
 
 //        cardGrid.setOnMousePressed(this::handleMousePress);
 //        cardGrid.setOnMouseClicked(this::handleCardSelection);
@@ -193,13 +197,8 @@ public class Game extends Application {
 
 //        setupGridDragHandlers(cardGrid);
 
-        int rowPosition = cardCount / 3;
-        int colPosition = cardCount % 3;
 
-        cardDisplayGrid.setVgap(10);
-        cardDisplayGrid.setHgap(10);
 
-//        cardDisplayGrid.add(cardGrid, colPosition, rowPosition);
         cardCount++;
     }
 
