@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -340,6 +341,18 @@ public class Game extends Application {
 
                 if (theBoard.hasCat(row, col)) {
 
+                    //If cat is present, square with cat is placed on top of the square of same colour.
+                    StackPane stack = new StackPane();
+
+                    String imagePathWithoutCat = addSquareImageByColour(theBoard, row, col);
+                    Image imageWithoutCat = new Image(imagePathWithoutCat);
+
+                    // Create an ImageView to display the image
+                    ImageView imageViewWithoutCat = new ImageView(imageWithoutCat);
+                    imageViewWithoutCat.setFitHeight(squareSideSize);
+                    imageViewWithoutCat.setFitWidth(squareSideSize);
+
+
                     String imagePath = addSquareWithCatByColour(theBoard, row, col);
                     Image image = new Image(imagePath);
 
@@ -349,7 +362,9 @@ public class Game extends Application {
                     imageView.setFitHeight(squareSideSize);
                     imageView.setFitWidth(squareSideSize);
 
-                    boardGridPane.add(imageView, col, row);
+                    stack.getChildren().addAll(imageViewWithoutCat, imageView);
+
+                    boardGridPane.add(stack, col, row);
 
                 } else {
 
