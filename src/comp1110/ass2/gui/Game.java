@@ -153,8 +153,12 @@ public class Game extends Application {
             cardGrid.add(text, col, row);
         }
 
-        cardGrid.setOnMousePressed(this::handleMousePress);
-        cardGrid.setOnMouseDragged(this::handleMouseDrag);
+        cardGrid.toFront();
+
+        Draggable.Nature nature = new Draggable.Nature(cardGrid);
+
+//        cardGrid.setOnMousePressed(this::handleMousePress);
+//        cardGrid.setOnMouseDragged(this::handleMouseDrag);
 
 //        setupGridDragHandlers(cardGrid);
 
@@ -166,18 +170,28 @@ public class Game extends Application {
 
     private void handleMousePress(MouseEvent event) {
         GridPane grid = (GridPane) event.getSource();
-        grid.toFront(); // Bring to front on press
+        grid.toFront(); // Ensure the gridpane is at the front when selected
         grid.setCursor(javafx.scene.Cursor.MOVE);
-        grid.setUserData(new double[]{event.getSceneX() - grid.getLayoutX(), event.getSceneY() - grid.getLayoutY()});
+        // Store initial positions
+        grid.setUserData(new double[]{
+                event.getSceneX(), // Initial mouse X
+                event.getSceneY(), // Initial mouse Y
+                grid.getLayoutX(), // Initial grid layout X
+                grid.getLayoutY()  // Initial grid layout Y
+        });
     }
 
     private void handleMouseDrag(MouseEvent event) {
         GridPane grid = (GridPane) event.getSource();
-        System.out.println("Namaste Mummy and Papa!!");
-        double[] offset = (double[]) grid.getUserData();
-        grid.setLayoutX(event.getSceneX() - offset[0]);
-        grid.setLayoutY(event.getSceneY() - offset[1]);
+        double[] data = (double[]) grid.getUserData();
+        // Calculate the new layout positions based on mouse movement
+        double newLayoutX = data[2] + (event.getSceneX() - data[0]);
+        double newLayoutY = data[3] + (event.getSceneY() - data[1]);
+        // Update the layout positions
+        grid.setLayoutX(newLayoutX);
+        grid.setLayoutY(newLayoutY);
     }
+
 
     private void setupGridDragHandlers(GridPane cardGrid) {
         cardGrid.setOnDragDetected(event -> {
