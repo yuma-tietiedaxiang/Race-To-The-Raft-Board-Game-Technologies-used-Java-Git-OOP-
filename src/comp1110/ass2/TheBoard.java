@@ -30,9 +30,9 @@ public class TheBoard {
 
         rows = list.length;
         columns = list[0].length();
-        System.out.println(rows+" "+ columns);
+//        System.out.println(rows+" "+ columns);
         this.squares = new Square[rows][columns];
-        System.out.println(this.squares[0].length);
+//        System.out.println(this.squares[0].length);
 
         for (int i = 0; i < rows; i++) {
             String rowString = list[i];
@@ -346,25 +346,38 @@ public class TheBoard {
     }
 
 
-    public boolean dfs(int startrow, int startcolumn, int endRow, int endCol) {
+    public boolean dfs(int startrow, int startcolumn, int endRow, int endCol, char catColor) {
         if (startrow == endRow && startcolumn == endCol) {
             return true;
-
         }
+
         for (int[] direction : directions) {
             int newRow = startrow + direction[0];
             int newCol = startcolumn + direction[1];
 
             if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < columns && !visited[newRow][newCol]) {
-
-                if (!visited[newRow][newCol]) {
-                    visited[newRow][newCol] = true;
-                    if (dfs(newRow, newCol, endRow, endCol)) return true;
-                    visited[newRow][newCol] = false;
+                char squareColor = getColour(newRow, newCol).toChar();
+                if (Character.toLowerCase(squareColor) == catColor) {
+                    if (!visited[newRow][newCol]) {
+                        visited[newRow][newCol] = true;
+                        if (dfs(newRow, newCol, endRow, endCol, catColor)) return true;
+                        visited[newRow][newCol] = false;
+                    }
                 }
             }
         }
         return false;
+    }
+
+    public Colour getRaftColour(int row, int col) {
+        int raftStartRow = getRows() - 3;
+        int raftStartCol = getColumns() - 3;
+
+        if (row >= raftStartRow && row < getRows() && col >= raftStartCol && col < getColumns()) {
+            // Return the color of the raft square
+            return getColour(row, col);
+        }
+        return null;
     }
 }
 
