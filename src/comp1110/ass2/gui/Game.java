@@ -15,6 +15,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -55,6 +56,8 @@ public class Game extends Application {
 
     private int cardCount = 0;
     private final int maxCardAllowed = 6;
+
+    Draggable.Nature fireTileDraggableNature;
 
     private final List<String> firetilesRemainingInBag = new ArrayList<>(List.of(Utility.FIRE_TILES));
 
@@ -135,10 +138,11 @@ public class Game extends Application {
         rotateClockwiseButton.setOnAction(e -> rotateSelectedCard(90));
         rotateCounterClockwiseButton.setOnAction(e -> rotateSelectedCard(-90));
 
+        HBox rotationHBox = new HBox(rotateClockwiseButton, rotateCounterClockwiseButton);
+        rotationHBox.setSpacing(10);
 
         // Create a VBox to hold the ComboBox and Label
-        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid, rotateClockwiseButton,
-                rotateCounterClockwiseButton, drawFireTileButton, firetileGridPane);
+        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid, rotationHBox, drawFireTileButton, firetileGridPane);
 
         // Set spacing for VBox
         vbox.setSpacing(10);
@@ -153,22 +157,40 @@ public class Game extends Application {
         for (int i = 1; i < tileString.length(); i += 2) {
             int row = tileString.charAt(i) - '0';     // Convert char to integer
             int col = tileString.charAt(i + 1) - '0'; // Convert char to integer
-            Rectangle rect = new Rectangle(20, 20);
-            rect.setFill(Color.GREEN);
-            grid.add(rect, col, row);
+
+            String fireTileImagePath = "file:src/comp1110/ass2/gui/assets/fire.png";
+
+            Image image = new Image(fireTileImagePath);
+
+            // Create an ImageView to display the image
+            ImageView imageView = new ImageView(image);
+
+            imageView.setFitHeight(squareSideSize);
+            imageView.setFitWidth(squareSideSize);
+
+//            Rectangle rect = new Rectangle(20, 20);
+//            rect.setFill(Color.GREEN);
+            grid.add(imageView, col, row);
         }
         return grid;
     }
 
     private void drawFireTile() {
         if (!firetilesRemainingInBag.isEmpty()) {
+
+            // Remove previous one, then add another one. Else it will speed up the drag for subsequent tiles
+            if(fireTileDraggableNature != null && !fireTileDraggableNature.getDragNodes().isEmpty()) {
+                fireTileDraggableNature.removeDraggedNode(firetileGridPane);
+            }
+
             Random rand = new Random();
             String tileString = firetilesRemainingInBag.get(rand.nextInt(firetilesRemainingInBag.size()));
             firetileGridPane.getChildren().clear(); // Clear previous tile
             GridPane newTileGrid = createTileGrid(tileString);
             System.out.println("Namaste Mummy and Papa!! Drawn Fire Tile: " + tileString);
             firetileGridPane.getChildren().add(newTileGrid); // Display new tile
-            Draggable.Nature nature = new Draggable.Nature(firetileGridPane);
+            fireTileDraggableNature = new Draggable.Nature(firetileGridPane);
+//            nature.removeDraggedNode(firetileGridPane);
         } else {
             System.out.println("No more fire tiles available.");
         }
