@@ -16,13 +16,14 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import static comp1110.ass2.Cat.addCats;
 import static comp1110.ass2.FireTile.addFire;
@@ -49,9 +50,12 @@ public class Game extends Application {
 
     private GridPane cardDisplayGrid;
     private GridPane selectedPathwayCard = null;
+    private final GridPane firetileGridPane = new GridPane();
 
     private int cardCount = 0;
     private final int maxCardAllowed = 6;
+
+    private final List<String> firetilesRemainingInBag = new ArrayList<>(List.of(Utility.FIRE_TILES));
 
     private Label deckALabel;
     private Label deckBLabel;
@@ -77,7 +81,7 @@ public class Game extends Application {
     void makeControls() {
         // Create a ComboBox (dropdown menu)
         ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("0","1", "2", "3", "4", "5");
+        comboBox.getItems().addAll("0", "1", "2", "3", "4", "5");
 
 //        comboBox.setPromptText("Select the Difficulty Level");
         comboBox.setValue(initialChallenge);
@@ -109,25 +113,83 @@ public class Game extends Application {
 
         setupButtonGrid(decksGridPane);
 
+        VBox vbox = getvBox(comboBox, selectedOptionLabel, decksGridPane);
 
+        controls.getChildren().add(vbox);
+
+    }
+
+    private VBox getvBox(ComboBox<String> comboBox, Label selectedOptionLabel, GridPane decksGridPane) {
         Button rotateClockwiseButton = new Button("Rotate Clockwise");
         Button rotateCounterClockwiseButton = new Button("Rotate Counterclockwise");
+
+        Button drawFireTileButton = new Button("Draw Fire Tile");
+
+        drawFireTileButton.setOnAction(e -> drawFireTile());
+
+//        drawFireTileButton.setOnAction(e -> {
+//            if (!firetilesRemainingInBag.isEmpty()) {
+//                Random rand = new Random();
+//                firetileDrawn = firetilesRemainingInBag.get(rand.nextInt(firetilesRemainingInBag.size()));
+////                GridPane tileGrid = createTileGrid(tileString);
+////                root.getChildren().add(tileGrid);
+//            }
+//        });
+
+//        GridPane tileGrid = createTileGrid(firetileDrawn);
+
+        drawFireTileButton.setOnAction(event -> drawFireTile());
 
         rotateClockwiseButton.setOnAction(e -> rotateSelectedCard(90));
         rotateCounterClockwiseButton.setOnAction(e -> rotateSelectedCard(-90));
 
 
         // Create a VBox to hold the ComboBox and Label
-        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid, rotateClockwiseButton, rotateCounterClockwiseButton);
+        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid, rotateClockwiseButton,
+                rotateCounterClockwiseButton, drawFireTileButton, firetileGridPane);
 
         // Set spacing for VBox
         vbox.setSpacing(10);
         vbox.setLayoutX(MARGIN_X);
         vbox.setLayoutY(MARGIN_Y);
-
-        controls.getChildren().add(vbox);
-
+        return vbox;
     }
+
+    private GridPane createTileGrid(String tileString) {
+        GridPane grid = new GridPane();
+        // Parse the coordinates from the string, skip the first character
+        for (int i = 1; i < tileString.length(); i += 2) {
+            int row = tileString.charAt(i) - '0';     // Convert char to integer
+            int col = tileString.charAt(i + 1) - '0'; // Convert char to integer
+            Rectangle rect = new Rectangle(20, 20);
+            rect.setFill(Color.GREEN);
+            grid.add(rect, col, row);
+        }
+        return grid;
+    }
+
+    private void drawFireTile() {
+        if (!firetilesRemainingInBag.isEmpty()) {
+            Random rand = new Random();
+            String tileString = firetilesRemainingInBag.get(rand.nextInt(firetilesRemainingInBag.size())); // Keep the tile in the list for continuous drawing
+            firetileGridPane.getChildren().clear(); // Clear previous tile
+            GridPane newTileGrid = createTileGrid(tileString);
+            firetileGridPane.getChildren().add(newTileGrid); // Display new tile
+        } else {
+            System.out.println("No more fire tiles available.");
+        }
+    }
+
+//    private void drawFireTile() {
+//        if (!firetilesRemainingInBag.isEmpty()) {
+//            Random rand = new Random();
+//            int index = rand.nextInt(firetilesRemainingInBag.size());
+//            String drawnTile = firetilesRemainingInBag.get(index);
+//            System.out.println("Drawn Fire Tile: " + drawnTile); // Handle the drawn string as needed
+//        } else {
+//            System.out.println("No more fire tiles available.");
+//        }
+//    }
 
     private void setupButtonGrid(GridPane gridPane) {
         Button deckAButton = new Button("Deck A");
@@ -179,7 +241,9 @@ public class Game extends Application {
 
         cardGrid.toFront();
 
+        //Do not remove! Used for dragging
         Draggable.Nature nature = new Draggable.Nature(cardGrid);
+        Draggable.Nature nature1 = new Draggable.Nature(firetileGridPane);
 
 
         cardGrid.setOnMouseClicked(this::handleCardSelection);
@@ -287,9 +351,9 @@ public class Game extends Application {
     }
 
 
-
+    //TODO: Aditya, use object instead of string
     private void drawCard(List<String> deck, Label label, char deckName) {
-        if (!deck.isEmpty() && cardCount < maxCardAllowed ) {
+        if (!deck.isEmpty() && cardCount < maxCardAllowed) {
 
             System.out.println("Namaste Mummy and Papa!! " + cardCount);
 
@@ -307,7 +371,7 @@ public class Game extends Application {
     void displayState(String boardstate) {
 
         //removing spaces in boardstate string
-        boardstate = boardstate.replaceAll(" ","");
+        boardstate = boardstate.replaceAll(" ", "");
 
         TheBoard theBoard = new TheBoard(boardstate);
 
@@ -321,7 +385,7 @@ public class Game extends Application {
 
             for (int col = 0; col < theBoard.getColumns(); col++) {
 
-                if(theBoard.hasCat(row,col)){
+                if (theBoard.hasCat(row, col)) {
 
                     String imagePath = addSquareWithCatByColour(theBoard, row, col);
                     Image image = new Image(imagePath);
@@ -334,7 +398,7 @@ public class Game extends Application {
 
                     boardGridPane.add(imageView, col, row);
 
-                }else{
+                } else {
 
                     String imagePath = addSquareImageByColour(theBoard, row, col);
                     Image image = new Image(imagePath);
@@ -358,36 +422,35 @@ public class Game extends Application {
 
     }
 
-    String addSquareWithCatByColour(TheBoard theBoard, int row, int col){
+    String addSquareWithCatByColour(TheBoard theBoard, int row, int col) {
 
         String imagePath = "file:src/comp1110/ass2/gui/assets/";
 
-        if (theBoard.getColor(row,col) == Colour.FIRE) {
+        if (theBoard.getColor(row, col) == Colour.FIRE) {
             return imagePath + "fire.png";
-        } else if (theBoard.getColor(row,col) == Colour.BLUE) {
+        } else if (theBoard.getColor(row, col) == Colour.BLUE) {
             return imagePath + "blueCat.png";
-        } else if (theBoard.getColor(row,col) == Colour.RED) {
+        } else if (theBoard.getColor(row, col) == Colour.RED) {
             return imagePath + "redCat.png";
-        } else if (theBoard.getColor(row,col) == Colour.YELLOW) {
+        } else if (theBoard.getColor(row, col) == Colour.YELLOW) {
             return imagePath + "yellowCat.png";
-        } else if (theBoard.getColor(row,col) == Colour.PURPLE) {
+        } else if (theBoard.getColor(row, col) == Colour.PURPLE) {
             return imagePath + "purpleCat.png";
-        }else if (theBoard.getColor(row,col) == Colour.GREEN) {
+        } else if (theBoard.getColor(row, col) == Colour.GREEN) {
             return imagePath + "greenCat.png";
-        }else if (theBoard.getColor(row,col) == Colour.OBJECTIVE) {
+        } else if (theBoard.getColor(row, col) == Colour.OBJECTIVE) {
             return imagePath + "objective.png";
         }
         //TODO: Aditya, check
-        else if (theBoard.getColor(row,col) == Colour.WILD) {
+        else if (theBoard.getColor(row, col) == Colour.WILD) {
             return imagePath + "objective.png";
-        }
-        else{
+        } else {
             return imagePath + "blue.png";
         }
     }
 
 
-    String getSquareImagePathByCharacter(char c){
+    String getSquareImagePathByCharacter(char c) {
         Colour colour = Colour.fromChar(c);
 
         String imagePath = "file:src/comp1110/ass2/gui/assets/";
@@ -411,35 +474,34 @@ public class Game extends Application {
         }
     }
 
-    String addSquareImageByColour(TheBoard theBoard, int row, int col){
+    String addSquareImageByColour(TheBoard theBoard, int row, int col) {
 
         String imagePath = "file:src/comp1110/ass2/gui/assets/";
 
-        if (theBoard.getColor(row,col) == Colour.FIRE) {
+        if (theBoard.getColor(row, col) == Colour.FIRE) {
             return imagePath + "fire.png";
-        } else if (theBoard.getColor(row,col) == Colour.BLUE) {
+        } else if (theBoard.getColor(row, col) == Colour.BLUE) {
             return imagePath + "blue.png";
-        } else if (theBoard.getColor(row,col) == Colour.RED) {
+        } else if (theBoard.getColor(row, col) == Colour.RED) {
             return imagePath + "red.png";
-        } else if (theBoard.getColor(row,col) == Colour.YELLOW) {
+        } else if (theBoard.getColor(row, col) == Colour.YELLOW) {
             return imagePath + "yellow.png";
-        } else if (theBoard.getColor(row,col) == Colour.PURPLE) {
+        } else if (theBoard.getColor(row, col) == Colour.PURPLE) {
             return imagePath + "purple.png";
-        }else if (theBoard.getColor(row,col) == Colour.GREEN) {
+        } else if (theBoard.getColor(row, col) == Colour.GREEN) {
             return imagePath + "green.png";
-        }else if (theBoard.getColor(row,col) == Colour.OBJECTIVE) {
+        } else if (theBoard.getColor(row, col) == Colour.OBJECTIVE) {
             return imagePath + "objective.png";
         }
         //TODO: Aditya, check
-        else if (theBoard.getColor(row,col) == Colour.WILD) {
+        else if (theBoard.getColor(row, col) == Colour.WILD) {
             return imagePath + "objective.png";
-        }
-        else{
+        } else {
             return imagePath + "blue.png";
         }
     }
 
-    String setupChallengeAndReturnBoardState(String difficulty){
+    String setupChallengeAndReturnBoardState(String difficulty) {
 
         Challenge challenge = new Challenge(Integer.parseInt(difficulty));
 
