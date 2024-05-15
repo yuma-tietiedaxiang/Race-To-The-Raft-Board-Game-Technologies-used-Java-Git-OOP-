@@ -425,12 +425,11 @@ public class RaceToTheRaft {
         Square[][] boardSquares = new Square[boardMaxRow][boardMaxColumn];
         String boardWithSpace = gameState[0];
         String boardWithoutSpace = boardWithSpace.replaceAll("\\r\\n|\\r|\\n", "");
-        int indexForWitoutSpace = 0;
+        int indexForWithoutSpace = 0;
 
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 18; j++) {
-                boardSquares[i][j] = new Square(Colour.fromChar(boardWithoutSpace.charAt(indexForWitoutSpace)));
-                indexForWitoutSpace++;
+        for (int i = 0; i < boardMaxRow; i++) {
+            for (int j = 0; j < boardMaxColumn; j++) {
+                boardSquares[i][j] = new Square(Colour.fromChar(boardWithoutSpace.charAt(indexForWithoutSpace++)));
             }
         }
         currentBoardState.setSquares(boardSquares);
@@ -807,7 +806,21 @@ public class RaceToTheRaft {
         BiFunction<String[], String, Boolean> handler = actionHandlers.get(actionType);
 
         if (handler != null) {
-            return handler.apply(gameState, action);
+            boolean gameOver = handler.apply(gameState, action);
+            if (gameOver) {
+                return true;
+            }
+        }
+
+        for (Map.Entry<String, BiFunction<String[], String, Boolean>> entry : actionHandlers.entrySet()) {
+            String type = entry.getKey();
+            BiFunction<String[], String, Boolean> handlerFunc = entry.getValue();
+            if (handlerFunc != handler && type.equals(actionType)) {
+                boolean gameOver = handlerFunc.apply(gameState, action);
+                if (gameOver) {
+                    return true;
+                }
+            }
         }
 
         System.out.println("Game is not over.");
@@ -868,13 +881,76 @@ public class RaceToTheRaft {
             return false;
         }
 
+        if (isCatSurroundedByFire(updatedBoard)) {
+            System.out.println("A cat is surrounded by fire within a 9x9 area and cannot reach the raft.");
+            return true;
+        }
+
+
         if (!areAllCatsAbleToReachRaft(updatedBoard)) {
             System.out.println("A cat cannot reach the raft.");
             return true;
         }
 
+
+
         return false;
     }
+
+    private static boolean isCatSurroundedByFire(TheBoard board) {
+        for (int row = 0; row < board.getRows(); row++) {
+            for (int col = 0; col < board.getColumns(); col++) {
+                if (Character.isUpperCase(board.getColour(row, col).toChar())) {
+                    if (isFireWithin9x9Area(board, row, col) && !hasPathPlacementOption(board, row, col)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasPathPlacementOption(TheBoard board, int catRow, int catCol) {
+        int rowStart = Math.max(0, catRow - 4);
+        int rowEnd = Math.min(board.getRows() - 1, catRow + 4);
+        int colStart = Math.max(0, catCol - 4);
+        int colEnd = Math.min(board.getColumns() - 1, catCol + 4);
+
+        for (int row = rowStart; row <= rowEnd; row++) {
+            for (int col = colStart; col <= colEnd; col++) {
+                if (board.getColour(row, col).toChar() != 'f' && board.getColour(row, col).toChar() != 'o') {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean isFireWithin9x9Area(TheBoard board, int catRow, int catCol) {
+        int rowStart = Math.max(0, catRow - 4);
+        int rowEnd = Math.min(board.getRows() - 1, catRow + 4);
+        int colStart = Math.max(0, catCol - 4);
+        int colEnd = Math.min(board.getColumns() - 1, catCol + 4);
+
+        // Check top and bottom rows
+        for (int col = colStart; col <= colEnd; col++) {
+            if (board.getColour(rowStart, col).toChar() != 'f' || board.getColour(rowEnd, col).toChar() != 'f') {
+                return false;
+            }
+        }
+
+        // Check left and right columns
+        for (int row = rowStart + 1; row < rowEnd; row++) {
+            if (board.getColour(row, colStart).toChar() != 'f' || board.getColour(row, colEnd).toChar() != 'f') {
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+
+
 
     private static boolean handleCatMove(String[] gameState, String action) {
         System.out.println("Action type: Cat move");
