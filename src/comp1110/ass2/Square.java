@@ -42,6 +42,7 @@ public class Square {
         return this.colour;
     }
 
+
     public Location setLocation(Colour colour){
         this.location = location;
         return location;
