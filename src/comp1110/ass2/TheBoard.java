@@ -369,6 +369,28 @@ public class TheBoard {
         return false;
     }
 
+    public boolean dfs(int startrow, int startcolumn, int endRow, int endCol) {
+        if (startrow == endRow && startcolumn == endCol) {
+            return true;
+
+        }
+        for (int[] direction : directions) {
+            int newRow = startrow + direction[0];
+            int newCol = startcolumn + direction[1];
+
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < columns && !visited[newRow][newCol]) {
+
+                if (!visited[newRow][newCol]) {
+                    visited[newRow][newCol] = true;
+                    if (dfs(newRow, newCol, endRow, endCol)) return true;
+                    visited[newRow][newCol] = false;
+                }
+            }
+        }
+        return false;
+    }
+
+
     public Colour getRaftColour(int row, int col) {
         int raftStartRow = getRows() - 3;
         int raftStartCol = getColumns() - 3;

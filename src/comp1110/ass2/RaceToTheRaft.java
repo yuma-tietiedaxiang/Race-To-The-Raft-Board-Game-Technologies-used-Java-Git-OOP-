@@ -739,12 +739,13 @@ public class RaceToTheRaft {
 
 
 
-        return theBoard.dfs(startRow,startCol,endRow,endCol,catColor);
+        return theBoard.dfs(startRow,startCol,endRow,endCol);
 
 
     }
 
     // FIXME TASK 14
+
 
 
 
