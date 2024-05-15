@@ -124,8 +124,8 @@ public class Game extends Application {
     }
 
     private VBox getvBox(ComboBox<String> comboBox, Label selectedOptionLabel, GridPane decksGridPane) {
-        Button rotateClockwiseButton = new Button("Rotate Clockwise");
-        Button rotateCounterClockwiseButton = new Button("Rotate Counterclockwise");
+        Button rotateCardClockwiseButton = new Button("Rotate Clockwise");
+        Button rotateCardCounterClockwiseButton = new Button("Rotate Counterclockwise");
 
         Button drawFireTileButton = new Button("Draw Fire Tile");
 
@@ -135,17 +135,31 @@ public class Game extends Application {
 
         drawFireTileButton.setOnAction(event -> drawFireTile());
 
-        rotateClockwiseButton.setOnAction(e -> rotateSelectedCard(90));
-        rotateCounterClockwiseButton.setOnAction(e -> rotateSelectedCard(-90));
+        rotateCardClockwiseButton.setOnAction(e -> rotateSelectedCard(90));
+        rotateCardCounterClockwiseButton.setOnAction(e -> rotateSelectedCard(-90));
 
-        HBox rotationHBox = new HBox(rotateClockwiseButton, rotateCounterClockwiseButton);
-        rotationHBox.setSpacing(10);
+        HBox cardRotationHBox = new HBox(rotateCardClockwiseButton, rotateCardCounterClockwiseButton);
+        cardRotationHBox.setSpacing(10);
+
+
+        //FireTile rotate Button
+        Button rotateFireTileClockwiseButton = new Button("Rotate Clockwise");
+        Button rotateFireTileCounterClockwiseButton = new Button("Rotate Counterclockwise");
+
+
+        rotateFireTileClockwiseButton.setOnAction(e -> rotateFireTile(90));
+        rotateFireTileCounterClockwiseButton.setOnAction(e -> rotateFireTile(-90));
+
+        HBox fireTileRotationHBox = new HBox(rotateFireTileClockwiseButton, rotateFireTileCounterClockwiseButton);
+        fireTileRotationHBox.setSpacing(10);
+
 
         // Create a VBox to hold the ComboBox and Label
-        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid, rotationHBox, drawFireTileButton, firetileGridPane);
+        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid, cardRotationHBox,
+                drawFireTileButton, firetileGridPane, fireTileRotationHBox);
 
         // Set spacing for VBox
-        vbox.setSpacing(10);
+        vbox.setSpacing(20);
         vbox.setLayoutX(MARGIN_X);
         vbox.setLayoutY(MARGIN_Y);
         return vbox;
@@ -282,6 +296,11 @@ public class Game extends Application {
             Rotate rotate = new Rotate(angle, selectedPathwayCard.getWidth() / 2, selectedPathwayCard.getHeight() / 2);
             selectedPathwayCard.getTransforms().add(rotate);
         }
+    }
+
+    private void rotateFireTile(double angle) {
+        Rotate rotate = new Rotate(angle, firetileGridPane.getWidth() / 4, firetileGridPane.getHeight() / 4);
+        firetileGridPane.getTransforms().add(rotate);
     }
 
 
