@@ -35,8 +35,7 @@ public class Viewer extends Application {
      * Draw the given board and hand in the window, removing any previously drawn boards/hands.
      *
      * @param boardstate newline separated string representing each row of the board (the board string, see the STRING-REPRESENTATION.md for more details
-     * @param hand A string representing the cards in a player's hand (the hand string, see the STRING-REPRESENTATION.md for more details)
-     *
+     * @param hand       A string representing the cards in a player's hand (the hand string, see the STRING-REPRESENTATION.md for more details)
      */
 
     // author: Aditya Arora
@@ -65,7 +64,7 @@ public class Viewer extends Application {
 //                 """;
 
         //removing spaces in boardstate string
-        boardstate = boardstate.replaceAll(" ","");
+        boardstate = boardstate.replaceAll(" ", "");
 
         TheBoard theBoard = new TheBoard(boardstate);
         PathwayCard pathwayCard = new PathwayCard(hand);
@@ -122,34 +121,61 @@ public class Viewer extends Application {
             for (int col = 0; col < theBoard.getColumns(); col++) {
 
 
-                String imagePath = "file:src/comp1110/ass2/gui/assets/blue.png";
-                Image image = new Image(imagePath);
+//                String imagePath = "file:src/comp1110/ass2/gui/assets/blue.png";
+//                Image image = new Image(imagePath);
+//
+//                // Create an ImageView to display the image
+//                ImageView imageView = new ImageView(image);
+//
+//                imageView.setFitHeight(35);
+//                imageView.setFitWidth(35);
+//
+//                root.getChildren().add(imageView);
 
-                // Create an ImageView to display the image
-                ImageView imageView = new ImageView(image);
 
-                imageView.setFitHeight(35);
-                imageView.setFitWidth(35);
+//                Rectangle rectangle = new Rectangle(35, 35);
+//                StackPane stack = new StackPane();
+//
+//                rectangle.setFill(getSquareColour(theBoard, row, col));
 
-                root.getChildren().add(imageView);
-
-
-
-                Rectangle rectangle = new Rectangle(35, 35);
-                StackPane stack = new StackPane();
-
-                rectangle.setFill(getSquareColour(theBoard, row, col));
-
-                if(theBoard.hasCat(row,col)){
-                    Text text = new Text("CAT");
-                    text.setFont(Font.font(14));
+                if (theBoard.hasCat(row, col)) {
+//                    Text text = new Text("CAT");
+//                    text.setFont(Font.font(14));
 //                    text.setFill(getSquareColour(theBoard, row, col));
-                    stack.getChildren().addAll(rectangle, text);
-                    boardGridPane.add(stack, col, row);
-                }else{
-                    Text text = new Text(String.valueOf(theBoard.getSquares()[row][col]));
-                    stack.getChildren().addAll(rectangle, text);
-                    boardGridPane.add(stack, col, row);
+//                    stack.getChildren().addAll(rectangle, text);
+//                    boardGridPane.add(stack, col, row);
+
+
+                    String imagePath = addSquareWithCatByColour(theBoard, row, col);
+                    Image image = new Image(imagePath);
+
+                    // Create an ImageView to display the image
+                    ImageView imageView = new ImageView(image);
+
+                    imageView.setFitHeight(35);
+                    imageView.setFitWidth(35);
+
+                    boardGridPane.add(imageView, col, row);
+
+
+//                    root.getChildren().add(imageView);
+
+                } else {
+
+                    String imagePath = addSquareImageByColour(theBoard, row, col);
+                    Image image = new Image(imagePath);
+
+                    // Create an ImageView to display the image
+                    ImageView imageView = new ImageView(image);
+
+                    imageView.setFitHeight(35);
+                    imageView.setFitWidth(35);
+
+                    boardGridPane.add(imageView, col, row);
+
+//                    Text text = new Text(String.valueOf(theBoard.getSquares()[row][col]));
+//                    stack.getChildren().addAll(rectangle, text);
+//                    boardGridPane.add(stack, col, row);
                 }
             }
         }
@@ -163,7 +189,7 @@ public class Viewer extends Application {
     }
 
     // author: Aditya Arora
-    Color getColourFromChar(char ch){
+    Color getColourFromChar(char ch) {
 
         Colour colour = Colour.fromChar(ch);
         if (colour == Colour.BLUE) {
@@ -174,64 +200,122 @@ public class Viewer extends Application {
             return Color.YELLOW;
         } else if (colour == Colour.PURPLE) {
             return Color.PURPLE;
-        }else if (colour == Colour.GREEN) {
+        } else if (colour == Colour.GREEN) {
             return Color.GREEN;
-        }else if (colour == Colour.OBJECTIVE) {
+        } else if (colour == Colour.OBJECTIVE) {
             return Color.GOLD;
-        }else if (colour == Colour.WILD) {
+        } else if (colour == Colour.WILD) {
             return Color.BROWN;
-        }else{
+        } else {
             return Color.BLACK;
         }
     }
 
-    String getImageByColour(Colour colour){
+    String addSquareWithCatByColour(TheBoard theBoard, int row, int col) {
+
+        String imagePath = "file:src/comp1110/ass2/gui/assets/";
+
+        if (theBoard.getColor(row, col) == Colour.FIRE) {
+            return imagePath + "fire.png";
+        } else if (theBoard.getColor(row, col) == Colour.BLUE) {
+            return imagePath + "blueCat.png";
+        } else if (theBoard.getColor(row, col) == Colour.RED) {
+            return imagePath + "redCat.png";
+        } else if (theBoard.getColor(row, col) == Colour.YELLOW) {
+            return imagePath + "yellowCat.png";
+        } else if (theBoard.getColor(row, col) == Colour.PURPLE) {
+            return imagePath + "purpleCat.png";
+        } else if (theBoard.getColor(row, col) == Colour.GREEN) {
+            return imagePath + "greenCat.png";
+        } else if (theBoard.getColor(row, col) == Colour.OBJECTIVE) {
+            return imagePath + "objective.png";
+        }
+        //TODO: Aditya, check
+//        else if (theBoard.getColor(row,col) == Colour.WILD) {
+//            return Color.BROWN;
+//        }
+        else {
+            return imagePath + "blue.png";
+        }
+    }
+
+
+    String addSquareImageByColour(TheBoard theBoard, int row, int col) {
+
+        String imagePath = "file:src/comp1110/ass2/gui/assets/";
+
+        if (theBoard.getColor(row, col) == Colour.FIRE) {
+            return imagePath + "fire.png";
+        } else if (theBoard.getColor(row, col) == Colour.BLUE) {
+            return imagePath + "blue.png";
+        } else if (theBoard.getColor(row, col) == Colour.RED) {
+            return imagePath + "red.png";
+        } else if (theBoard.getColor(row, col) == Colour.YELLOW) {
+            return imagePath + "yellow.png";
+        } else if (theBoard.getColor(row, col) == Colour.PURPLE) {
+            return imagePath + "purple.png";
+        } else if (theBoard.getColor(row, col) == Colour.GREEN) {
+            return imagePath + "green.png";
+        } else if (theBoard.getColor(row, col) == Colour.OBJECTIVE) {
+            return imagePath + "objective.png";
+        }
+        //TODO: Aditya, check
+//        else if (theBoard.getColor(row,col) == Colour.WILD) {
+//            return Color.BROWN;
+//        }
+        else {
+            return imagePath + "blue.png";
+        }
+    }
+
+    String addSquareImageByColourUseless(Color colour) {
 
 
         //String imagePath = "file:src/comp1110/ass2/gui/assets/blue.png";
         String imagePath = "file:src/comp1110/ass2/gui/assets/";
 
-        if (colour == Colour.BLUE) {
-            return Color.BLUE;
-        } else if (colour == Colour.RED) {
-            return Color.RED;
-        } else if (colour == Colour.YELLOW) {
-            return Color.YELLOW;
-        } else if (colour == Colour.PURPLE) {
-            return Color.PURPLE;
-        }else if (colour == Colour.GREEN) {
-            return Color.GREEN;
-        }else if (colour == Colour.OBJECTIVE) {
-            return Color.GOLD;
-        }else if (colour == Colour.WILD) {
-            return Color.BROWN;
-        }else{
-            return Color.BLACK;
+        if (colour == Color.BLUE) {
+            return imagePath + "blue.png";
+        } else if (colour == Color.RED) {
+            return imagePath + "red.png";
+        } else if (colour == Color.YELLOW) {
+            return imagePath + "yellow.png";
+        } else if (colour == Color.PURPLE) {
+            return imagePath + "purple.png";
+        } else if (colour == Color.GREEN) {
+            return imagePath + "green.png";
+        }
+//        else if (colour == Color.OBJECTIVE) {
+//            return imagePath + "objective.png";
+//        }else if (colour == Colour.WILD) {
+//            //TODO: Aditya, check this
+//            return imagePath + "blue.png";
+//        }
+        else {
+            return imagePath + "blue.png";
         }
 
     }
 
     // author: Aditya Arora
-    Color getSquareColour(TheBoard theBoard, int row, int col){
-        if (theBoard.getColor(row,col) == Colour.FIRE) {
+    Color getSquareColour(TheBoard theBoard, int row, int col) {
+        if (theBoard.getColor(row, col) == Colour.FIRE) {
             return Color.DARKORANGE;
-        } else if (theBoard.getColor(row,col) == Colour.BLUE) {
+        } else if (theBoard.getColor(row, col) == Colour.BLUE) {
             return Color.BLUE;
-        } else if (theBoard.getColor(row,col) == Colour.RED) {
+        } else if (theBoard.getColor(row, col) == Colour.RED) {
             return Color.RED;
-        }
-        else if (theBoard.getColor(row,col) == Colour.YELLOW) {
+        } else if (theBoard.getColor(row, col) == Colour.YELLOW) {
             return Color.YELLOW;
-        }
-        else if (theBoard.getColor(row,col) == Colour.PURPLE) {
+        } else if (theBoard.getColor(row, col) == Colour.PURPLE) {
             return Color.PURPLE;
-        }else if (theBoard.getColor(row,col) == Colour.GREEN) {
+        } else if (theBoard.getColor(row, col) == Colour.GREEN) {
             return Color.GREEN;
-        }else if (theBoard.getColor(row,col) == Colour.OBJECTIVE) {
+        } else if (theBoard.getColor(row, col) == Colour.OBJECTIVE) {
             return Color.GOLD;
-        }else if (theBoard.getColor(row,col) == Colour.WILD) {
+        } else if (theBoard.getColor(row, col) == Colour.WILD) {
             return Color.BROWN;
-        }else{
+        } else {
             return Color.BLACK;
         }
     }
@@ -264,6 +348,7 @@ public class Viewer extends Application {
 
     /**
      * Create refresh button. Upon pressing, capture the textFields and call displayState
+     *
      * @return the created button
      */
     private Button refreshButton() {
