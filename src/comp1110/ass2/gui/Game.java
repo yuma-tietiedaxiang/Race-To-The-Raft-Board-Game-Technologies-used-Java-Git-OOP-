@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class Game extends Application {
     private final List<String> deckDList = new ArrayList<>(List.of(Utility.DECK_D));
 
     private GridPane cardDisplayGrid;
+    private GridPane selectedPathwayCard = null;
+
     private int cardCount = 0;
     private final int maxCardAllowed = 6;
 
@@ -107,8 +110,15 @@ public class Game extends Application {
         setupButtonGrid(decksGridPane);
 
 
+        Button rotateClockwiseButton = new Button("Rotate Clockwise");
+        Button rotateCounterClockwiseButton = new Button("Rotate Counterclockwise");
+
+        rotateClockwiseButton.setOnAction(e -> rotateSelectedCard(90));
+        rotateCounterClockwiseButton.setOnAction(e -> rotateSelectedCard(-90));
+
+
         // Create a VBox to hold the ComboBox and Label
-        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid);
+        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid, rotateClockwiseButton, rotateCounterClockwiseButton);
 
         // Set spacing for VBox
         vbox.setSpacing(10);
@@ -171,7 +181,14 @@ public class Game extends Application {
 
         Draggable.Nature nature = new Draggable.Nature(cardGrid);
 
+
+        cardGrid.setOnMouseClicked(this::handleCardSelection);
+        cardGrid.setBorder(null); // Ensure no border unless selected
+        cardDisplayGrid.add(cardGrid, cardDisplayGrid.getChildren().size() % 3, cardDisplayGrid.getChildren().size() / 3);
+
+
 //        cardGrid.setOnMousePressed(this::handleMousePress);
+//        cardGrid.setOnMouseClicked(this::handleCardSelection);
 //        cardGrid.setOnMouseDragged(this::handleMouseDrag);
 
 //        setupGridDragHandlers(cardGrid);
@@ -182,12 +199,34 @@ public class Game extends Application {
         cardDisplayGrid.setVgap(10);
         cardDisplayGrid.setHgap(10);
 
-        cardDisplayGrid.add(cardGrid, colPosition, rowPosition);
+//        cardDisplayGrid.add(cardGrid, colPosition, rowPosition);
         cardCount++;
     }
 
-    //Not used, can be useful in future though
+    private void handleCardSelection(MouseEvent event) {
+        if (selectedPathwayCard != null) {
+            selectedPathwayCard.setStyle(""); // Clear style from previously selected card
+        }
+        selectedPathwayCard = (GridPane) event.getSource();
+        selectedPathwayCard.setStyle("-fx-border-color: goldenrod; -fx-border-width: 2; -fx-border-style: solid;");
+    }
+
+    private void rotateSelectedCard(double angle) {
+        if (selectedPathwayCard != null) {
+            Rotate rotate = new Rotate(angle, selectedPathwayCard.getWidth() / 2, selectedPathwayCard.getHeight() / 2);
+            selectedPathwayCard.getTransforms().add(rotate);
+        }
+    }
+
     private void handleMousePress(MouseEvent event) {
+        GridPane grid = (GridPane) event.getSource();
+        selectedPathwayCard = grid;
+        grid.toFront(); // Ensure the gridpane is at the front when selected
+        grid.setCursor(javafx.scene.Cursor.MOVE);
+    }
+
+    //Not used, can be useful in future though
+    private void handleMousePressOG(MouseEvent event) {
         GridPane grid = (GridPane) event.getSource();
         grid.toFront(); // Ensure the gridpane is at the front when selected
         grid.setCursor(javafx.scene.Cursor.MOVE);
