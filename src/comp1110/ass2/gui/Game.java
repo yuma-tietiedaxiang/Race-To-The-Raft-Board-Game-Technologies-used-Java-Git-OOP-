@@ -163,25 +163,16 @@ public class Game extends Application {
     private void drawFireTile() {
         if (!firetilesRemainingInBag.isEmpty()) {
             Random rand = new Random();
-            String tileString = firetilesRemainingInBag.get(rand.nextInt(firetilesRemainingInBag.size())); // Keep the tile in the list for continuous drawing
+            String tileString = firetilesRemainingInBag.get(rand.nextInt(firetilesRemainingInBag.size()));
             firetileGridPane.getChildren().clear(); // Clear previous tile
             GridPane newTileGrid = createTileGrid(tileString);
+            System.out.println("Namaste Mummy and Papa!! Drawn Fire Tile: " + tileString);
             firetileGridPane.getChildren().add(newTileGrid); // Display new tile
         } else {
             System.out.println("No more fire tiles available.");
         }
     }
 
-//    private void drawFireTile() {
-//        if (!firetilesRemainingInBag.isEmpty()) {
-//            Random rand = new Random();
-//            int index = rand.nextInt(firetilesRemainingInBag.size());
-//            String drawnTile = firetilesRemainingInBag.get(index);
-//            System.out.println("Drawn Fire Tile: " + drawnTile); // Handle the drawn string as needed
-//        } else {
-//            System.out.println("No more fire tiles available.");
-//        }
-//    }
 
     private void setupButtonGrid(GridPane gridPane) {
         Button deckAButton = new Button("Deck A");
@@ -235,7 +226,7 @@ public class Game extends Application {
 
         //Do not remove! Used for dragging
         Draggable.Nature nature = new Draggable.Nature(cardGrid);
-        Draggable.Nature nature1 = new Draggable.Nature(firetileGridPane);
+//        Draggable.Nature nature1 = new Draggable.Nature(firetileGridPane);
 
 
         cardGrid.setOnMouseClicked(this::handleCardSelection);
