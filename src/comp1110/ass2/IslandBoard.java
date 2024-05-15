@@ -74,7 +74,7 @@ public class IslandBoard {
                     rotatedIslandSquares[i][cols - 1 - j] = temp;//Horizontal flip left to right
                 }
             }
-        }else{//rectangle shape
+        }else{//rectangle shape..
 //            System.out.println("进入矩形反转");
             //switch the value of rectangle rows and cols. Because of transposition.
             int rectangleRow = cols;
