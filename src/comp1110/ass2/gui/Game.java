@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -149,8 +150,20 @@ public class Game extends Application {
         for (int i = 0; i < 9; i++) {
             int row = i / 3;
             int col = i % 3;
-            Text text = new Text(String.valueOf(card.charAt(i)));
-            cardGrid.add(text, col, row);
+//            Text text = new Text(String.valueOf(card.charAt(i)));
+//            cardGrid.add(text, col, row);
+
+            String imagePath = getSquareImagePathByCharacter(card.charAt(i));
+            Image image = new Image(imagePath);
+
+            // Create an ImageView to display the image
+            ImageView imageView = new ImageView(image);
+
+            imageView.setFitHeight(squareSideSize);
+            imageView.setFitWidth(squareSideSize);
+
+            cardGrid.add(imageView, col, row);
+
         }
 
         cardGrid.toFront();
@@ -164,10 +177,15 @@ public class Game extends Application {
 
         int rowPosition = cardCount / 3;
         int colPosition = cardCount % 3;
+
+        cardDisplayGrid.setVgap(10);
+        cardDisplayGrid.setHgap(10);
+
         cardDisplayGrid.add(cardGrid, colPosition, rowPosition);
         cardCount++;
     }
 
+    //Not used, can be useful in future though
     private void handleMousePress(MouseEvent event) {
         GridPane grid = (GridPane) event.getSource();
         grid.toFront(); // Ensure the gridpane is at the front when selected
@@ -181,6 +199,7 @@ public class Game extends Application {
         });
     }
 
+    //Not used, can be useful in future though
     private void handleMouseDrag(MouseEvent event) {
         GridPane grid = (GridPane) event.getSource();
         double[] data = (double[]) grid.getUserData();
@@ -193,6 +212,7 @@ public class Game extends Application {
     }
 
 
+    //Not used, can be useful in future though
     private void setupGridDragHandlers(GridPane cardGrid) {
         cardGrid.setOnDragDetected(event -> {
             Dragboard db = cardGrid.startDragAndDrop(TransferMode.MOVE);
@@ -327,6 +347,30 @@ public class Game extends Application {
         }
     }
 
+
+    String getSquareImagePathByCharacter(char c){
+        Colour colour = Colour.fromChar(c);
+
+        String imagePath = "file:src/comp1110/ass2/gui/assets/";
+
+        if (colour == Colour.BLUE) {
+            return imagePath + "blue.png";
+        } else if (colour == Colour.RED) {
+            return imagePath + "red.png";
+        } else if (colour == Colour.YELLOW) {
+            return imagePath + "yellow.png";
+        } else if (colour == Colour.PURPLE) {
+            return imagePath + "purple.png";
+        } else if (colour == Colour.GREEN) {
+            return imagePath + "green.png";
+        } else if (colour == Colour.OBJECTIVE) {
+            return imagePath + "objective.png";
+        } else if (colour == Colour.WILD) {
+            return imagePath + "objective.png";
+        } else {
+            return imagePath + "blue.png";
+        }
+    }
 
     String addSquareImageByColour(TheBoard theBoard, int row, int col){
 
