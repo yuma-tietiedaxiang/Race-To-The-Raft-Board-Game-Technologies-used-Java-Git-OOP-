@@ -305,9 +305,9 @@ public class Game extends Application {
             return imagePath + "objective.png";
         }
         //TODO: Aditya, check
-//        else if (theBoard.getColor(row,col) == Colour.WILD) {
-//            return Color.BROWN;
-//        }
+        else if (theBoard.getColor(row,col) == Colour.WILD) {
+            return imagePath + "objective.png";
+        }
         else{
             return imagePath + "blue.png";
         }
@@ -334,9 +334,9 @@ public class Game extends Application {
             return imagePath + "objective.png";
         }
         //TODO: Aditya, check
-//        else if (theBoard.getColor(row,col) == Colour.WILD) {
-//            return Color.BROWN;
-//        }
+        else if (theBoard.getColor(row,col) == Colour.WILD) {
+            return imagePath + "objective.png";
+        }
         else{
             return imagePath + "blue.png";
         }

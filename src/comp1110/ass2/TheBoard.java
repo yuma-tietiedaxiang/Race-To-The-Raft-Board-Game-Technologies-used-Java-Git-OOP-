@@ -30,9 +30,9 @@ public class TheBoard {
 
         rows = list.length;
         columns = list[0].length();
-        System.out.println(rows + " " + columns);
+//        System.out.println(rows + " " + columns);
         this.squares = new Square[rows][columns];
-        System.out.println(this.squares[0].length);
+//        System.out.println(this.squares[0].length);
 
         for (int i = 0; i < rows; i++) {
             String rowString = list[i];
