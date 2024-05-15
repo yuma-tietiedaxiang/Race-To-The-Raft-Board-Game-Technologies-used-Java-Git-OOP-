@@ -48,6 +48,7 @@ public class Game extends Application {
 
     private GridPane cardDisplayGrid;
     private int cardCount = 0;
+    private final int maxCardAllowed = 6;
 
     private Label deckALabel;
     private Label deckBLabel;
@@ -252,7 +253,9 @@ public class Game extends Application {
 
 
     private void drawCard(List<String> deck, Label label, char deckName) {
-        if (!deck.isEmpty()) {
+        if (!deck.isEmpty() && cardCount < maxCardAllowed ) {
+
+            System.out.println("Namaste Mummy and Papa!! " + cardCount);
 
             Collections.shuffle(deck);
             String card = deck.remove(deck.size() - 1);
