@@ -450,8 +450,6 @@ public class Game extends Application {
 
     }
 
-
-
     public String setBoardStateFromSelectedChallenge(String challengeString) {
 
         String islandSubstring = challengeString.substring(0, challengeString.indexOf('F'));
