@@ -343,7 +343,12 @@ public class Viewer extends Application {
         labels.setSpacing(45);
         labels.setLayoutX(MARGIN_X);
         labels.setLayoutY(VIEWER_HEIGHT - 220);
+
+        final Rectangle rectangle = new Rectangle(100, 100, 200, 50);
+        Draggable.Nature nature = new Draggable.Nature(rectangle);
+
         controls.getChildren().addAll(fields, labels, button);
+//        controls.getChildren().addAll(fields, labels, button, rectangle);
     }
 
     /**
