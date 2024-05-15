@@ -168,6 +168,7 @@ public class Game extends Application {
             GridPane newTileGrid = createTileGrid(tileString);
             System.out.println("Namaste Mummy and Papa!! Drawn Fire Tile: " + tileString);
             firetileGridPane.getChildren().add(newTileGrid); // Display new tile
+            Draggable.Nature nature = new Draggable.Nature(firetileGridPane);
         } else {
             System.out.println("No more fire tiles available.");
         }
@@ -226,7 +227,6 @@ public class Game extends Application {
 
         //Do not remove! Used for dragging
         Draggable.Nature nature = new Draggable.Nature(cardGrid);
-//        Draggable.Nature nature1 = new Draggable.Nature(firetileGridPane);
 
 
         cardGrid.setOnMouseClicked(this::handleCardSelection);
@@ -260,70 +260,6 @@ public class Game extends Application {
             Rotate rotate = new Rotate(angle, selectedPathwayCard.getWidth() / 2, selectedPathwayCard.getHeight() / 2);
             selectedPathwayCard.getTransforms().add(rotate);
         }
-    }
-
-    private void handleMousePress(MouseEvent event) {
-        GridPane grid = (GridPane) event.getSource();
-        selectedPathwayCard = grid;
-        grid.toFront(); // Ensure the gridpane is at the front when selected
-        grid.setCursor(javafx.scene.Cursor.MOVE);
-    }
-
-    //Not used, can be useful in future though
-    private void handleMousePressOG(MouseEvent event) {
-        GridPane grid = (GridPane) event.getSource();
-        grid.toFront(); // Ensure the gridpane is at the front when selected
-        grid.setCursor(javafx.scene.Cursor.MOVE);
-        // Store initial positions
-        grid.setUserData(new double[]{
-                event.getSceneX(), // Initial mouse X
-                event.getSceneY(), // Initial mouse Y
-                grid.getLayoutX(), // Initial grid layout X
-                grid.getLayoutY()  // Initial grid layout Y
-        });
-    }
-
-    //Not used, can be useful in future though
-    private void handleMouseDrag(MouseEvent event) {
-        GridPane grid = (GridPane) event.getSource();
-        double[] data = (double[]) grid.getUserData();
-        // Calculate the new layout positions based on mouse movement
-        double newLayoutX = data[2] + (event.getSceneX() - data[0]);
-        double newLayoutY = data[3] + (event.getSceneY() - data[1]);
-        // Update the layout positions
-        grid.setLayoutX(newLayoutX);
-        grid.setLayoutY(newLayoutY);
-    }
-
-
-    //Not used, can be useful in future though
-    private void setupGridDragHandlers(GridPane cardGrid) {
-        cardGrid.setOnDragDetected(event -> {
-            Dragboard db = cardGrid.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(""); // You might not need to transfer actual data
-            db.setContent(content);
-            System.out.println("Namaste Mummy and Papa!!");
-            event.consume();
-        });
-
-        cardGrid.setOnDragOver(event -> {
-            if (event.getGestureSource() != cardGrid && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-
-        cardGrid.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            boolean success = db.hasString();
-            // Perform the move operation here
-            event.setDropCompleted(success);
-            event.consume();
-        });
-
-        // Additional cleanup if needed
-        cardGrid.setOnDragDone(Event::consume);
     }
 
 
@@ -507,6 +443,71 @@ public class Game extends Application {
 
         return theBoard.boardToString();
 
+    }
+
+
+    private void handleMousePress(MouseEvent event) {
+        GridPane grid = (GridPane) event.getSource();
+        selectedPathwayCard = grid;
+        grid.toFront(); // Ensure the gridpane is at the front when selected
+        grid.setCursor(javafx.scene.Cursor.MOVE);
+    }
+
+    //Not used, can be useful in future though
+    private void handleMousePressOG(MouseEvent event) {
+        GridPane grid = (GridPane) event.getSource();
+        grid.toFront(); // Ensure the gridpane is at the front when selected
+        grid.setCursor(javafx.scene.Cursor.MOVE);
+        // Store initial positions
+        grid.setUserData(new double[]{
+                event.getSceneX(), // Initial mouse X
+                event.getSceneY(), // Initial mouse Y
+                grid.getLayoutX(), // Initial grid layout X
+                grid.getLayoutY()  // Initial grid layout Y
+        });
+    }
+
+    //Not used, can be useful in future though
+    private void handleMouseDrag(MouseEvent event) {
+        GridPane grid = (GridPane) event.getSource();
+        double[] data = (double[]) grid.getUserData();
+        // Calculate the new layout positions based on mouse movement
+        double newLayoutX = data[2] + (event.getSceneX() - data[0]);
+        double newLayoutY = data[3] + (event.getSceneY() - data[1]);
+        // Update the layout positions
+        grid.setLayoutX(newLayoutX);
+        grid.setLayoutY(newLayoutY);
+    }
+
+
+    //Not used, can be useful in future though
+    private void setupGridDragHandlers(GridPane cardGrid) {
+        cardGrid.setOnDragDetected(event -> {
+            Dragboard db = cardGrid.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(""); // You might not need to transfer actual data
+            db.setContent(content);
+            System.out.println("Namaste Mummy and Papa!!");
+            event.consume();
+        });
+
+        cardGrid.setOnDragOver(event -> {
+            if (event.getGestureSource() != cardGrid && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        cardGrid.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = db.hasString();
+            // Perform the move operation here
+            event.setDropCompleted(success);
+            event.consume();
+        });
+
+        // Additional cleanup if needed
+        cardGrid.setOnDragDone(Event::consume);
     }
 
 
