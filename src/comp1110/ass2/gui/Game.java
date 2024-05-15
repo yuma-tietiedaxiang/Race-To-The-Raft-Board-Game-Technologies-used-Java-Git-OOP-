@@ -9,7 +9,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -153,6 +156,8 @@ public class Game extends Application {
         cardGrid.setOnMousePressed(this::handleMousePress);
         cardGrid.setOnMouseDragged(this::handleMouseDrag);
 
+//        setupGridDragHandlers(cardGrid);
+
         int rowPosition = cardCount / 3;
         int colPosition = cardCount % 3;
         cardDisplayGrid.add(cardGrid, colPosition, rowPosition);
@@ -168,10 +173,48 @@ public class Game extends Application {
 
     private void handleMouseDrag(MouseEvent event) {
         GridPane grid = (GridPane) event.getSource();
+        System.out.println("Namaste Mummy and Papa!!");
         double[] offset = (double[]) grid.getUserData();
         grid.setLayoutX(event.getSceneX() - offset[0]);
         grid.setLayoutY(event.getSceneY() - offset[1]);
     }
+
+    private void setupGridDragHandlers(GridPane cardGrid) {
+        cardGrid.setOnDragDetected(event -> {
+            Dragboard db = cardGrid.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(""); // You might not need to transfer actual data
+            db.setContent(content);
+            System.out.println("Namaste Mummy and Papa!!");
+            event.consume();
+        });
+
+        cardGrid.setOnDragOver(event -> {
+            if (event.getGestureSource() != cardGrid && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        cardGrid.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                // Perform the move operation here
+                success = true;
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
+
+        cardGrid.setOnDragDone(event -> {
+            if (event.getTransferMode() == TransferMode.MOVE) {
+                // Additional cleanup if needed
+            }
+            event.consume();
+        });
+    }
+
 
 
     private void drawCard(List<String> deck, Label label, char deckName) {
