@@ -345,6 +345,35 @@ public class TheBoard {
         return sb.toString();
     }
 
+    public boolean raftDfs(int startrow, int startcolumn, char catColor) {
+        for (int raftRow = startrow-1; raftRow <= startrow+1; raftRow++) {
+            for (int raftCol = startcolumn-1; raftCol <= startcolumn+1; raftCol++) {
+                if (raftRow>=0 && raftRow<this.getRows() && raftCol>=0 && raftCol<this.getColumns()) {
+                    if (this.getColour(raftRow,raftCol).toChar()=='o' || this.getColour(raftRow,raftCol).toChar()=='w') {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        for (int[] direction : directions) {
+            int newRow = startrow + direction[0];
+            int newCol = startcolumn + direction[1];
+
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < columns && !visited[newRow][newCol]) {
+                char squareColor = getColour(newRow, newCol).toChar();
+                if (Character.toLowerCase(squareColor) == catColor) {
+                    if (!visited[newRow][newCol]) {
+                        visited[newRow][newCol] = true;
+                        if (raftDfs(newRow, newCol, catColor)) return true;
+                        visited[newRow][newCol] = false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
     public boolean dfs(int startrow, int startcolumn, int endRow, int endCol, char catColor) {
         if (startrow == endRow && startcolumn == endCol) {

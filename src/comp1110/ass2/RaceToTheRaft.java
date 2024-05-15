@@ -3,6 +3,7 @@ package comp1110.ass2;
 //import org.junit.jupiter.api.Assertions;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 import static comp1110.ass2.Cat.addCats;
 import static comp1110.ass2.FireTile.addFire;
@@ -555,6 +556,9 @@ public class RaceToTheRaft {
      */
     public static boolean isPlacementValid(String[] gameState, String placementString) {
         // 解析放置字符串,确定是卡片放置还是火焰块放置
+//        if (gameState[4].contains(String.valueOf(placementString.charAt(0)))){
+//            return false;
+//        }
         if (Character.isLetter(placementString.charAt(1)) && Character.isLetter(placementString.charAt(6))) {
             // 卡片放置
             int row = Integer.parseInt(placementString.substring(2, 4));
@@ -783,6 +787,8 @@ public class RaceToTheRaft {
         System.out.println("Initial gameState: " + Arrays.toString(gameState));
         System.out.println("Initial action: " + action);
 
+
+
         if (gameState == null || gameState.length == 0 || gameState[0] == null || gameState[0].isEmpty()) {
             System.out.println("Game state is invalid or empty.");
             return false;
@@ -791,87 +797,161 @@ public class RaceToTheRaft {
         TheBoard board1 = new TheBoard(gameState[0]);
         System.out.println("Initial board created: " + board1);
 
-        // Check if the raft is in the correct position
+
+
         if (!isRaftInCorrectPosition(board1)) {
             System.out.println("Raft is not in the correct position.");
+        }
+
+        String actionType = determineActionType(action);
+        BiFunction<String[], String, Boolean> handler = actionHandlers.get(actionType);
+
+        if (handler != null) {
+            return handler.apply(gameState, action);
+        }
+
+        System.out.println("Game is not over.");
+        return false;
+    }
+
+
+
+
+    private static final Map<String, BiFunction<String[], String, Boolean>> actionHandlers = new HashMap<>();
+
+    static {
+        actionHandlers.put("fireTilePlacement", RaceToTheRaft::handleFireTilePlacement);
+        actionHandlers.put("catMove", RaceToTheRaft::handleCatMove);
+        actionHandlers.put("cardPlacement", RaceToTheRaft::handleCardPlacement);
+    }
+
+    private static String determineActionType(String action) {
+        if (isFireTilePlacement(action)) {
+            return "fireTilePlacement";
+        } else if (isCatMove(action)) {
+            return "catMove";
+        } else if (isCardPlacement(action)) {
+            return "cardPlacement";
+        }
+        return "unknown";
+    }
+
+    private static boolean isFireTilePlacement(String action) {
+        return action.length() == 7 && Character.isLetter(action.charAt(0)) && Character.isLetter(action.charAt(6));
+    }
+
+    private static boolean isCatMove(String action) {
+        return action.length() >= 10;
+    }
+
+    private static boolean isCardPlacement(String action) {
+        return action.length() == 7;
+    }
+
+    private static boolean handleFireTilePlacement(String[] gameState, String action) {
+        System.out.println("Action type: Fire tile placement");
+        if (!isPlacementValid(gameState, action)) {
+            System.out.println("Placement invalid: " + action);
+            if (!hasValidFireTilePlacement(gameState, new TheBoard(gameState[0]),action.charAt(0))) {
+                System.out.println("No valid placements left, game over.");
+                return true;
+            }
+        }
+
+        String[] updatedGameState = applyPlacement(gameState, action);
+        TheBoard updatedBoard = new TheBoard(updatedGameState[0]);
+
+        System.out.println("Updated gameState after placement: " + Arrays.toString(updatedGameState));
+
+        if (!isValidGameState(updatedGameState)) {
+            System.out.println("Updated game state is empty or invalid.");
             return false;
         }
 
-        if (action.length() == 7 && Character.isLetter(action.charAt(0)) && Character.isLetter(action.charAt(6))) {
-            System.out.println("Action type: Fire tile placement");
-            if (!isPlacementValid(gameState, action)) {
-                System.out.println("Placement invalid: " + action);
-                boolean hasValidPlacement = false;
-                for (char fireID : gameState[4].toCharArray()) {
-                    for (int row = 0; row < board1.getRows(); row++) {
-                        for (int col = 0; col < board1.getColumns(); col++) {
-                            for (boolean flipped : new boolean[]{false, true}) {
-                                for (char orientation : new char[]{'N', 'E', 'S', 'W'}) {
-                                    String placementString = String.format("%c%02d%02d%c%c", fireID, row, col, flipped ? 'T' : 'F', orientation);
-                                    if (isPlacementValid(gameState, placementString)) {
-                                        hasValidPlacement = true;
-                                        System.out.println("Found valid placement: " + placementString);
-                                        break;
-                                    }
-                                }
-                                if (hasValidPlacement) break;
-                            }
-                            if (hasValidPlacement) break;
-                        }
-                        if (hasValidPlacement) break;
-                    }
-                }
-                if (!hasValidPlacement) {
-                    System.out.println("No valid placements left, game over.");
+        if (!areAllCatsAbleToReachRaft(updatedBoard)) {
+            System.out.println("A cat cannot reach the raft.");
+            return true;
+        }
+
+        return false;
+    }
+
+    private static boolean handleCatMove(String[] gameState, String action) {
+        System.out.println("Action type: Cat move");
+
+        String[] updatedGameState = moveCat(gameState, action);
+        TheBoard updatedBoard = new TheBoard(updatedGameState[0]);
+
+        System.out.println("Updated gameState after moving cat: " + Arrays.toString(updatedGameState));
+
+
+
+        if (areAllCatsOnRaft(updatedBoard)) {
+            System.out.println("All cats are on the raft.");
+            return true;
+        }
+
+        return false;
+    }
+
+    private static boolean handleCardPlacement(String[] gameState, String action) {
+        System.out.println("Action type: Card placement");
+
+        String[] updatedGameState = applyPlacement(gameState, action);
+
+        System.out.println("Updated gameState after placing card: " + Arrays.toString(updatedGameState));
+
+        if (updatedGameState[4].isEmpty()) {
+            System.out.println("Fire tile backpack is empty.");
+            return true;
+        }
+
+//        TheBoard updatedBoard = new TheBoard(updatedGameState[0]);
+//        if (!areAllCatsAbleToReachRaft(updatedBoard)) {
+//            System.out.println("A cat cannot reach the raft.");
+//            return true;
+//        }
+
+        return false;
+    }
+
+    private static boolean isValidGameState(String[] gameState) {
+        return gameState != null && gameState.length > 0 && gameState[0] != null && !gameState[0].isEmpty();
+    }
+
+    private static boolean hasValidFireTilePlacement(String[] gameState, TheBoard board1, char ID) {
+        if (findValidPlacement(gameState, board1, ID)) {
+            return true;
+        }
+//        for (char fireID : gameState[4].toCharArray()) {
+//            if (findValidPlacement(gameState, board1, fireID)) {
+//                return true;
+//            }
+//        }
+        return false;
+    }
+
+    private static boolean findValidPlacement(String[] gameState, TheBoard board, char fireID) {
+        for (int row = 0; row < board.getRows(); row++) {
+            for (int col = 0; col < board.getColumns(); col++) {
+                if (checkPlacementOptions(gameState, board, fireID, row, col)) {
                     return true;
                 }
             }
+        }
+        return false;
+    }
 
-            String[] updatedGameState = applyPlacement(gameState, action);
-            TheBoard updatedBoard = new TheBoard(updatedGameState[0]);
-
-            System.out.println("Updated gameState after placement: " + Arrays.toString(updatedGameState));
-
-            if (updatedGameState == null || updatedGameState.length == 0 || updatedGameState[0] == null || updatedGameState[0].isEmpty()) {
-                System.out.println("Updated game state is empty or invalid.");
-                return false;
-            }
-
-            if (!areAllCatsAbleToReachRaft(updatedBoard)) {
-                System.out.println("A cat cannot reach the raft.");
-                return true;
-            }
-        } else if (action.length() >= 10) {
-            System.out.println("Action type: Cat move");
-
-            String[] updatedGameState = moveCat(gameState, action);
-            TheBoard updatedBoard = new TheBoard(updatedGameState[0]);
-
-            System.out.println("Updated gameState after moving cat: " + Arrays.toString(updatedGameState));
-
-            if (areAllCatsOnRaft(updatedBoard)) {
-                System.out.println("All cats are on the raft.");
-                return true;
-            }
-        } else if (action.length() == 7) {
-            System.out.println("Action type: Card placement");
-
-            String[] updatedGameState = applyPlacement(gameState, action);
-
-            System.out.println("Updated gameState after placing card: " + Arrays.toString(updatedGameState));
-
-            if (updatedGameState[4].isEmpty()) {
-                System.out.println("Fire tile backpack is empty.");
-                return true;
-            }
-
-            TheBoard updatedBoard = new TheBoard(updatedGameState[0]);
-            if (!areAllCatsAbleToReachRaft(updatedBoard)) {
-                System.out.println("A cat cannot reach the raft.");
-                return true;
+    private static boolean checkPlacementOptions(String[] gameState, TheBoard board, char fireID, int row, int col) {
+        for (boolean flipped : new boolean[]{false, true}) {
+            for (char orientation : new char[]{'N', 'E', 'S', 'W'}) {
+                String placementString = String.format("%c%02d%02d%c%c", fireID, row, col, flipped ? 'T' : 'F', orientation);
+                if (isPlacementValid(gameState, placementString)) {
+                    System.out.println("Found valid placement: " + placementString);
+                    return true;
+                }
             }
         }
-        System.out.println("Game is not over.");
         return false;
     }
 
@@ -895,17 +975,25 @@ public class RaceToTheRaft {
             return false;
         }
 
+        return checkRaftOuterRing(board, startRow, startCol);
+    }
+
+    private static boolean checkRaftOuterRing(TheBoard board, int startRow, int startCol) {
         for (int row = startRow; row < startRow + 3; row++) {
             for (int col = startCol; col < startCol + 3; col++) {
-                Colour colour = board.getColour(row, col);
-                if (colour != Colour.OBJECTIVE && colour != Colour.WILD) {
-                    if (row == startRow || row == startRow + 2 || col == startCol || col == startCol + 2) {
-                        // 如果是外围一圈，则必须是 WILD 或猫的颜色
-                        if (colour != Colour.WILD && !Character.isLowerCase(colour.toChar())) {
-                            return false;
-                        }
-                    }
+                if (!isValidRaftCell(board, row, col, startRow, startCol)) {
+                    return false;
                 }
+            }
+        }
+        return true;
+    }
+
+    private static boolean isValidRaftCell(TheBoard board, int row, int col, int startRow, int startCol) {
+        Colour colour = board.getColour(row, col);
+        if (colour != Colour.OBJECTIVE && colour != Colour.WILD) {
+            if (row == startRow || row == startRow + 2 || col == startCol || col == startCol + 2) {
+                return colour == Colour.WILD || Character.isLowerCase(colour.toChar());
             }
         }
         return true;
@@ -917,69 +1005,108 @@ public class RaceToTheRaft {
 
         for (int catRow = 0; catRow < rows; catRow++) {
             for (int catCol = 0; catCol < cols; catCol++) {
-                char catSquare = board.getColour(catRow, catCol).toChar();
-                if (Character.isUpperCase(catSquare)) {
-                    boolean canReachRaft = false;
-                    char catColor = Character.toLowerCase(catSquare);
+                if (Character.isUpperCase(board.getColour(catRow,catCol).toChar()) && !isCatUnableToReachRaft(board, catRow, catCol)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
-                    for (int raftRow = 0; raftRow < rows; raftRow++) {
-                        for (int raftCol = 0; raftCol < cols; raftCol++) {
-                            if (board.getColour(raftRow, raftCol) == Colour.OBJECTIVE) {
-                                canReachRaft = board.dfs(catRow, catCol, raftRow, raftCol, catColor);
-                                if (canReachRaft) break;
-                            }
-                        }
-                        if (canReachRaft) break;
-                    }
+    private static boolean isCatUnableToReachRaft(TheBoard board, int catRow, int catCol) {
+        char catSquare = board.getColour(catRow, catCol).toChar();
+        if (Character.isUpperCase(catSquare)) {
+            char catColor = Character.toLowerCase(catSquare);
+            boolean can=canCatReachAnyRaft(board, catRow, catCol, catColor);
+            return can;
+        }
+        return false;
+    }
 
-                    if (!canReachRaft) {
-                        return false;
+    private static boolean canCatReachAnyRaft(TheBoard board, int catRow, int catCol, char catColor) {
+        int rows = board.getRows();
+        int cols = board.getColumns();
+        for (int i=0;i<board.rows;i++){
+            for (int j=0;j<board.columns;j++){
+                if (Character.toLowerCase(board.squares[i][j].colour.toChar()) != Character.toLowerCase(catColor)){
+                    //&& board.squares[i][j].colour.toChar() != 'w'
+                    board.visited[i][j]=true;
+                }else {
+                    board.visited[i][j]=false;
+                }
+            }
+        }
+        return board.raftDfs(catRow,catCol,catColor);
+
+        /*for (int raftRow = 0; raftRow < rows; raftRow++) {
+            for (int raftCol = 0; raftCol < cols; raftCol++) {
+                if (board.getColour(raftRow, raftCol).toChar()=='o') {
+                    if (board.dfs(catRow, catCol, raftRow, raftCol, catColor)) {
+                        return true;
                     }
                 }
             }
         }
-
-        return true;
+        return false;*/
     }
 
     private static boolean areAllCatsOnRaft(TheBoard board) {
         for (int row = 0; row < board.getRows(); row++) {
             for (int col = 0; col < board.getColumns(); col++) {
-                if (Character.isUpperCase(board.getColour(row, col).toChar())) {
-                    boolean catOnRaft = false;
-                    char catColor = Character.toLowerCase(board.getColour(row, col).toChar());
-
-                    for (int raftRow = 0; raftRow <= board.getRows() - 3; raftRow++) {
-                        for (int raftCol = 0; raftCol <= board.getColumns() - 3; raftCol++) {
-                            if (isRaftAtPosition(board, raftRow, raftCol)) {
-                                for (int rRow = raftRow; rRow < raftRow + 3; rRow++) {
-                                    for (int rCol = raftCol; rCol < raftCol + 3; rCol++) {
-                                        Colour raftColour = board.getColour(rRow, rCol);
-                                        if (raftColour.toChar() == catColor || raftColour == Colour.WILD || raftColour == Colour.OBJECTIVE) {
-                                            if (row == rRow && col == rCol) {
-                                                catOnRaft = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if (catOnRaft) break;
-                                }
-                            }
-                            if (catOnRaft) break;
-                        }
-                        if (catOnRaft) break;
-                    }
-
-                    if (!catOnRaft) {
-                        return false;
-                    }
+                if (isCatNotOnRaft(board, row, col)) {
+                    return false;
                 }
             }
         }
         return true;
     }
 
+    private static boolean isCatNotOnRaft(TheBoard board, int row, int col) {
+        if (Character.isUpperCase(board.getColour(row, col).toChar())) {
+            char catColor = Character.toLowerCase(board.getColour(row, col).toChar());
+            return !isCatOnAnyRaft(board, row, col, catColor);
+        }
+        return false;
+    }
 
+    private static boolean isCatOnAnyRaft(TheBoard board, int row, int col, char catColor) {
+        for (int raftRow = row-1; raftRow <= row+1; raftRow++) {
+            for (int raftCol = col-1; raftCol <= col+1; raftCol++) {
+                if (raftRow>=0 && raftRow<board.getRows() && raftCol>=0 && raftCol<board.getColumns()) {
+                    if (board.getColour(raftRow,raftCol).toChar()=='o') {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+        /*for (int raftRow = 0; raftRow <= board.getRows() - 3; raftRow++) {
+            for (int raftCol = 0; raftCol <= board.getColumns() - 3; raftCol++) {
+                if (isRaftAtPosition(board, raftRow, raftCol)) {
+                    if (isCatOnRaft(board, row, col, catColor, raftRow, raftCol)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;*/
+    }
+
+    private static boolean isCatOnRaft(TheBoard board, int row, int col, char catColor, int raftRow, int raftCol) {
+        for (int rRow = raftRow; rRow < raftRow + 3; rRow++) {
+            for (int rCol = raftCol; rCol < raftCol + 3; rCol++) {
+                Colour raftColour = board.getColour(rRow, rCol);
+                if (isCatOnRaftCell(raftColour, catColor, row, col, rRow, rCol)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean isCatOnRaftCell(Colour raftColour, char catColor, int row, int col, int rRow, int rCol) {
+        return (raftColour.toChar() == catColor || raftColour == Colour.WILD || raftColour == Colour.OBJECTIVE) && (row == rRow && col == rCol);
+    }
 }
 
 
