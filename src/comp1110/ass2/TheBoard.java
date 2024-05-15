@@ -1,6 +1,5 @@
 package comp1110.ass2;
 
-
 //import static comp1110.ass2.IslandBoard.generateIslandLayout;
 
 
@@ -31,7 +30,7 @@ public class TheBoard {
 
         rows = list.length;
         columns = list[0].length();
-        System.out.println(rows + " " + columns);
+        System.out.println(rows+" "+ columns);
         this.squares = new Square[rows][columns];
         System.out.println(this.squares[0].length);
 
@@ -60,16 +59,15 @@ public class TheBoard {
         //wht happened
         return squareChar;
     }
-
-    public void setSquares(Square[][] squares) {
+    public void setSquares(Square[][] squares){
         this.squares = squares;
     }
 
-    public int getRows() {
+    public int getRows(){
         return rows;
     }
 
-    public int getColumns() {
+    public int getColumns(){
         return columns;
     }
 
@@ -96,9 +94,9 @@ public class TheBoard {
     /**
      * this method is to form a board with 4 island boards
      *
+     * @author Yu Ma
      * @param islandSubstring A string from challenge string that represents islands eg."LASNLESA"
      * @return The Square[][] represents all the squares on the play board
-     * @author Yu Ma
      */
     public Square[][] formBoard(String islandSubstring) {
         //sorry for this duplication of utility strings. But this method is called in the third layer
@@ -290,7 +288,7 @@ public class TheBoard {
 
             //get all four islands and calculate how big should the board be
             if (i == 0) {
-                islandLayout01 = islandBoard.generateIslandLayout(size, orientation, copiedSquareBoard, copiedRectangleBoard);
+                islandLayout01 = islandBoard.generateIslandLayout(size, orientation, copiedSquareBoard,copiedRectangleBoard);
                 boardRow += islandLayout01.length;
                 boardColumn += islandLayout01[0].length;
             } else if (i == 1) {
@@ -312,21 +310,21 @@ public class TheBoard {
         for (int row = 0; row < boardRow; row++) {
             for (int column = 0; column < boardColumn; column++) {
 
-                if (row < islandLayout01.length && column < islandLayout01[0].length) {
+                if (row < islandLayout01.length && column < islandLayout01[0].length){
                     //1st island
                     board[row][column] = new Square(islandLayout01[row][column].getColour());
 
-                } else if (row >= islandLayout01.length && column < islandLayout01[0].length) {
+                }else if(row >= islandLayout01.length && column < islandLayout01[0].length){
                     //2nd island
-                    board[row][column] = new Square(islandLayout02[row - islandLayout01.length][column].getColour());
+                    board[row][column] = new Square(islandLayout02[row-islandLayout01.length][column].getColour());
 
-                } else if (row < islandLayout01.length && column >= islandLayout01[0].length) {
+                }else if(row < islandLayout01.length && column >= islandLayout01[0].length){
                     //3rd island
-                    board[row][column] = new Square(islandLayout03[row][column - islandLayout01[0].length].getColour());
+                    board[row][column] = new Square(islandLayout03[row][column-islandLayout01[0].length].getColour());
 
-                } else if (row >= islandLayout01.length && column >= islandLayout01[0].length) {
+                }else if(row >= islandLayout01.length && column >= islandLayout01[0].length){
                     //4th island
-                    board[row][column] = new Square(islandLayout04[row - islandLayout01.length][column - islandLayout01[0].length].getColour());
+                    board[row][column] = new Square(islandLayout04[row-islandLayout01.length][column-islandLayout01[0].length].getColour());
                 }
             }
         }
@@ -335,7 +333,7 @@ public class TheBoard {
     }
 
 
-    String boardToString() {
+     public String boardToString() {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < this.squares.length; i++) {
@@ -369,15 +367,4 @@ public class TheBoard {
         return false;
     }
 }
-
-
-//    public Colour getColour(int row, int col) {
-//        if (row < 0 || row >= rows || col < 0 || col >= columns) {
-//            // 如果传入的行列索引超出了棋盘边界,则抛出异常或返回默认值
-//            return Colour.NONE;
-//        }
-//        return squares[row][col].getColour();
-//    }
-
-
 
