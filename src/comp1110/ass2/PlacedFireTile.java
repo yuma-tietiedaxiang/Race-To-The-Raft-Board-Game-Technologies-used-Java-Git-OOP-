@@ -26,11 +26,9 @@ public class PlacedFireTile {
     }
 
 
-    //获得被翻转旋转之后的 Square[]
+    //Get the Square[] after being flipped and rotated.
     public Square[] getSquares() {
         char[][] fireTile = readFireTile(fireTileString);
-//        System.out.println(fireTileString);
-//        System.out.println(countSquares(fireTile));
         Square[] originalSquares = new Square[countSquares(fireTile)];//Square[6]
         int squareIndex = 0;
 
@@ -51,7 +49,7 @@ public class PlacedFireTile {
         int maxRow = 0;
         int maxCol = 0;
 
-        //获得最终火 square的最大行和最大列
+        //Get the maximum rows and columns of the final fire square
         for (Square square : originalSquares) {
             int row = square.getLocation().getRow();
             int col = square.getLocation().getColumn();
@@ -104,32 +102,26 @@ public class PlacedFireTile {
 
         for (int i = 0; i < fireLocations.length(); i++) {
             coords[i] = fireLocations.charAt(i)-'0';
-//            System.out.print(coords[i]);
         }
-//        System.out.println();
 
         int maxRow = 0;
         int maxCol = 0;
 
-//        System.out.println(fireLocations);
         for (int i = 0; i < coords.length; i++) {
-            if (i % 2 == 0) { // 偶数索引表示行数
+            if (i % 2 == 0) { // Even indexes indicate the number of rows
                 maxRow = Math.max(maxRow, coords[i]);
-            } else { // 奇数索引表示列数
+            } else { // Odd indexes indicate the number of columns
                 maxCol = Math.max(maxCol, coords[i]);
             }
         }
-//        System.out.println(maxRow+ " "+ maxCol);
 
         char[][] fireTile = new char[maxRow+1][maxCol+1];
-//        System.out.println(coords.length);
 
         for (int i = 0; i+1 < coords.length; i += 2) {
 
             int row = coords[i];
             int col = coords[i + 1];
             fireTile[row][col] = '#';
-//            System.out.println(row+""+ col);
 
         }
 

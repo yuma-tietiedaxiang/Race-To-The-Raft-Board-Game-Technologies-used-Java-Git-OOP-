@@ -49,7 +49,6 @@ public class IslandBoard {
      * @return a 2D Square representing the islandBoard after rotation
      */
     public Square[][] rotateIslandBoard(Square[][] islandSquares) {// can get Square[][] with island.getIslandSquares
-//        System.out.println("开始旋转");
         int rows = islandSquares.length;
         int cols = islandSquares[0].length;
 
@@ -74,25 +73,17 @@ public class IslandBoard {
                     rotatedIslandSquares[i][cols - 1 - j] = temp;//Horizontal flip left to right
                 }
             }
-        }else{//rectangle shape
-//            System.out.println("进入矩形反转");
+        }else{//rectangle shape..
             //switch the value of rectangle rows and cols. Because of transposition.
             int rectangleRow = cols;
             int rectangleCol = rows;
 
             for (int i = 0; i < rectangleRow; i++) {
                 for (int j = 0; j < rectangleCol / 2; j++) {
-                    Square temp = rotatedIslandSquares[i][j];// temp stores the Square on the left, with the corresponding
-                    // colours
+                    Square temp = rotatedIslandSquares[i][j];// temp stores the Square on the left, with the corresponding colours
+                    rotatedIslandSquares[i][j] = rotatedIslandSquares[i][rectangleCol - 1 - j];// Horizontal flip right to left
+                    rotatedIslandSquares[i][rectangleCol - 1 - j] = temp;// Assign the temp value (left) to the right (rectangleCol - 1 - j)
 
-//                    System.out.println("最大行列：" + rectangleRow + " " + rectangleCol);
-//                    System.out.println("右边的ij: " + i + " " + (rectangleCol - 1 - j));
-//                    System.out.println("放到左边ij: " + i + " " + j);
-
-                    rotatedIslandSquares[i][j] = rotatedIslandSquares[i][rectangleCol - 1 - j];// Horizontal flip right to
-                    // left
-                    rotatedIslandSquares[i][rectangleCol - 1 - j] = temp;// Assign the temp value (left) to the right
-                    // (rectangleCol - 1 - j)
                 }
             }
         }
@@ -168,8 +159,6 @@ public class IslandBoard {
             }
             //select one from the Square board by order, and replace it with null
             String randomChooseIsland = copiedSquareBoard[indexRow][0];
-//            System.out.println("选出来的行"+indexRow);
-//            System.out.println(randomChooseIsland);
             chooseIsland = new IslandBoard(randomChooseIsland);
             copiedSquareBoard[indexRow][0] = null;
             chooseIslandSquares = chooseIsland.getIslandSquares();
