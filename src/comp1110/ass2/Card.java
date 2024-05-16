@@ -1,6 +1,11 @@
 package comp1110.ass2;
 
-// author: Yu Ma
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+// author: Yu Ma and Aditya Arora
 public class Card {
     /*
     every card(islands, pathway, fire, raft) is a card
@@ -15,11 +20,31 @@ public class Card {
 
     char[][] cardColours = new char[3][3];
 
+    //easier approach for colors
+    private String colors;
+
+    public Card(String cardString) {
+        this.cardId = cardString.charAt(0);
+        this.colors = cardString.substring(1);
+    }
+
+    public String getColors() {
+        return colors;
+    }
+
     public Card(){}
     public Card(char deckId, char cardId, String pattern) {
         this.deckId = deckId;
         this.cardId = cardId;
         setCardColours(pattern);
+    }
+
+    public static List<Card> convertStringArrayOfCardsToList(String[] deck) {
+        List<Card> cardList = new ArrayList<>();
+        for (String cardString : deck) {
+            cardList.add(new Card(cardString));
+        }
+        return cardList;
     }
 
 

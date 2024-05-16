@@ -44,10 +44,16 @@ public class Game extends Application {
     private final String initialChallenge = "0";
     private final int squareSideSize = 35;
 
-    private final List<String> deckAList = new ArrayList<>(List.of(Utility.DECK_A));
-    private final List<String> deckBList = new ArrayList<>(List.of(Utility.DECK_B));
-    private final List<String> deckCList = new ArrayList<>(List.of(Utility.DECK_C));
-    private final List<String> deckDList = new ArrayList<>(List.of(Utility.DECK_D));
+//    private final List<String> deckAList = new ArrayList<>(List.of(Utility.DECK_A));
+//    private final List<String> deckBList = new ArrayList<>(List.of(Utility.DECK_B));
+//    private final List<String> deckCList = new ArrayList<>(List.of(Utility.DECK_C));
+//    private final List<String> deckDList = new ArrayList<>(List.of(Utility.DECK_D));
+
+
+    private final List<Card> deckAList = Card.convertStringArrayOfCardsToList(Utility.DECK_A);
+    private final List<Card> deckBList = Card.convertStringArrayOfCardsToList(Utility.DECK_A);
+    private final List<Card> deckCList = Card.convertStringArrayOfCardsToList(Utility.DECK_A);
+    private final List<Card> deckDList = Card.convertStringArrayOfCardsToList(Utility.DECK_A);
 
     private GridPane cardDisplayGrid;
     private GridPane selectedPathwayCard = null;
@@ -299,13 +305,13 @@ public class Game extends Application {
 
 
     //TODO: Aditya, use object instead of string
-    private void drawCard(Button deckButton, List<String> deck, char deckName) {
+    private void drawCard(Button deckButton, List<Card> deck, char deckName) {
         if (!deck.isEmpty() && cardCount < maxCardAllowed) {
             Collections.shuffle(deck);
-            String card = deck.remove(deck.size() - 1);
+            Card card = deck.remove(deck.size() - 1);
 //            deckButton.setText("Cards left in " + deckName + ": " + deck.size());
             deckButton.setText("Deck " + deckName + " (" + deck.size() + ")");
-            displayCard(card.substring(1)); // Ignore the first character
+            displayCard(card.getColors()); // Ignore the first character
 //            System.out.println("Drawn card: " + card);
 
         } else {
