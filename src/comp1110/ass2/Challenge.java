@@ -73,8 +73,6 @@ public class Challenge {
 
         addRaft(board, raftSubstring);
 
-        System.out.println("Namaste Mummy and Papa!! " + theBoard.boardToString());
-
         return theBoard.boardToString();
 
     }

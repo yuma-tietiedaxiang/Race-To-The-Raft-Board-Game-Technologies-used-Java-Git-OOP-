@@ -203,7 +203,6 @@ public class Game extends Application {
             String tileString = firetilesRemainingInBag.get(rand.nextInt(firetilesRemainingInBag.size()));
             firetileGridPane.getChildren().clear(); // Clear previous tile
             GridPane newTileGrid = createTileGrid(tileString);
-            System.out.println("Namaste Mummy and Papa!! Drawn Fire Tile: " + tileString);
             firetileGridPane.getChildren().add(newTileGrid); // Display new tile
             fireTileDraggableNature = new Draggable.Nature(firetileGridPane);
 //            nature.removeDraggedNode(firetileGridPane);
@@ -448,7 +447,6 @@ public class Game extends Application {
         Challenge challenge = new Challenge(Integer.parseInt(difficulty));
 
         String boardStateFromChallenge = setBoardStateFromSelectedChallenge(challenge.getChallenge());
-        System.out.println("Namaste Mummy and Papa!! " + boardStateFromChallenge);
 
         return boardStateFromChallenge;
 
@@ -517,7 +515,7 @@ public class Game extends Application {
             ClipboardContent content = new ClipboardContent();
             content.putString(""); // You might not need to transfer actual data
             db.setContent(content);
-            System.out.println("Namaste Mummy and Papa!!");
+//            System.out.println("Namaste Mummy and Papa!!");
             event.consume();
         });
 
