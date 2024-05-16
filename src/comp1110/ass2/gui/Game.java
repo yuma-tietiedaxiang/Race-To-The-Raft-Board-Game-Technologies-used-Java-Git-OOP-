@@ -330,6 +330,7 @@ public class Game extends Application {
         TheBoard theBoard = new TheBoard(boardstate);
 
         GridPane boardGridPane = new GridPane();
+        List<int[]> catPositions = new ArrayList<>();
 //        boardGridPane.setHgap(2);
 //        boardGridPane.setVgap(2);
 
@@ -337,36 +338,8 @@ public class Game extends Application {
         for (int row = 0; row < theBoard.getRows(); row++) {
 
             for (int col = 0; col < theBoard.getColumns(); col++) {
-
                 if (theBoard.hasCat(row, col)) {
-
-                    //If cat is present, square with cat is placed on top of the square of same colour.
-                    StackPane stack = new StackPane();
-
-                    String imagePathWithoutCat = addSquareImageByColour(theBoard, row, col);
-                    Image imageWithoutCat = new Image(imagePathWithoutCat);
-
-                    // Create an ImageView to display the image
-                    ImageView imageViewWithoutCat = new ImageView(imageWithoutCat);
-                    imageViewWithoutCat.setFitHeight(squareSideSize);
-                    imageViewWithoutCat.setFitWidth(squareSideSize);
-
-
-                    String imagePath = addSquareWithCatByColour(theBoard, row, col);
-                    Image image = new Image(imagePath);
-
-                    // Create an ImageView to display the image
-                    ImageView imageView = new ImageView(image);
-
-                    imageView.setFitHeight(squareSideSize);
-                    imageView.setFitWidth(squareSideSize);
-
-                    stack.getChildren().addAll(imageViewWithoutCat, imageView);
-
-                    Draggable.Nature catDraggableNature = new Draggable.Nature(imageView);
-
-                    boardGridPane.add(stack, col, row);
-
+                    catPositions.add(new int[]{row, col});
                 } else {
 
                     String imagePath = addSquareImageByColour(theBoard, row, col);
@@ -384,7 +357,42 @@ public class Game extends Application {
             }
         }
 
-        boardGridPane.setLayoutX(400);
+        // Second pass: only fill cells that have cats. If this is not done, cats would get behind the board after the row in
+        // which they lie.
+        for (int[] position : catPositions) {
+            int row = position[0];
+            int col = position[1];
+
+            //If cat is present, square with cat is placed on top of the square of same colour.
+            StackPane stack = new StackPane();
+
+            String imagePathWithoutCat = addSquareImageByColour(theBoard, row, col);
+            Image imageWithoutCat = new Image(imagePathWithoutCat);
+
+            // Create an ImageView to display the image
+            ImageView imageViewWithoutCat = new ImageView(imageWithoutCat);
+            imageViewWithoutCat.setFitHeight(squareSideSize);
+            imageViewWithoutCat.setFitWidth(squareSideSize);
+
+
+            String imagePath = addSquareWithCatByColour(theBoard, row, col);
+            Image image = new Image(imagePath);
+
+            // Create an ImageView to display the image
+            ImageView imageView = new ImageView(image);
+
+            imageView.setFitHeight(squareSideSize);
+            imageView.setFitWidth(squareSideSize);
+
+            stack.getChildren().addAll(imageViewWithoutCat, imageView);
+
+            Draggable.Nature catDraggableNature = new Draggable.Nature(imageView);
+
+            boardGridPane.add(stack, col, row);
+
+        }
+
+        boardGridPane.setLayoutX(425);
         boardGridPane.setLayoutY(MARGIN_Y);
 
         root.getChildren().add(boardGridPane);
