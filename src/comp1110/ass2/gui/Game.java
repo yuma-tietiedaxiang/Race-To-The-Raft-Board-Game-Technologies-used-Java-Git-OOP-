@@ -62,11 +62,6 @@ public class Game extends Application {
 
     private final List<String> firetilesRemainingInBag = new ArrayList<>(List.of(Utility.FIRE_TILES));
 
-    private Label deckALabel;
-    private Label deckBLabel;
-    private Label deckCLabel;
-    private Label deckDLabel;
-
     // FIXME TASK 11 Basic game
     // FIXME TASK 13 Fully working game
 
@@ -216,30 +211,20 @@ public class Game extends Application {
 
 
     private void setupButtonGrid(GridPane gridPane) {
-        Button deckAButton = new Button("Deck A");
-        Button deckBButton = new Button("Deck B");
-        Button deckCButton = new Button("Deck C");
-        Button deckDButton = new Button("Deck D");
+        Button deckAButton = new Button("Deck A (" + deckAList.size() + ")");
+        Button deckBButton = new Button("Deck B (" + deckAList.size() + ")");
+        Button deckCButton = new Button("Deck C (" + deckAList.size() + ")");
+        Button deckDButton = new Button("Deck D (" + deckAList.size() + ")");
 
-        deckALabel = new Label("Cards left: " + deckAList.size());
-        deckBLabel = new Label("Cards left: " + deckBList.size());
-        deckCLabel = new Label("Cards left: " + deckCList.size());
-        deckDLabel = new Label("Cards left: " + deckDList.size());
-
-        deckAButton.setOnAction(event -> drawCard(deckAList, deckALabel, 'A'));
-        deckBButton.setOnAction(event -> drawCard(deckBList, deckBLabel, 'B'));
-        deckCButton.setOnAction(event -> drawCard(deckCList, deckCLabel, 'C'));
-        deckDButton.setOnAction(event -> drawCard(deckDList, deckDLabel, 'D'));
+        deckAButton.setOnAction(event -> drawCard(deckAButton, deckAList, 'A'));
+        deckBButton.setOnAction(event -> drawCard(deckBButton, deckBList, 'B'));
+        deckCButton.setOnAction(event -> drawCard(deckCButton, deckCList, 'C'));
+        deckDButton.setOnAction(event -> drawCard(deckDButton, deckDList, 'D'));
 
         gridPane.add(deckAButton, 0, 0);
         gridPane.add(deckBButton, 1, 0);
         gridPane.add(deckCButton, 0, 1);
         gridPane.add(deckDButton, 1, 1);
-
-        gridPane.add(deckALabel, 0, 2);
-        gridPane.add(deckBLabel, 1, 2);
-        gridPane.add(deckCLabel, 0, 3);
-        gridPane.add(deckDLabel, 1, 3);
     }
 
     private void displayCard(String card) {
@@ -309,14 +294,12 @@ public class Game extends Application {
 
 
     //TODO: Aditya, use object instead of string
-    private void drawCard(List<String> deck, Label label, char deckName) {
+    private void drawCard(Button deckButton, List<String> deck, char deckName) {
         if (!deck.isEmpty() && cardCount < maxCardAllowed) {
-
-            System.out.println("Namaste Mummy and Papa!! " + cardCount);
-
             Collections.shuffle(deck);
             String card = deck.remove(deck.size() - 1);
-            label.setText("Cards left in " + deckName + ": " + deck.size());
+//            deckButton.setText("Cards left in " + deckName + ": " + deck.size());
+            deckButton.setText("Deck " + deckName + " (" + deck.size() + ")");
             displayCard(card.substring(1)); // Ignore the first character
             System.out.println("Drawn card: " + card);
 
