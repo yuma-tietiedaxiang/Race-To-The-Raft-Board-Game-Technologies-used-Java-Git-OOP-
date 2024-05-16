@@ -94,6 +94,9 @@ public class Game extends Application {
         Label selectedOptionLabel = new Label();
         selectedOptionLabel.setText("Difficulty Level Selected: " + initialChallenge);
 
+        HBox challengeHBox = new HBox(comboBox, selectedOptionLabel);
+        challengeHBox.setSpacing(10);
+
         // Event handler to the ComboBox
         comboBox.setOnAction(event -> {
             // Get the selected item
@@ -118,13 +121,13 @@ public class Game extends Application {
 
         setupButtonGrid(decksGridPane);
 
-        VBox vbox = getvBox(comboBox, selectedOptionLabel, decksGridPane);
+        VBox vbox = getvBox(challengeHBox, decksGridPane);
 
         controls.getChildren().add(vbox);
 
     }
 
-    private VBox getvBox(ComboBox<String> comboBox, Label selectedOptionLabel, GridPane decksGridPane) {
+    private VBox getvBox(HBox challengeHorizontalBox, GridPane decksGridPane) {
         Button rotateCardClockwiseButton = new Button("Rotate Clockwise");
         Button rotateCardCounterClockwiseButton = new Button("Rotate Counterclockwise");
 
@@ -156,7 +159,7 @@ public class Game extends Application {
 
 
         // Create a VBox to hold the ComboBox and Label
-        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid, cardRotationHBox,
+        VBox vbox = new VBox(challengeHorizontalBox, decksGridPane, cardDisplayGrid, cardRotationHBox,
                 drawFireTileButton, firetileGridPane, fireTileRotationHBox);
 
         // Set spacing for VBox
