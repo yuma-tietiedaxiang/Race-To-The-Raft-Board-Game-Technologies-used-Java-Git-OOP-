@@ -120,4 +120,6 @@ public class FireTile {
     public Square[] getSquares() {
         return fireSquares;
     }
+
 }
+

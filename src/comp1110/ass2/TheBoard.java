@@ -30,7 +30,7 @@ public class TheBoard {
 
         rows = list.length;
         columns = list[0].length();
-//        System.out.println(rows + " " + columns);
+//        System.out.println(rows+" "+ columns);
         this.squares = new Square[rows][columns];
 //        System.out.println(this.squares[0].length);
 
@@ -345,6 +345,84 @@ public class TheBoard {
         return sb.toString();
     }
 
+//    public boolean raftDfs(int startrow, int startcolumn, char catColor) {
+//        for (int raftRow = startrow-1; raftRow <= startrow+1; raftRow++) {
+//            for (int raftCol = startcolumn-1; raftCol <= startcolumn+1; raftCol++) {
+//                if (raftRow>=0 && raftRow<this.getRows() && raftCol>=0 && raftCol<this.getColumns()) {
+//                    if (this.getColour(raftRow,raftCol).toChar()=='o' || this.getColour(raftRow,raftCol).toChar()=='w') {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+
+    public boolean raftDfs(int startRow, int startColumn, char catColor) {
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; // 定义四个方向: 下, 上, 右, 左
+
+        if (isRaftAtPosition(startRow, startColumn)) {
+            return true;
+        }
+
+        visited[startRow][startColumn] = true;
+
+        for (int[] direction : directions) {
+            int newRow = startRow + direction[0];
+            int newCol = startColumn + direction[1];
+
+            if (isValidMove(newRow, newCol) && !visited[newRow][newCol]) {
+                char squareColor = getColour(newRow, newCol).toChar();
+                if (squareColor == catColor || squareColor == 'w' || squareColor == 'o') {
+                    if (raftDfs(newRow, newCol, catColor)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        visited[startRow][startColumn] = false;
+        return false;
+    }
+
+    private boolean isValidMove(int row, int col) {
+        return row >= 0 && row < getRows() && col >= 0 && col < getColumns();
+    }
+
+    private boolean isRaftAtPosition(int row, int col) {
+        if (row >= 1 && row < getRows() - 1 && col >= 1 && col < getColumns() - 1) {
+            for (int raftRow = row - 1; raftRow <= row + 1; raftRow++) {
+                for (int raftCol = col - 1; raftCol <= col + 1; raftCol++) {
+                    if (getColour(raftRow, raftCol).toChar() == 'o') {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public boolean dfs(int startrow, int startcolumn, int endRow, int endCol, char catColor) {
+        if (startrow == endRow && startcolumn == endCol) {
+            return true;
+        }
+
+        for (int[] direction : directions) {
+            int newRow = startrow + direction[0];
+            int newCol = startcolumn + direction[1];
+
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < columns && !visited[newRow][newCol]) {
+                char squareColor = getColour(newRow, newCol).toChar();
+                if (Character.toLowerCase(squareColor) == catColor) {
+                    if (!visited[newRow][newCol]) {
+                        visited[newRow][newCol] = true;
+                        if (dfs(newRow, newCol, endRow, endCol, catColor)) return true;
+                        visited[newRow][newCol] = false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     public boolean dfs(int startrow, int startcolumn, int endRow, int endCol) {
         if (startrow == endRow && startcolumn == endCol) {
@@ -365,6 +443,18 @@ public class TheBoard {
             }
         }
         return false;
+    }
+
+
+    public Colour getRaftColour(int row, int col) {
+        int raftStartRow = getRows() - 3;
+        int raftStartCol = getColumns() - 3;
+
+        if (row >= raftStartRow && row < getRows() && col >= raftStartCol && col < getColumns()) {
+            // Return the color of the raft square
+            return getColour(row, col);
+        }
+        return null;
     }
 }
 
