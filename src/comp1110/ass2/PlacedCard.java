@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+// author: Weiqi Huang
+
 public class PlacedCard {
     private Pathway pathway;
 

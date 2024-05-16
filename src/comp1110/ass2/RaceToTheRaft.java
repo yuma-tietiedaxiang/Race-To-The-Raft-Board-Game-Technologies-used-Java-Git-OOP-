@@ -531,6 +531,7 @@ public class RaceToTheRaft {
      * 5. The Fire tile is orthogonally adjacent to another fire square.
      * </p>
      *
+     * @author Weiqi Huang
      * @param gameState       An array representing the gameState
      * @param placementString A string representing a card placement or a fire tile placement
      * @return True if the placement is valid, otherwise false.
@@ -665,6 +666,7 @@ public class RaceToTheRaft {
      * cat.
      * 3. The path does not include diagonal movements.
      *
+     * @author Yu Ma, Weiqi Huang
      * @param gameState         An array representing the gameState
      * @param catMovementString A string representing a cat movement.
      * @return True if the cat movement is valid, otherwise false
@@ -741,10 +743,13 @@ public class RaceToTheRaft {
      * 1. If after placing this card, there are no more fire tiles left in the bag (the game is lost).
      * </p>
      *
+     * @author Yu Ma, Weiqi Huang
      * @param gameState An array of strings representing the game state
      * @param action    A string representing a fire tile placement, cat movement or card placement action.
      * @return True if the game is over (regardless of whether it is won or lost), otherwise False.
      */
+
+
     public static boolean isGameOver(String[] gameState, String action) {
         System.out.println("Initial gameState: " + Arrays.toString(gameState));
         System.out.println("Initial action: " + action);
