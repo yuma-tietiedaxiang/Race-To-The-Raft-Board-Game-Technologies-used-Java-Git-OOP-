@@ -804,11 +804,10 @@ public class RaceToTheRaft {
 
         String actionType = determineActionType(action);
         BiFunction<String[], String, Boolean> handler = actionHandlers.get(actionType);
-
         if (handler != null) {
             boolean gameOver = handler.apply(gameState, action);
-            if (gameOver) {
-                return true;
+            if (!gameOver) {
+                return false;
             }
         }
 
@@ -817,14 +816,14 @@ public class RaceToTheRaft {
             BiFunction<String[], String, Boolean> handlerFunc = entry.getValue();
             if (handlerFunc != handler && type.equals(actionType)) {
                 boolean gameOver = handlerFunc.apply(gameState, action);
-                if (gameOver) {
-                    return true;
+                if (!gameOver) {
+                    return false;
                 }
             }
         }
 
-        System.out.println("Game is not over.");
-        return false;
+        System.out.println("Game is over.");
+        return true;
     }
 
 
@@ -881,10 +880,11 @@ public class RaceToTheRaft {
             return false;
         }
 
-        if (isCatSurroundedByFire(updatedBoard)) {
-            System.out.println("A cat is surrounded by fire within a 9x9 area and cannot reach the raft.");
-            return true;
-        }
+//        if (isCatSurroundedByFire(updatedBoard)) {
+//
+//            return true;
+//        }
+//        System.out.println("A cat is not surrounded by fire within a 9x9 area and can reach the raft.");
 
 
         if (!areAllCatsAbleToReachRaft(updatedBoard)) {
@@ -897,58 +897,73 @@ public class RaceToTheRaft {
         return false;
     }
 
-    private static boolean isCatSurroundedByFire(TheBoard board) {
-        for (int row = 0; row < board.getRows(); row++) {
-            for (int col = 0; col < board.getColumns(); col++) {
-                if (Character.isUpperCase(board.getColour(row, col).toChar())) {
-                    if (isFireWithin9x9Area(board, row, col) && !hasPathPlacementOption(board, row, col)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private static boolean hasPathPlacementOption(TheBoard board, int catRow, int catCol) {
-        int rowStart = Math.max(0, catRow - 4);
-        int rowEnd = Math.min(board.getRows() - 1, catRow + 4);
-        int colStart = Math.max(0, catCol - 4);
-        int colEnd = Math.min(board.getColumns() - 1, catCol + 4);
-
-        for (int row = rowStart; row <= rowEnd; row++) {
-            for (int col = colStart; col <= colEnd; col++) {
-                if (board.getColour(row, col).toChar() != 'f' && board.getColour(row, col).toChar() != 'o') {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private static boolean isFireWithin9x9Area(TheBoard board, int catRow, int catCol) {
-        int rowStart = Math.max(0, catRow - 4);
-        int rowEnd = Math.min(board.getRows() - 1, catRow + 4);
-        int colStart = Math.max(0, catCol - 4);
-        int colEnd = Math.min(board.getColumns() - 1, catCol + 4);
-
-        // Check top and bottom rows
-        for (int col = colStart; col <= colEnd; col++) {
-            if (board.getColour(rowStart, col).toChar() != 'f' || board.getColour(rowEnd, col).toChar() != 'f') {
-                return false;
-            }
-        }
-
-        // Check left and right columns
-        for (int row = rowStart + 1; row < rowEnd; row++) {
-            if (board.getColour(row, colStart).toChar() != 'f' || board.getColour(row, colEnd).toChar() != 'f') {
-                return false;
-            }
-        }
-
-
-        return true;
-    }
+//    private static boolean isCatSurroundedByFire(TheBoard board) {
+//        for (int row = 0; row < board.getRows(); row++) {
+//            for (int col = 0; col < board.getColumns(); col++) {
+//                if (Character.isUpperCase(board.getColour(row, col).toChar())) {
+//                    System.out.println("Checking cat at position: (" + row + ", " + col + ")");
+//                    if (isFireWithin9x9Area(board, row, col) && !hasPathToObjective(board, row, col)) {
+//                        System.out.println("Cat at (" + row + ", " + col + ") is surrounded by fire and has no path to objective.");
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private static boolean hasPathToObjective(TheBoard board, int catRow, int catCol) {
+//        int rowStart = Math.max(0, catRow - 4);
+//        int rowEnd = Math.min(board.getRows() - 1, catRow + 4);
+//        int colStart = Math.max(0, catCol - 4);
+//        int colEnd = Math.min(board.getColumns() - 1, catCol + 4);
+//
+//        char catColor = Character.toLowerCase(board.getColour(catRow, catCol).toChar());
+//        System.out.println("Checking path for cat at (" + catRow + ", " + catCol + ") with color " + catColor);
+//
+//        for (int row = rowStart; row <= rowEnd; row++) {
+//            for (int col = colStart; col <= colEnd; col++) {
+//                char currentColor = board.getColour(row, col).toChar();
+//                if (currentColor != 'f' && currentColor != 'o') {
+//                    if (currentColor == 'w' || currentColor == catColor) {
+//                        System.out.println("Trying path from (" + row + ", " + col + ")");
+//                        if (board.raftDfs(row, col, catColor)) {
+//                            System.out.println("Found path to objective for cat at (" + catRow + ", " + catCol + ")");
+//                            return true;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    private static boolean isFireWithin9x9Area(TheBoard board, int catRow, int catCol) {
+//        int rowStart = Math.max(0, catRow - 4);
+//        int rowEnd = Math.min(board.getRows() - 1, catRow + 4);
+//        int colStart = Math.max(0, catCol - 4);
+//        int colEnd = Math.min(board.getColumns() - 1, catCol + 4);
+//
+//        // Check top and bottom rows
+//        for (int col = colStart; col <= colEnd; col++) {
+//            if (board.getColour(rowStart, col).toChar() != 'f' || board.getColour(rowEnd, col).toChar() != 'f') {
+//                System.out.println("Fire not within 9x9 area at row: (" + rowStart + " or " + rowEnd + "), col: " + col);
+//                return false;
+//            }
+//        }
+//
+//        // Check left and right columns
+//        for (int row = rowStart + 1; row < rowEnd; row++) {
+//            if (board.getColour(row, colStart).toChar() != 'f' || board.getColour(row, colEnd).toChar() != 'f') {
+//                System.out.println("Fire not within 9x9 area at row: " + row + ", col: (" + colStart + " or " + colEnd + ")");
+//                return false;
+//            }
+//        }
+//
+//        System.out.println("Fire is within 9x9 area for cat at (" + catRow + ", " + catCol + ")");
+//        return true;
+//    }
 
 
 
@@ -1082,6 +1097,8 @@ public class RaceToTheRaft {
         for (int catRow = 0; catRow < rows; catRow++) {
             for (int catCol = 0; catCol < cols; catCol++) {
                 if (Character.isUpperCase(board.getColour(catRow,catCol).toChar()) && !isCatUnableToReachRaft(board, catRow, catCol)) {
+                    System.out.println("Checking if cat at (" + catRow + ", " + catCol + ") can reach the raft.");
+                    System.out.println("Cat at (" + catRow + ", " + catCol + ") cannot reach the raft.");
                     return false;
                 }
             }
@@ -1093,6 +1110,7 @@ public class RaceToTheRaft {
         char catSquare = board.getColour(catRow, catCol).toChar();
         if (Character.isUpperCase(catSquare)) {
             char catColor = Character.toLowerCase(catSquare);
+            System.out.println("Checking if cat at (" + catRow + ", " + catCol + ") with color " + catColor + " can reach any raft.");
             boolean can=canCatReachAnyRaft(board, catRow, catCol, catColor);
             return can;
         }
@@ -1104,7 +1122,7 @@ public class RaceToTheRaft {
         int cols = board.getColumns();
         for (int i=0;i<board.rows;i++){
             for (int j=0;j<board.columns;j++){
-                if (Character.toLowerCase(board.squares[i][j].colour.toChar()) != Character.toLowerCase(catColor)){
+                if (Character.toLowerCase(board.squares[i][j].colour.toChar()) == 'f'){
                     //&& board.squares[i][j].colour.toChar() != 'w'
                     board.visited[i][j]=true;
                 }else {
@@ -1112,6 +1130,7 @@ public class RaceToTheRaft {
                 }
             }
         }
+        System.out.println("Starting DFS for cat at (" + catRow + ", " + catCol + ") with color " + catColor);
         return board.raftDfs(catRow,catCol,catColor);
 
         /*for (int raftRow = 0; raftRow < rows; raftRow++) {
