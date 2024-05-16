@@ -99,9 +99,10 @@ public class Game extends Application {
             String boardState = setupChallengeAndReturnBoardState(selectedItem);
 
             root.getChildren().clear();
-            root.getChildren().add(controls);
 
             displayState(boardState);
+
+            root.getChildren().add(controls);
 
         });
 
@@ -305,7 +306,7 @@ public class Game extends Application {
 //            deckButton.setText("Cards left in " + deckName + ": " + deck.size());
             deckButton.setText("Deck " + deckName + " (" + deck.size() + ")");
             displayCard(card.substring(1)); // Ignore the first character
-            System.out.println("Drawn card: " + card);
+//            System.out.println("Drawn card: " + card);
 
         } else {
             System.out.println("No more cards left in the deck!");
