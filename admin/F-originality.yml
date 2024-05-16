@@ -46,16 +46,21 @@ code:
     url: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/CharSequence.html#charAt(int)
     licence: https://download.oracle.com/otndocs/jcp/java_se-17-final-spec/license.html
 
-# Use this to list any assets (artwork, sound, etc) that you used.
-# Provide a comment explaining your use of that asset and the URL
-# and license for the asset
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external assets)
-assets:
-  - comment:
-    url:
-    licence:
+  - comment: Referred to stackoverflow to learn how to implement Combo box, to select challenges from drop down menu.
+    url: https://docs.oracle.com/javafx/2/ui_controls/combo-box.htm
+    licence: https://stackoverflow.com/help/licensing
+
+  - comment: Referred to oracle documentation to learn how to implement Combo box, to select challenges from drop down menu.
+    url: https://docs.oracle.com/javafx/2/ui_controls/combo-box.htm
+    licence: https://docs.oracle.com/javafx/dcommon/html/cpyr.htm
+
+  - comment: referred to stackoverflow to understand how to show images using JavaFX
+    url: https://stackoverflow.com/questions/29780369/load-image-from-a-file-inside-a-project-folder
+    licence: https://stackoverflow.com/help/licensing
+
+  - comment: referred to stackoverflow to get the implementation of Draggable nodes implementation
+    url: https://stackoverflow.com/a/46696687/16562982
+    licence: https://stackoverflow.com/help/licensing
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer

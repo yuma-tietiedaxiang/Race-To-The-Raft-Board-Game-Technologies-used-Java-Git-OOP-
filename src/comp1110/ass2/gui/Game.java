@@ -18,8 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -62,11 +60,6 @@ public class Game extends Application {
 
     private final List<String> firetilesRemainingInBag = new ArrayList<>(List.of(Utility.FIRE_TILES));
 
-    private Label deckALabel;
-    private Label deckBLabel;
-    private Label deckCLabel;
-    private Label deckDLabel;
-
     // FIXME TASK 11 Basic game
     // FIXME TASK 13 Fully working game
 
@@ -74,9 +67,9 @@ public class Game extends Application {
     public void start(Stage stage) throws Exception {
         Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
 //        makeControls();
-        root.getChildren().add(controls);
         String boardState = setupChallengeAndReturnBoardState(initialChallenge);
         displayState(boardState);
+        root.getChildren().add(controls);
         makeControls();
         stage.setScene(scene);
         stage.show();
@@ -94,6 +87,9 @@ public class Game extends Application {
         Label selectedOptionLabel = new Label();
         selectedOptionLabel.setText("Difficulty Level Selected: " + initialChallenge);
 
+        HBox challengeHBox = new HBox(comboBox, selectedOptionLabel);
+        challengeHBox.setSpacing(10);
+
         // Event handler to the ComboBox
         comboBox.setOnAction(event -> {
             // Get the selected item
@@ -103,9 +99,10 @@ public class Game extends Application {
             String boardState = setupChallengeAndReturnBoardState(selectedItem);
 
             root.getChildren().clear();
-            root.getChildren().add(controls);
 
             displayState(boardState);
+
+            root.getChildren().add(controls);
 
         });
 
@@ -118,13 +115,13 @@ public class Game extends Application {
 
         setupButtonGrid(decksGridPane);
 
-        VBox vbox = getvBox(comboBox, selectedOptionLabel, decksGridPane);
+        VBox vbox = getvBox(challengeHBox, decksGridPane);
 
         controls.getChildren().add(vbox);
 
     }
 
-    private VBox getvBox(ComboBox<String> comboBox, Label selectedOptionLabel, GridPane decksGridPane) {
+    private VBox getvBox(HBox challengeHorizontalBox, GridPane decksGridPane) {
         Button rotateCardClockwiseButton = new Button("Rotate Clockwise");
         Button rotateCardCounterClockwiseButton = new Button("Rotate Counterclockwise");
 
@@ -144,6 +141,21 @@ public class Game extends Application {
 
 
         //FireTile rotate Button
+        HBox fireTileRotationHBox = getFireTileRotationHBox();
+
+
+        // Create a VBox to hold the ComboBox and Label
+        VBox vbox = new VBox(challengeHorizontalBox, decksGridPane, cardDisplayGrid, cardRotationHBox,
+                drawFireTileButton, firetileGridPane, fireTileRotationHBox);
+
+        // Set spacing for VBox
+        vbox.setSpacing(20);
+        vbox.setLayoutX(MARGIN_X);
+        vbox.setLayoutY(MARGIN_Y);
+        return vbox;
+    }
+
+    private HBox getFireTileRotationHBox() {
         Button rotateFireTileClockwiseButton = new Button("Rotate Clockwise");
         Button rotateFireTileCounterClockwiseButton = new Button("Rotate Counterclockwise");
 
@@ -153,17 +165,7 @@ public class Game extends Application {
 
         HBox fireTileRotationHBox = new HBox(rotateFireTileClockwiseButton, rotateFireTileCounterClockwiseButton);
         fireTileRotationHBox.setSpacing(10);
-
-
-        // Create a VBox to hold the ComboBox and Label
-        VBox vbox = new VBox(comboBox, selectedOptionLabel, decksGridPane, cardDisplayGrid, cardRotationHBox,
-                drawFireTileButton, firetileGridPane, fireTileRotationHBox);
-
-        // Set spacing for VBox
-        vbox.setSpacing(20);
-        vbox.setLayoutX(MARGIN_X);
-        vbox.setLayoutY(MARGIN_Y);
-        return vbox;
+        return fireTileRotationHBox;
     }
 
     private GridPane createTileGrid(String tileString) {
@@ -202,7 +204,6 @@ public class Game extends Application {
             String tileString = firetilesRemainingInBag.get(rand.nextInt(firetilesRemainingInBag.size()));
             firetileGridPane.getChildren().clear(); // Clear previous tile
             GridPane newTileGrid = createTileGrid(tileString);
-            System.out.println("Namaste Mummy and Papa!! Drawn Fire Tile: " + tileString);
             firetileGridPane.getChildren().add(newTileGrid); // Display new tile
             fireTileDraggableNature = new Draggable.Nature(firetileGridPane);
 //            nature.removeDraggedNode(firetileGridPane);
@@ -213,33 +214,42 @@ public class Game extends Application {
 
 
     private void setupButtonGrid(GridPane gridPane) {
-        Button deckAButton = new Button("Deck A");
-        Button deckBButton = new Button("Deck B");
-        Button deckCButton = new Button("Deck C");
-        Button deckDButton = new Button("Deck D");
+        Button deckAButton = new Button("Deck A (" + deckAList.size() + ")");
+        Button deckBButton = new Button("Deck B (" + deckAList.size() + ")");
+        Button deckCButton = new Button("Deck C (" + deckAList.size() + ")");
+        Button deckDButton = new Button("Deck D (" + deckAList.size() + ")");
 
-        deckALabel = new Label("Cards left: " + deckAList.size());
-        deckBLabel = new Label("Cards left: " + deckBList.size());
-        deckCLabel = new Label("Cards left: " + deckCList.size());
-        deckDLabel = new Label("Cards left: " + deckDList.size());
-
-        deckAButton.setOnAction(event -> drawCard(deckAList, deckALabel, 'A'));
-        deckBButton.setOnAction(event -> drawCard(deckBList, deckBLabel, 'B'));
-        deckCButton.setOnAction(event -> drawCard(deckCList, deckCLabel, 'C'));
-        deckDButton.setOnAction(event -> drawCard(deckDList, deckDLabel, 'D'));
+        deckAButton.setOnAction(event -> drawCard(deckAButton, deckAList, 'A'));
+        deckBButton.setOnAction(event -> drawCard(deckBButton, deckBList, 'B'));
+        deckCButton.setOnAction(event -> drawCard(deckCButton, deckCList, 'C'));
+        deckDButton.setOnAction(event -> drawCard(deckDButton, deckDList, 'D'));
 
         gridPane.add(deckAButton, 0, 0);
         gridPane.add(deckBButton, 1, 0);
         gridPane.add(deckCButton, 0, 1);
         gridPane.add(deckDButton, 1, 1);
-
-        gridPane.add(deckALabel, 0, 2);
-        gridPane.add(deckBLabel, 1, 2);
-        gridPane.add(deckCLabel, 0, 3);
-        gridPane.add(deckDLabel, 1, 3);
     }
 
     private void displayCard(String card) {
+        GridPane cardGrid = getCardGrid(card);
+
+
+        cardGrid.setOnMouseClicked(this::handleCardSelection);
+        cardGrid.setBorder(null); // To Ensure no border unless selected
+        cardDisplayGrid.setVgap(10);
+        cardDisplayGrid.setHgap(10);
+        cardDisplayGrid.add(cardGrid, cardDisplayGrid.getChildren().size() % 3, cardDisplayGrid.getChildren().size() / 3);
+
+//        cardGrid.setOnMousePressed(this::handleMousePress);
+//        cardGrid.setOnMouseClicked(this::handleCardSelection);
+//        cardGrid.setOnMouseDragged(this::handleMouseDrag);
+
+//        setupGridDragHandlers(cardGrid);
+
+        cardCount++;
+    }
+
+    private GridPane getCardGrid(String card) {
         GridPane cardGrid = new GridPane();
         for (int i = 0; i < 9; i++) {
             int row = i / 3;
@@ -247,7 +257,7 @@ public class Game extends Application {
 //            Text text = new Text(String.valueOf(card.charAt(i)));
 //            cardGrid.add(text, col, row);
 
-            String imagePath = getSquareImagePathByCharacter(card.charAt(i));
+            String imagePath = Colour.getSquareImagePathByCharacter(card.charAt(i));
             Image image = new Image(imagePath);
 
             // Create an ImageView to display the image
@@ -264,24 +274,7 @@ public class Game extends Application {
 
         //Do not remove! Used for dragging
         Draggable.Nature nature = new Draggable.Nature(cardGrid);
-
-
-        cardGrid.setOnMouseClicked(this::handleCardSelection);
-        cardGrid.setBorder(null); // To Ensure no border unless selected
-        cardDisplayGrid.setVgap(10);
-        cardDisplayGrid.setHgap(10);
-//        cardDisplayGrid.add(cardGrid, cardDisplayGrid.getChildren().size() % 3, cardDisplayGrid.getChildren().size() / 3);
-        int rowPosition = cardCount / 3;
-        int colPosition = cardCount % 3;
-        cardDisplayGrid.add(cardGrid, colPosition, rowPosition);
-
-//        cardGrid.setOnMousePressed(this::handleMousePress);
-//        cardGrid.setOnMouseClicked(this::handleCardSelection);
-//        cardGrid.setOnMouseDragged(this::handleMouseDrag);
-
-//        setupGridDragHandlers(cardGrid);
-
-        cardCount++;
+        return cardGrid;
     }
 
     private void handleCardSelection(MouseEvent event) {
@@ -306,16 +299,14 @@ public class Game extends Application {
 
 
     //TODO: Aditya, use object instead of string
-    private void drawCard(List<String> deck, Label label, char deckName) {
+    private void drawCard(Button deckButton, List<String> deck, char deckName) {
         if (!deck.isEmpty() && cardCount < maxCardAllowed) {
-
-            System.out.println("Namaste Mummy and Papa!! " + cardCount);
-
             Collections.shuffle(deck);
             String card = deck.remove(deck.size() - 1);
-            label.setText("Cards left in " + deckName + ": " + deck.size());
+//            deckButton.setText("Cards left in " + deckName + ": " + deck.size());
+            deckButton.setText("Deck " + deckName + " (" + deck.size() + ")");
             displayCard(card.substring(1)); // Ignore the first character
-            System.out.println("Drawn card: " + card);
+//            System.out.println("Drawn card: " + card);
 
         } else {
             System.out.println("No more cards left in the deck!");
@@ -330,42 +321,16 @@ public class Game extends Application {
         TheBoard theBoard = new TheBoard(boardstate);
 
         GridPane boardGridPane = new GridPane();
-        boardGridPane.setHgap(2);
-        boardGridPane.setVgap(2);
-
+        List<int[]> catPositions = new ArrayList<>();
+//        boardGridPane.setHgap(2);
+//        boardGridPane.setVgap(2);
 
         //For board
         for (int row = 0; row < theBoard.getRows(); row++) {
 
             for (int col = 0; col < theBoard.getColumns(); col++) {
-
                 if (theBoard.hasCat(row, col)) {
-
-                    //If cat is present, square with cat is placed on top of the square of same colour.
-                    StackPane stack = new StackPane();
-
-                    String imagePathWithoutCat = addSquareImageByColour(theBoard, row, col);
-                    Image imageWithoutCat = new Image(imagePathWithoutCat);
-
-                    // Create an ImageView to display the image
-                    ImageView imageViewWithoutCat = new ImageView(imageWithoutCat);
-                    imageViewWithoutCat.setFitHeight(squareSideSize);
-                    imageViewWithoutCat.setFitWidth(squareSideSize);
-
-
-                    String imagePath = addSquareWithCatByColour(theBoard, row, col);
-                    Image image = new Image(imagePath);
-
-                    // Create an ImageView to display the image
-                    ImageView imageView = new ImageView(image);
-
-                    imageView.setFitHeight(squareSideSize);
-                    imageView.setFitWidth(squareSideSize);
-
-                    stack.getChildren().addAll(imageViewWithoutCat, imageView);
-
-                    boardGridPane.add(stack, col, row);
-
+                    catPositions.add(new int[]{row, col});
                 } else {
 
                     String imagePath = addSquareImageByColour(theBoard, row, col);
@@ -383,7 +348,42 @@ public class Game extends Application {
             }
         }
 
-        boardGridPane.setLayoutX(400);
+        // Second pass: only fill cells that have cats. If this is not done, cats would get behind the board after the row in
+        // which they lie.
+        for (int[] position : catPositions) {
+            int row = position[0];
+            int col = position[1];
+
+            //If cat is present, square with cat is placed on top of the square of same colour.
+            StackPane stack = new StackPane();
+
+            String imagePathWithoutCat = addSquareImageByColour(theBoard, row, col);
+            Image imageWithoutCat = new Image(imagePathWithoutCat);
+
+            // Create an ImageView to display the image
+            ImageView imageViewWithoutCat = new ImageView(imageWithoutCat);
+            imageViewWithoutCat.setFitHeight(squareSideSize);
+            imageViewWithoutCat.setFitWidth(squareSideSize);
+
+
+            String imagePath = addSquareWithCatByColour(theBoard, row, col);
+            Image image = new Image(imagePath);
+
+            // Create an ImageView to display the image
+            ImageView imageView = new ImageView(image);
+
+            imageView.setFitHeight(squareSideSize);
+            imageView.setFitWidth(squareSideSize);
+
+            stack.getChildren().addAll(imageViewWithoutCat, imageView);
+
+            Draggable.Nature catDraggableNature = new Draggable.Nature(imageView);
+
+            boardGridPane.add(stack, col, row);
+
+        }
+
+        boardGridPane.setLayoutX(425);
         boardGridPane.setLayoutY(MARGIN_Y);
 
         root.getChildren().add(boardGridPane);
@@ -416,32 +416,6 @@ public class Game extends Application {
             return imagePath + "blue.png";
         }
     }
-
-
-    String getSquareImagePathByCharacter(char c) {
-        Colour colour = Colour.fromChar(c);
-
-        String imagePath = "file:src/comp1110/ass2/gui/assets/";
-
-        if (colour == Colour.BLUE) {
-            return imagePath + "blue.png";
-        } else if (colour == Colour.RED) {
-            return imagePath + "red.png";
-        } else if (colour == Colour.YELLOW) {
-            return imagePath + "yellow.png";
-        } else if (colour == Colour.PURPLE) {
-            return imagePath + "purple.png";
-        } else if (colour == Colour.GREEN) {
-            return imagePath + "green.png";
-        } else if (colour == Colour.OBJECTIVE) {
-            return imagePath + "objective.png";
-        } else if (colour == Colour.WILD) {
-            return imagePath + "objective.png";
-        } else {
-            return imagePath + "blue.png";
-        }
-    }
-
     String addSquareImageByColour(TheBoard theBoard, int row, int col) {
 
         String imagePath = "file:src/comp1110/ass2/gui/assets/";
@@ -474,7 +448,6 @@ public class Game extends Application {
         Challenge challenge = new Challenge(Integer.parseInt(difficulty));
 
         String boardStateFromChallenge = setBoardStateFromSelectedChallenge(challenge.getChallenge());
-        System.out.println("Namaste Mummy and Papa!! " + boardStateFromChallenge);
 
         return boardStateFromChallenge;
 
@@ -543,7 +516,7 @@ public class Game extends Application {
             ClipboardContent content = new ClipboardContent();
             content.putString(""); // You might not need to transfer actual data
             db.setContent(content);
-            System.out.println("Namaste Mummy and Papa!!");
+//            System.out.println("Namaste Mummy and Papa!!");
             event.consume();
         });
 

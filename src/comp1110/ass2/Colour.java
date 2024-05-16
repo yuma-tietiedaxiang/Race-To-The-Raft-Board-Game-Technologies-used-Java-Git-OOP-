@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-// author: Weiqi Huang
+// author: Weiqi Huang and Aditya Arora
 
 public enum Colour {
     RED, BLUE, GREEN, YELLOW, PURPLE, FIRE, NONE, OBJECTIVE, WILD,
@@ -28,6 +28,31 @@ public enum Colour {
             default -> NONE;
         };
     }
+
+    public static String getSquareImagePathByCharacter(char c) {
+        Colour colour = Colour.fromChar(c);
+
+        String imagePath = "file:src/comp1110/ass2/gui/assets/";
+
+        if (colour == Colour.BLUE) {
+            return imagePath + "blue.png";
+        } else if (colour == Colour.RED) {
+            return imagePath + "red.png";
+        } else if (colour == Colour.YELLOW) {
+            return imagePath + "yellow.png";
+        } else if (colour == Colour.PURPLE) {
+            return imagePath + "purple.png";
+        } else if (colour == Colour.GREEN) {
+            return imagePath + "green.png";
+        } else if (colour == Colour.OBJECTIVE) {
+            return imagePath + "objective.png";
+        } else if (colour == Colour.WILD) {
+            return imagePath + "objective.png";
+        } else {
+            return imagePath + "blue.png";
+        }
+    }
+
 
     public char toChar() {
         return switch (this) {

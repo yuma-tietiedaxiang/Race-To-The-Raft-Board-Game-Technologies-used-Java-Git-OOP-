@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+//author: sourced from stackoverflow by Aditya
+
 /**
  * Generalised implementation of 'Draggability' of a {@link Node}. The Draggable class is used as a 'namespace' for the internal
  * class/interfaces/enum.
- * @author phill
  *
  */
 public class Draggable {
@@ -21,7 +23,6 @@ public class Draggable {
 
     /**
      * Marker for an entity that has draggable nature.
-     * @author phill
      */
     public interface Interface {
         public abstract Draggable.Nature getDraggableNature();
@@ -39,7 +40,6 @@ public class Draggable {
      * DragNode</li>
      * <li>Listeners: listen for the drag events</li>
      * </ul>
-     * @author phill
      *
      */
     public static final class Nature implements EventHandler<MouseEvent> {

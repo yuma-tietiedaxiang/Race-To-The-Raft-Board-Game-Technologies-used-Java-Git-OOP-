@@ -22,7 +22,6 @@ public class RaceToTheRaft {
     public static TheBoard theBoard = new TheBoard();
 
 
-
     /**
      * Determine whether a boardState string is well-formed.
      * To be well-formed the string must satisfy all the following conditions:
@@ -51,6 +50,7 @@ public class RaceToTheRaft {
      * @param boardString A string representing the boardState
      * @return True if the boardState is well-formed, otherwise false.
      */
+    //author: Aditya Arora
     public static boolean isBoardStringWellFormed(String boardString) {
 
         String[] list = boardString.split("\\r?\\n");
@@ -81,6 +81,7 @@ public class RaceToTheRaft {
     }
 
 
+    //author: Aditya Arora
     private static boolean isValidChar(char ch) {
         return ch == 'b' || ch == 'B' || ch == 'f' || ch == 'g' || ch == 'G' ||
                 ch == 'n' || ch == 'o' || ch == 'p' || ch == 'P' || ch == 'r' ||
@@ -92,8 +93,6 @@ public class RaceToTheRaft {
      * Make Constructors for each of your objects.
      */
     // FIXME TASK 3 done!
-
-
 
 
     /**
@@ -108,17 +107,17 @@ public class RaceToTheRaft {
     /**
      * this method is to draw a fireTile from a fire bag. The fire bag is defined in a String[] gameState
      *
-     * @author Yu Ma
      * @param gameState the length is 5, follow the order of [Board, Decks, Hand, Exhausted Cats,Fire tile bag].
      *                  each element is a string representing its current state
      * @return a fire tile string like "a000110111221"
+     * @author Yu Ma
      */
     public static String drawFireTile(String[] gameState) {
         if (gameState[4].isEmpty()) {
             return "";
         }
         Random random = new Random();
-        int index= random.nextInt(gameState[4].length());
+        int index = random.nextInt(gameState[4].length());
         char fireID = gameState[4].charAt(index);
         FireTile fireTile = new FireTile(fireID);
         String fireToStr = fireTile.toString();
@@ -179,11 +178,11 @@ public class RaceToTheRaft {
         for (char c = 'A'; c <= 'D'; c++) {
             String tempDeckInfo;
             if (c == 'D') {
-                tempDeckInfo = deckState.substring(deckState.indexOf(c)+1);
+                tempDeckInfo = deckState.substring(deckState.indexOf(c) + 1);
             } else {
-                tempDeckInfo = deckState.substring(deckState.indexOf(c)+1, deckState.indexOf(c + 1));
+                tempDeckInfo = deckState.substring(deckState.indexOf(c) + 1, deckState.indexOf(c + 1));
             }
-            deckMap.put(c, new Deck(c,tempDeckInfo));
+            deckMap.put(c, new Deck(c, tempDeckInfo));
         }
 
         // The final drawn hand
@@ -257,10 +256,10 @@ public class RaceToTheRaft {
      * When placing a card, you should update both the Board string and remove the corresponding card from the Hand
      * string in the gameState array.
      *
-     * @author Yu Ma, Weiqi Huang
      * @param gameState       An array representing the game state.
      * @param placementString A string representing a Fire Tile Placement or a Card Placement.
      * @return the updated gameState array after this placement has been made
+     * @author Yu Ma, Weiqi Huang
      */
     public static String[] applyPlacement(String[] gameState, String placementString) {
         if (Character.isLetter(placementString.charAt(1)) && Character.isLetter(placementString.charAt(6))) {
@@ -327,7 +326,7 @@ public class RaceToTheRaft {
 
             //evaluate placement string
             char fireID = placementString.charAt(0);
-            String fileBag="abcdefghigklmnopqrstuvwxyzABCDE";
+            String fileBag = "abcdefghigklmnopqrstuvwxyzABCDE";
             String fireTileString = Utility.FIRE_TILES[fileBag.indexOf(fireID)];
             int fireIDIndex = fileBag.indexOf(fireID);
 
@@ -377,12 +376,10 @@ public class RaceToTheRaft {
     }
 
 
-        private static int boardLength (StringBuilder boardBuilder){
-            return boardBuilder.toString().split("\\r?\\n")[0].length();
-        }
+    private static int boardLength(StringBuilder boardBuilder) {
+        return boardBuilder.toString().split("\\r?\\n")[0].length();
+    }
     // FIXME TASK 8 done!
-
-
 
 
     /**
@@ -392,11 +389,11 @@ public class RaceToTheRaft {
      * You should both move the cat (updating the Board string) and also add the cat to the Exhausted Cats string, or
      * update that cat's reference in the Exhausted Cats string if it was already exhausted.
      *
-     * @author Yu Ma, Aditya Arora
      * @param gameState      An array representing the game state.
      * @param movementString A string representing the movement of a cat and the cards discarded to allow this move.
      *                       "B01100710Bm"
      * @return the updated gameState array after this movement has been made.
+     * @author Yu Ma, Aditya Arora
      */
     public static String[] moveCat(String[] gameState, String movementString) {
 
@@ -435,15 +432,15 @@ public class RaceToTheRaft {
         boardSquares[toRow][toCol].setColour(Colour.fromChar(cat));
 
         //update catPosition string of moved cat
-        String catPosition = ""+cat;
-        if(toRow<10 && toCol<10){
+        String catPosition = "" + cat;
+        if (toRow < 10 && toCol < 10) {
             catPosition += "" + 0 + toRow + 0 + toCol;
-        }else if(toRow>9 && toCol<10){
-            catPosition += ""+toRow+0+toCol;
-        }else if(toRow<10 && toCol>9){
-            catPosition += ""+0+toRow+toCol;
-        }else if(toRow>9 && toCol>9){
-            catPosition += ""+toRow+toCol;
+        } else if (toRow > 9 && toCol < 10) {
+            catPosition += "" + toRow + 0 + toCol;
+        } else if (toRow < 10 && toCol > 9) {
+            catPosition += "" + 0 + toRow + toCol;
+        } else if (toRow > 9 && toCol > 9) {
+            catPosition += "" + toRow + toCol;
         }
 
         //update exhaustedCats
@@ -471,8 +468,6 @@ public class RaceToTheRaft {
     }
 
 
-
-
     /**
      * Given a challengeString, construct a board string that satisfies the challenge requirements.
      * <p>
@@ -481,9 +476,9 @@ public class RaceToTheRaft {
      * twice, even in different orientations.
      * The cat, fire card and raft card placements should all match the challenge string.
      *
-     * @author Yu Ma
      * @param challengeString A string representing the challenge to initialise
      * @return A board string for this challenge.
+     * @author Yu Ma
      */
     public static String initialiseChallenge(String challengeString) {// FIXME 10 done!
         //example challengeString = "LNSNLASA F000300060012001503030903 C112033060340009 R01215";
@@ -575,7 +570,7 @@ public class RaceToTheRaft {
 
             // evaluate placement string
             char fireID = placementString.charAt(0);
-            String fileBag="abcdefghijklmnopqrstuvwxyzABCDE";
+            String fileBag = "abcdefghijklmnopqrstuvwxyzABCDE";
             int fireIDIndex = fileBag.indexOf(fireID);
 
             if (fireIDIndex < 0 || fireIDIndex >= Utility.FIRE_TILES.length) {
@@ -610,11 +605,12 @@ public class RaceToTheRaft {
 
             PlacedFireTile fireTile = new PlacedFireTile(fireTileString, placementRow, placementCol, flipped, orientation, boardMaxRow, boardMaxColumn);
             for (Square square : fireTile.getSquares()) {
-            int boardRow = square.getLocation().getRow() + placementRow;
-            int boardCol = square.getLocation().getColumn() + placementCol;
-            if (boardRow < 0 || boardRow >= boardMaxRow || boardCol < 0 || boardCol >= boardMaxColumn) {
-                return false;
-            }}
+                int boardRow = square.getLocation().getRow() + placementRow;
+                int boardCol = square.getLocation().getColumn() + placementCol;
+                if (boardRow < 0 || boardRow >= boardMaxRow || boardCol < 0 || boardCol >= boardMaxColumn) {
+                    return false;
+                }
+            }
 
 
             // 检查火焰块的任何部分是否越界或重叠到无效方格
@@ -678,24 +674,26 @@ public class RaceToTheRaft {
         int startCol = Integer.parseInt(catMovementString.substring(3, 5));
         int endRow = Integer.parseInt(catMovementString.substring(5, 7));
         int endCol = Integer.parseInt(catMovementString.substring(7, 9));
-        theBoard=new TheBoard(gameState[0]);
-        String[] move=catMovementString.split("(?=\\p{Upper})");
+        theBoard = new TheBoard(gameState[0]);
+        String[] move = catMovementString.split("(?=\\p{Upper})");
 
-        if (endRow < 0 || endRow >= theBoard.getSquares().length ||  endCol < 0 || endCol >= theBoard.getSquares()[0].length ) {
+        if (endRow < 0 || endRow >= theBoard.getSquares().length || endCol < 0 || endCol >= theBoard.getSquares()[0].length) {
             return false;
         }//cross-border
 
-        if (gameState[3].contains(catMovementString.substring(0,5)) && move.length<3) {return false;}
-        String[] hands=gameState[2].split("(?=\\p{Upper})");
-        for (int i=1;i<move.length;i++){
-            int index=move[i].charAt(0)-'A';
-            for (int j=1;j<move[i].length();j++){
-                if (hands[index].indexOf(move[i].charAt(j))==-1) return false;
+        if (gameState[3].contains(catMovementString.substring(0, 5)) && move.length < 3) {
+            return false;
+        }
+        String[] hands = gameState[2].split("(?=\\p{Upper})");
+        for (int i = 1; i < move.length; i++) {
+            int index = move[i].charAt(0) - 'A';
+            for (int j = 1; j < move[i].length(); j++) {
+                if (hands[index].indexOf(move[i].charAt(j)) == -1) return false;
             }
         }
 
         // Check that the end position matches the colour of the cat
-        if (theBoard.squares[endRow][endCol].colour.toChar()!= Character.toLowerCase(catColor)) {
+        if (theBoard.squares[endRow][endCol].colour.toChar() != Character.toLowerCase(catColor)) {
             return false;
         }
 
@@ -706,26 +704,23 @@ public class RaceToTheRaft {
         Queue<int[]> queue = new LinkedList<>();
         queue.offer(new int[]{startRow, startCol});
 
-        for (int i=0;i<theBoard.rows;i++){
-            for (int j=0;j<theBoard.columns;j++){
-                if (Character.toLowerCase(theBoard.squares[i][j].colour.toChar()) != Character.toLowerCase(catColor)){
-                    theBoard.visited[i][j]=true;
-                }else {
-                    theBoard.visited[i][j]=false;
+        for (int i = 0; i < theBoard.rows; i++) {
+            for (int j = 0; j < theBoard.columns; j++) {
+                if (Character.toLowerCase(theBoard.squares[i][j].colour.toChar()) != Character.toLowerCase(catColor)) {
+                    theBoard.visited[i][j] = true;
+                } else {
+                    theBoard.visited[i][j] = false;
                 }
             }
         }
 
 
-
-        return theBoard.dfs(startRow,startCol,endRow,endCol);
+        return theBoard.dfs(startRow, startCol, endRow, endCol);
 
 
     }
 
     // FIXME TASK 14
-
-
 
 
     /**
@@ -755,7 +750,6 @@ public class RaceToTheRaft {
         System.out.println("Initial action: " + action);
 
 
-
         if (gameState == null || gameState.length == 0 || gameState[0] == null || gameState[0].isEmpty()) {
             System.out.println("Game state is invalid or empty.");
             return false;
@@ -763,7 +757,6 @@ public class RaceToTheRaft {
 
         TheBoard board1 = new TheBoard(gameState[0]);
         System.out.println("Initial board created: " + board1);
-
 
 
         if (!isRaftInCorrectPosition(board1)) {
@@ -793,8 +786,6 @@ public class RaceToTheRaft {
         System.out.println("Game is over.");
         return true;
     }
-
-
 
 
     private static final Map<String, BiFunction<String[], String, Boolean>> actionHandlers = new HashMap<>();
@@ -832,7 +823,7 @@ public class RaceToTheRaft {
         System.out.println("Action type: Fire tile placement");
         if (!isPlacementValid(gameState, action)) {
             System.out.println("Placement invalid: " + action);
-            if (!hasValidFireTilePlacement(gameState, new TheBoard(gameState[0]),action.charAt(0))) {
+            if (!hasValidFireTilePlacement(gameState, new TheBoard(gameState[0]), action.charAt(0))) {
                 System.out.println("No valid placements left, game over.");
                 return true;
             }
@@ -859,7 +850,6 @@ public class RaceToTheRaft {
             System.out.println("A cat cannot reach the raft.");
             return true;
         }
-
 
 
         return false;
@@ -934,7 +924,6 @@ public class RaceToTheRaft {
 //    }
 
 
-
     private static boolean handleCatMove(String[] gameState, String action) {
         System.out.println("Action type: Cat move");
 
@@ -942,7 +931,6 @@ public class RaceToTheRaft {
         TheBoard updatedBoard = new TheBoard(updatedGameState[0]);
 
         System.out.println("Updated gameState after moving cat: " + Arrays.toString(updatedGameState));
-
 
 
         if (areAllCatsOnRaft(updatedBoard)) {
@@ -1064,7 +1052,7 @@ public class RaceToTheRaft {
 
         for (int catRow = 0; catRow < rows; catRow++) {
             for (int catCol = 0; catCol < cols; catCol++) {
-                if (Character.isUpperCase(board.getColour(catRow,catCol).toChar()) && !isCatUnableToReachRaft(board, catRow, catCol)) {
+                if (Character.isUpperCase(board.getColour(catRow, catCol).toChar()) && !isCatUnableToReachRaft(board, catRow, catCol)) {
                     System.out.println("Checking if cat at (" + catRow + ", " + catCol + ") can reach the raft.");
                     System.out.println("Cat at (" + catRow + ", " + catCol + ") cannot reach the raft.");
                     return false;
@@ -1079,7 +1067,7 @@ public class RaceToTheRaft {
         if (Character.isUpperCase(catSquare)) {
             char catColor = Character.toLowerCase(catSquare);
             System.out.println("Checking if cat at (" + catRow + ", " + catCol + ") with color " + catColor + " can reach any raft.");
-            boolean can=canCatReachAnyRaft(board, catRow, catCol, catColor);
+            boolean can = canCatReachAnyRaft(board, catRow, catCol, catColor);
             return can;
         }
         return false;
@@ -1088,18 +1076,18 @@ public class RaceToTheRaft {
     private static boolean canCatReachAnyRaft(TheBoard board, int catRow, int catCol, char catColor) {
         int rows = board.getRows();
         int cols = board.getColumns();
-        for (int i=0;i<board.rows;i++){
-            for (int j=0;j<board.columns;j++){
-                if (Character.toLowerCase(board.squares[i][j].colour.toChar()) == 'f'){
+        for (int i = 0; i < board.rows; i++) {
+            for (int j = 0; j < board.columns; j++) {
+                if (Character.toLowerCase(board.squares[i][j].colour.toChar()) == 'f') {
                     //&& board.squares[i][j].colour.toChar() != 'w'
-                    board.visited[i][j]=true;
-                }else {
-                    board.visited[i][j]=false;
+                    board.visited[i][j] = true;
+                } else {
+                    board.visited[i][j] = false;
                 }
             }
         }
         System.out.println("Starting DFS for cat at (" + catRow + ", " + catCol + ") with color " + catColor);
-        return board.raftDfs(catRow,catCol,catColor);
+        return board.raftDfs(catRow, catCol, catColor);
 
         /*for (int raftRow = 0; raftRow < rows; raftRow++) {
             for (int raftCol = 0; raftCol < cols; raftCol++) {
@@ -1133,10 +1121,10 @@ public class RaceToTheRaft {
     }
 
     private static boolean isCatOnAnyRaft(TheBoard board, int row, int col, char catColor) {
-        for (int raftRow = row-1; raftRow <= row+1; raftRow++) {
-            for (int raftCol = col-1; raftCol <= col+1; raftCol++) {
-                if (raftRow>=0 && raftRow<board.getRows() && raftCol>=0 && raftCol<board.getColumns()) {
-                    if (board.getColour(raftRow,raftCol).toChar()=='o') {
+        for (int raftRow = row - 1; raftRow <= row + 1; raftRow++) {
+            for (int raftCol = col - 1; raftCol <= col + 1; raftCol++) {
+                if (raftRow >= 0 && raftRow < board.getRows() && raftCol >= 0 && raftCol < board.getColumns()) {
+                    if (board.getColour(raftRow, raftCol).toChar() == 'o') {
                         return true;
                     }
                 }
@@ -1173,10 +1161,7 @@ public class RaceToTheRaft {
 }
 
 
-
-
 // FIXME TASK 15
-
 
 
 //    public static void main(String[] args) {
