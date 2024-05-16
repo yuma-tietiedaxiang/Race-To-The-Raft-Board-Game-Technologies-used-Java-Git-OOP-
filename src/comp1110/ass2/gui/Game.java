@@ -74,9 +74,9 @@ public class Game extends Application {
     public void start(Stage stage) throws Exception {
         Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
 //        makeControls();
-        root.getChildren().add(controls);
         String boardState = setupChallengeAndReturnBoardState(initialChallenge);
         displayState(boardState);
+        root.getChildren().add(controls);
         makeControls();
         stage.setScene(scene);
         stage.show();
@@ -330,9 +330,8 @@ public class Game extends Application {
         TheBoard theBoard = new TheBoard(boardstate);
 
         GridPane boardGridPane = new GridPane();
-        boardGridPane.setHgap(2);
-        boardGridPane.setVgap(2);
-
+//        boardGridPane.setHgap(2);
+//        boardGridPane.setVgap(2);
 
         //For board
         for (int row = 0; row < theBoard.getRows(); row++) {
@@ -363,6 +362,8 @@ public class Game extends Application {
                     imageView.setFitWidth(squareSideSize);
 
                     stack.getChildren().addAll(imageViewWithoutCat, imageView);
+
+                    Draggable.Nature catDraggableNature = new Draggable.Nature(imageView);
 
                     boardGridPane.add(stack, col, row);
 
