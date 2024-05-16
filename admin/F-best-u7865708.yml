@@ -1,0 +1,56 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+#
+# This is also where you should declare your use of generative AI,
+# e.g. Copilot, ChatGPT, etc.
+#
+# Add as many "url+licence+comment" entries as necessary
+# (or remove it altogether if you haven't used any external code)
+code:
+  - comment: Referred to oracle documentation to learn how to implement Combo box, to select challenges from drop down menu.
+    url: https://docs.oracle.com/javafx/2/ui_controls/combo-box.htm
+    licence: https://docs.oracle.com/javafx/dcommon/html/cpyr.htm
+
+  - comment: referred to stackoverflow to understand how to show images using JavaFX
+    url: https://stackoverflow.com/questions/29780369/load-image-from-a-file-inside-a-project-folder
+    licence: https://stackoverflow.com/help/licensing
+
+  - comment: referred to stackoverflow to get the implementation of Draggable nodes implementation
+    url: https://stackoverflow.com/a/46696687/16562982
+    licence: https://stackoverflow.com/help/licensing
+
+
+# I wish to submit the following classes as entirely my own (remove this if
+# you want to just submit methods):
+class:
+   - most of Game class
+   - PathwayCard
+   - most of TheBoard class
+   - most of Viewer class
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - isBoardStringWellFormed() method, for Task 2.
+   - getSquareImagePathByCharacter() method in Colour class
+
+# sign *your* name and uid here
+name: Aditya Arora
+uid: u7865708

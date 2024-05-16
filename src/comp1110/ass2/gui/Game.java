@@ -18,8 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -142,15 +140,7 @@ public class Game extends Application {
 
 
         //FireTile rotate Button
-        Button rotateFireTileClockwiseButton = new Button("Rotate Clockwise");
-        Button rotateFireTileCounterClockwiseButton = new Button("Rotate Counterclockwise");
-
-
-        rotateFireTileClockwiseButton.setOnAction(e -> rotateFireTile(90));
-        rotateFireTileCounterClockwiseButton.setOnAction(e -> rotateFireTile(-90));
-
-        HBox fireTileRotationHBox = new HBox(rotateFireTileClockwiseButton, rotateFireTileCounterClockwiseButton);
-        fireTileRotationHBox.setSpacing(10);
+        HBox fireTileRotationHBox = getFireTileRotationHBox();
 
 
         // Create a VBox to hold the ComboBox and Label
@@ -162,6 +152,19 @@ public class Game extends Application {
         vbox.setLayoutX(MARGIN_X);
         vbox.setLayoutY(MARGIN_Y);
         return vbox;
+    }
+
+    private HBox getFireTileRotationHBox() {
+        Button rotateFireTileClockwiseButton = new Button("Rotate Clockwise");
+        Button rotateFireTileCounterClockwiseButton = new Button("Rotate Counterclockwise");
+
+
+        rotateFireTileClockwiseButton.setOnAction(e -> rotateFireTile(90));
+        rotateFireTileCounterClockwiseButton.setOnAction(e -> rotateFireTile(-90));
+
+        HBox fireTileRotationHBox = new HBox(rotateFireTileClockwiseButton, rotateFireTileCounterClockwiseButton);
+        fireTileRotationHBox.setSpacing(10);
+        return fireTileRotationHBox;
     }
 
     private GridPane createTileGrid(String tileString) {
@@ -228,6 +231,25 @@ public class Game extends Application {
     }
 
     private void displayCard(String card) {
+        GridPane cardGrid = getCardGrid(card);
+
+
+        cardGrid.setOnMouseClicked(this::handleCardSelection);
+        cardGrid.setBorder(null); // To Ensure no border unless selected
+        cardDisplayGrid.setVgap(10);
+        cardDisplayGrid.setHgap(10);
+        cardDisplayGrid.add(cardGrid, cardDisplayGrid.getChildren().size() % 3, cardDisplayGrid.getChildren().size() / 3);
+
+//        cardGrid.setOnMousePressed(this::handleMousePress);
+//        cardGrid.setOnMouseClicked(this::handleCardSelection);
+//        cardGrid.setOnMouseDragged(this::handleMouseDrag);
+
+//        setupGridDragHandlers(cardGrid);
+
+        cardCount++;
+    }
+
+    private GridPane getCardGrid(String card) {
         GridPane cardGrid = new GridPane();
         for (int i = 0; i < 9; i++) {
             int row = i / 3;
@@ -235,7 +257,7 @@ public class Game extends Application {
 //            Text text = new Text(String.valueOf(card.charAt(i)));
 //            cardGrid.add(text, col, row);
 
-            String imagePath = getSquareImagePathByCharacter(card.charAt(i));
+            String imagePath = Colour.getSquareImagePathByCharacter(card.charAt(i));
             Image image = new Image(imagePath);
 
             // Create an ImageView to display the image
@@ -252,24 +274,7 @@ public class Game extends Application {
 
         //Do not remove! Used for dragging
         Draggable.Nature nature = new Draggable.Nature(cardGrid);
-
-
-        cardGrid.setOnMouseClicked(this::handleCardSelection);
-        cardGrid.setBorder(null); // To Ensure no border unless selected
-        cardDisplayGrid.setVgap(10);
-        cardDisplayGrid.setHgap(10);
-//        cardDisplayGrid.add(cardGrid, cardDisplayGrid.getChildren().size() % 3, cardDisplayGrid.getChildren().size() / 3);
-        int rowPosition = cardCount / 3;
-        int colPosition = cardCount % 3;
-        cardDisplayGrid.add(cardGrid, colPosition, rowPosition);
-
-//        cardGrid.setOnMousePressed(this::handleMousePress);
-//        cardGrid.setOnMouseClicked(this::handleCardSelection);
-//        cardGrid.setOnMouseDragged(this::handleMouseDrag);
-
-//        setupGridDragHandlers(cardGrid);
-
-        cardCount++;
+        return cardGrid;
     }
 
     private void handleCardSelection(MouseEvent event) {
@@ -411,32 +416,6 @@ public class Game extends Application {
             return imagePath + "blue.png";
         }
     }
-
-
-    String getSquareImagePathByCharacter(char c) {
-        Colour colour = Colour.fromChar(c);
-
-        String imagePath = "file:src/comp1110/ass2/gui/assets/";
-
-        if (colour == Colour.BLUE) {
-            return imagePath + "blue.png";
-        } else if (colour == Colour.RED) {
-            return imagePath + "red.png";
-        } else if (colour == Colour.YELLOW) {
-            return imagePath + "yellow.png";
-        } else if (colour == Colour.PURPLE) {
-            return imagePath + "purple.png";
-        } else if (colour == Colour.GREEN) {
-            return imagePath + "green.png";
-        } else if (colour == Colour.OBJECTIVE) {
-            return imagePath + "objective.png";
-        } else if (colour == Colour.WILD) {
-            return imagePath + "objective.png";
-        } else {
-            return imagePath + "blue.png";
-        }
-    }
-
     String addSquareImageByColour(TheBoard theBoard, int row, int col) {
 
         String imagePath = "file:src/comp1110/ass2/gui/assets/";

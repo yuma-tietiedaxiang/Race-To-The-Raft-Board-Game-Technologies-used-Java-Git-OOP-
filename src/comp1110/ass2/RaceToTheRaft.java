@@ -49,6 +49,7 @@ public class RaceToTheRaft {
      * @param boardString A string representing the boardState
      * @return True if the boardState is well-formed, otherwise false.
      */
+    //author: Aditya Arora
     public static boolean isBoardStringWellFormed(String boardString) {
 
         String[] list = boardString.split("\\r?\\n");
@@ -79,6 +80,7 @@ public class RaceToTheRaft {
     }
 
 
+    // author: Aditya Arora
     private static boolean isValidChar(char ch) {
         return ch == 'b' || ch == 'B' || ch == 'f' || ch == 'g' || ch == 'G' ||
                 ch == 'n' || ch == 'o' || ch == 'p' || ch == 'P' || ch == 'r' ||
