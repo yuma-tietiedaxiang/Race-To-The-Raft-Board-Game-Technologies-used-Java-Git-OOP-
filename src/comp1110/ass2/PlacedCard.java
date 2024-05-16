@@ -15,12 +15,12 @@ public class PlacedCard {
     }
 
     public char getColorAt(int i, int j) {
-        // 根据 orientation 调整 i 和 j 的值
+        // Adjust the values of i and j according to orientation
         int adjustedI = i;
         int adjustedJ = j;
         switch (orientation) {
             case 'N':
-                // 不需要调整
+                // no adjustment
                 break;
             case 'E':
                 adjustedI = 2 - j;
@@ -36,10 +36,10 @@ public class PlacedCard {
                 break;
         }
 
-        // 获取 Pathway 对象中对应位置的颜色
+        // Get the colour of the corresponding position in the Pathway object.
         return pathway.squares[adjustedI][adjustedJ].getColour().toChar();
     }
 
-    // 其他方法...
+
 }
 

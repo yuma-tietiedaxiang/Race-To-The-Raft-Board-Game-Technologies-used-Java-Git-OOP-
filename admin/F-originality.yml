@@ -14,14 +14,6 @@ declaration: >-
   everything we have submitted for for all stages of this assignment was
   entirely our own work, with the following exceptions:
 
-# Use this to list names of people who you collaborated with, and a
-# comment about what you collaborated on.
-#
-# Add as many "name+comment" entries as necessary
-# (or remove it altogether if you haven't collaborated with anyone)
-collaboration:
-  - name:
-    comment: >-
 
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
@@ -34,28 +26,49 @@ collaboration:
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment:
-    url:
-    licence:
+  - comment: referred to stackoverflow to split the string by new line \n
+    url: https://stackoverflow.com/a/454913/16562982
+    licence: https://stackoverflow.com/help/licensing
 
-# Use this to list any assets (artwork, sound, etc) that you used.
-# Provide a comment explaining your use of that asset and the URL
-# and license for the asset
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external assets)
-assets:
-  - comment:
-    url:
-    licence:
+  - comment: referred to stackoverflow to check if a string contains \n. I used this for task 2, to specifically handle the case when last character string had a \n or not.
+    url: https://stackoverflow.com/a/5518515/16562982
+    licence: https://stackoverflow.com/help/licensing
+
+  - comment: learn how to use Random
+    url: https://www.educative.io/answers/how-to-generate-random-numbers-in-java
+    licence: CC-BY-SA 4.0
+
+  - comment: see what is ordinal method in Enum
+    url: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#ordinal()
+    licence: https://download.oracle.com/otndocs/jcp/java_se-17-final-spec/license.html
+
+  - comment: see what is charAt()
+    url: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/CharSequence.html#charAt(int)
+    licence: https://download.oracle.com/otndocs/jcp/java_se-17-final-spec/license.html
+
+  - comment: Referred to stackoverflow to learn how to implement Combo box, to select challenges from drop down menu.
+    url: https://docs.oracle.com/javafx/2/ui_controls/combo-box.htm
+    licence: https://stackoverflow.com/help/licensing
+
+  - comment: Referred to oracle documentation to learn how to implement Combo box, to select challenges from drop down menu.
+    url: https://docs.oracle.com/javafx/2/ui_controls/combo-box.htm
+    licence: https://docs.oracle.com/javafx/dcommon/html/cpyr.htm
+
+  - comment: referred to stackoverflow to understand how to show images using JavaFX
+    url: https://stackoverflow.com/questions/29780369/load-image-from-a-file-inside-a-project-folder
+    licence: https://stackoverflow.com/help/licensing
+
+  - comment: referred to stackoverflow to get the implementation of Draggable nodes implementation
+    url: https://stackoverflow.com/a/46696687/16562982
+    licence: https://stackoverflow.com/help/licensing
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
 signatures:
-  - name:
-    uid:
-  - name:
-    uid:
-  - name:
-    uid:
+  - name: Yu Ma
+    uid: u7670957
+  - name: Weiqi Huang
+    uid: u7739624
+  - name: Aditya Arora
+    uid: u7865708

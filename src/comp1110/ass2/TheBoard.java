@@ -74,7 +74,6 @@ public class TheBoard {
 
     public Colour getColor(int row, int column) {
         return Colour.fromChar(Character.toLowerCase(squareChar[row][column]));
-//        return squares[row][column];
     }
 
     // Check if a square has a cat on it
