@@ -18,15 +18,15 @@ declaration: >-
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
 class:
-   - IslandBoard
+   - IslandBoard - https://gitlab.cecs.anu.edu.au/u7670957/comp1110-ass2/-/blob/main/src/comp1110/ass2/IslandBoard.java?ref_type=heads
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
-   - Colour.catColourToNormalColour
-   - RaceToTheRaft.initialiseChallenge
-   - TheBoard.formBoard
-   - Cat.creatCatFromChallenge
+   - Colour.catColourToNormalColour - https://gitlab.cecs.anu.edu.au/u7670957/comp1110-ass2/-/blob/main/src/comp1110/ass2/Colour.java?ref_type=heads#L87-97
+   - RaceToTheRaft.initialiseChallenge - https://gitlab.cecs.anu.edu.au/u7670957/comp1110-ass2/-/blob/main/src/comp1110/ass2/RaceToTheRaft.java?ref_type=heads#L483-506
+   - TheBoard.formBoard - https://gitlab.cecs.anu.edu.au/u7670957/comp1110-ass2/-/blob/main/src/comp1110/ass2/TheBoard.java?ref_type=heads#L101-333
+   - Cat.creatCatFromChallenge - https://gitlab.cecs.anu.edu.au/u7670957/comp1110-ass2/-/blob/main/src/comp1110/ass2/Cat.java?ref_type=heads#L33-57
 
 # sign *your* name and uid here
 name: Yu Ma
