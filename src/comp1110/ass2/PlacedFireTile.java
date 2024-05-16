@@ -2,9 +2,7 @@ package comp1110.ass2;
 
 import java.util.Arrays;
 
-/*
-这个类是用来
- */
+// author: Yu Ma, Weiqi Huang
 
 public class PlacedFireTile {
     private String fireTileString;
