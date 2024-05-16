@@ -12,8 +12,7 @@ public class FireTile {
     List<Location> coordinates;
     String info;
 
-    public FireTile() {
-    }
+    public FireTile() {}
 
     // constructor use fromString to get coordinates
     public FireTile(char fireID) {
@@ -121,4 +120,6 @@ public class FireTile {
     public Square[] getSquares() {
         return fireSquares;
     }
+
 }
+
