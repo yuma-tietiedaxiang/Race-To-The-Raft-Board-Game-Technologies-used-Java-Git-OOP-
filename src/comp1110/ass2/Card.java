@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// author: Yu Ma
+// author: Yu Ma and Aditya Arora
 public class Card {
     /*
     every card(islands, pathway, fire, raft) is a card
@@ -39,7 +39,7 @@ public class Card {
         setCardColours(pattern);
     }
 
-    public static List<Card> convertStringArrayOfCardsToListOldApproach(String[] deck) {
+    public static List<Card> convertStringArrayOfCardsToList(String[] deck) {
         List<Card> cardList = new ArrayList<>();
         for (String cardString : deck) {
             cardList.add(new Card(cardString));
@@ -47,11 +47,6 @@ public class Card {
         return cardList;
     }
 
-    public static List<Card> convertStringArrayOfCardsToList(String[] deck) {
-        return Arrays.stream(deck)
-                .map(Card::new) // Convert each string to a Card object
-                .collect(Collectors.toList()); // Collect results to a list
-    }
 
     private void setCardColours(String pattern) {
         String[] rows = pattern.split("(?<=\\G.{9})"); // Split string every 9 characters
