@@ -144,44 +144,35 @@ public class RaceToTheRaft {
 
     /**
      * Draw random cards from the specified decks.
-     * 从指定的牌组中随机抽取牌。
      * <p>
      * The decks string denotes what decks to draw from and how many cards to draw from that deck.
-     * deck字符串表示要从哪些牌组中抽牌以及要从该牌组中抽多少张牌。
      *
      * <p>
      * For example the drawRequest string "4A1B1D" tells us that we should draw 4 cards from deck A, 1 card from deck B
      * and
      * 1 card from deck D.
      * <p>
-     * 例如，drawRequest字符串“4A1B1D”告诉我们应该从牌组A中抽取4张牌，从牌组B中抽取1张牌，从牌组D中抽取1张牌。
      * <p>
      * If I draw cards a, b, d, from deck A, card a from deck B and card s from deck D, I would return the string: "AabdBaDs".
-     * 如果我从牌组a中抽牌a, b, d，从牌组b中抽牌a，从牌组d中抽牌s，我将返回字符串"AabdBaDs"。
      * <p>
      * Decks should be listed in alphabetical order, with cards drawn from that deck also listed in alphabetical order.
-     * 牌组应按字母顺序排列，从牌组中抽取的牌也应按字母顺序排列。
      *
      * </p>
      * Recall the mapping between deck and char:
-     * 回想一下deck和char之间的映射:
      * A -> CIRCLE;
      * B -> CROSS;
      * C -> SQUARE;
      * D -> TRIANGLE;
      *
      * @param gameState   the current state of the game, including the current state of the decks
-     *                    游戏的当前状态，包括牌组的当前状态
      * @param drawRequest A string representing the decks to draw from and the number of cards to draw from each respective deck.
-     *                    表示要抽的牌组和要抽的牌组数量的字符串。 4A1B1D
      * @return The updated gameState array after the cards have been drawn. (Remove all cards drawn from decks and add them to the Hand string). If it is not possible to draw all the specified cards, you should return the original gameState.
-     * 在抽完牌后更新的gameState数组。(从牌组中取出所有牌并将其添加到手牌串中)。如果不能抽到所有指定的牌，你应该返回原始的gameState。
      */
 
     // Weiqi Huang
     public static String[] drawHand(String[] gameState, String drawRequest) {
         // FIXME TASK 7 Done!
-        // Get the current state of the decks 获取牌组的当前状态
+        // Get the current state of the decks
         Map<Character, Deck> deckMap = new HashMap<>();
         String deckState = gameState[1];
         for (char c = 'A'; c <= 'D'; c++) {
@@ -194,49 +185,48 @@ public class RaceToTheRaft {
             deckMap.put(c, new Deck(c,tempDeckInfo));
         }
 
-        // The final drawn hand 最终抽取的手牌
+        // The final drawn hand
         StringBuilder handDeck = new StringBuilder();
 
-        // Iterate over the drawRequest string and record each deck request 遍历 drawRequest 字符串，依次记录每个牌组请求
+        // Iterate over the drawRequest string and record each deck request
         HashMap<Character, Integer> drawRequestMap = new HashMap();
         drawRequestMap.put('A', 0);
         drawRequestMap.put('B', 0);
         drawRequestMap.put('C', 0);
         drawRequestMap.put('D', 0);
         for (int i = 0; i < drawRequest.length(); i += 2) {
-            // Get the current deck and the number of cards to draw 获取当前牌组和需要抽取的牌数
+            // Get the current deck and the number of cards to draw
             char deckChar = drawRequest.charAt(i);
             int count = Character.getNumericValue(drawRequest.charAt(i + 1));
-            //            System.out.println("从牌组" + deckChar + "中抽取" + count + "张牌：");
             drawRequestMap.put(deckChar, count);
         }
 
 
-        // Randomly draw cards from the corresponding decks 从对应的牌组中随机抽取牌
+        // Randomly draw cards from the corresponding decks
         for (char deckChar = 'A'; deckChar <= 'D'; deckChar++) {
 
             StringBuilder tempHand = new StringBuilder();
-            // Number of times to draw from this deck 从该牌组获取的次数
+            // Number of times to draw from this deck
             int count = drawRequestMap.get(deckChar);
             for (int j = 0; j < count; j++) {
-                // The state of this deck 该牌组的状态
+                // The state of this deck
                 String deckInfo = deckMap.get(deckChar).getDeckInfo();
 
                 Deck deck = deckMap.get(deckChar);
-                // If there are no cards to draw from this deck 如果该牌组没有牌可以抽取
+                // If there are no cards to draw from this deck
                 if (deck.hasNoCard()) {
                     return gameState;
                 }
-                // Randomly draw a card 随机取牌
+                // Randomly draw a card
                 /*Random = new Random();
                 int index = random.nextInt(deckInfo.toCharArray().length);
                 char randomChar = deckInfo.charAt(index);*/
-                //Add it to the hand 加入到手牌中
+                //Add it to the hand
                 tempHand.append(deck.drawCards());
-                //After drawing the card, remove it from the deck 取牌之后, 将该牌组中已经取走的牌删掉,
+                //After drawing the card, remove it from the deck
                 deckMap.put(deckChar, deck);
             }
-            //Sort the cards 排序
+            //Sort the cards
             String str = tempHand.toString();
             char[] chars = str.toCharArray();
             Arrays.sort(chars);
@@ -244,7 +234,7 @@ public class RaceToTheRaft {
             //the result: AabdBaDs
             handDeck.append(deckChar).append(sortedString);
         }
-        //Update the latest deck state to gameState 将最新的牌组状态更新到 gameState
+        //Update the latest deck state to gameState
         StringBuilder newDeckState = new StringBuilder();
         for (Character deckChar : deckMap.keySet()) {
             String deckInfo = deckMap.get(deckChar).getDeckInfo();
@@ -252,7 +242,7 @@ public class RaceToTheRaft {
         }
         gameState[1] = newDeckState.toString();
 
-        //Assign the hand to gameState 将手牌赋值给 gameState
+        //Assign the hand to gameState
         gameState[2] = handDeck.toString();
 
         return gameState;
@@ -266,21 +256,22 @@ public class RaceToTheRaft {
      * When placing a card, you should update both the Board string and remove the corresponding card from the Hand
      * string in the gameState array.
      *
+     * @author Yu Ma, Weiqi Huang
      * @param gameState       An array representing the game state.
      * @param placementString A string representing a Fire Tile Placement or a Card Placement.
      * @return the updated gameState array after this placement has been made
      */
     public static String[] applyPlacement(String[] gameState, String placementString) {
         if (Character.isLetter(placementString.charAt(1)) && Character.isLetter(placementString.charAt(6))) {
-            // 放置卡片
-            // 字符串是否既不是火牌也不是路径卡
+            // place cards
+            // Whether the string is neither a fire card nor a path card
             char deckType = placementString.charAt(0);
             char cardID = placementString.charAt(1);
             int row = Integer.parseInt(placementString.substring(2, 4));
             int col = Integer.parseInt(placementString.substring(4, 6));
             char orientation = placementString.charAt(6);
 
-            // 根据卡片的类型和ID获取卡片数据
+            // Get card data based on the type and ID of the card
             String[] cardData;
             DeckType deckType1 = DeckType.fromChar(placementString.charAt(0));
             switch (deckType1) {
@@ -295,10 +286,10 @@ public class RaceToTheRaft {
                     throw new IllegalArgumentException("Invalid deck type: " + deckType);
             }
 
-            // 创建 PlacedCard 对象
+            // Creating PlacedCard Objects
             PlacedCard card = new PlacedCard(cardData[0], orientation, row, col);
 
-            // 更新 Board 字符串
+            // Update Board String
             StringBuilder boardBuilder = new StringBuilder(gameState[0]);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
@@ -313,28 +304,27 @@ public class RaceToTheRaft {
             }
             gameState[0] = boardBuilder.toString();
 
-            // 从 Hand 字符串中移除卡片
+            // Removing cards from the Hand string
             String handString = gameState[2];
 
-            // 找到 handString 中表示卡组的大写字母的位置
+            // Find the location of the uppercase letter in the handString that represents the deck.
             int deckIndex = handString.indexOf(deckType);
 
-            // 如果找到了卡组标识
+            // If the deck logo is found
             if (deckIndex != -1) {
-                // 在卡组标识后搜索与 cardID 匹配的小写字母
+                // Search for a lowercase letter that matches the cardID after the deck ID.
                 int cardIndex = handString.indexOf(cardID, deckIndex + 1);
 
-                // 如果找到了匹配的卡牌
+                // If a matching deck is found
                 if (cardIndex != -1) {
-                    // 从 handString 中移除匹配的卡牌
+                    // Remove matching cards from handString
                     gameState[2] = handString.substring(0, cardIndex) + handString.substring(cardIndex + 1);
                 }
             }
         } else {
-            // 放置火焰块
+            // Placement of Flame Blocks
 
-            //解析placement string
-//            System.out.println("放置命令 "+placementString);
+            //evaluate placement string
             char fireID = placementString.charAt(0);
             String fileBag="abcdefghigklmnopqrstuvwxyzABCDE";
             String fireTileString = Utility.FIRE_TILES[fileBag.indexOf(fireID)];
@@ -346,7 +336,7 @@ public class RaceToTheRaft {
             char orientation = placementString.charAt(6);
 
 
-            //计算板子最大行列
+            //Calculate the maximum rows and columns of the board
             StringBuilder boardBuilder = new StringBuilder(gameState[0]);
             String[] boardRows = boardBuilder.toString().split("\\r?\\n");
             int boardMaxRow = boardRows.length;
@@ -365,24 +355,17 @@ public class RaceToTheRaft {
                 }
             }
 
-//            System.out.println(currentBoardState.boardToString());
 
-            //
-//            System.out.println();
             PlacedFireTile placedFireTile = new PlacedFireTile(fireTileString, placementRow, placementCol, flipped, orientation, boardMaxRow, boardMaxColumn);
 
 
-            // 更新 Board 字符串
+            // update Board string
             Set<Location> affectedSquares = new HashSet<>();
             Square[] readyOnBoard = placedFireTile.getSquares();
 
 
 
             for (int i = 0; i < readyOnBoard.length; i++) {
-//                System.out.println("i= "+ i);
-//                System.out.println("i<"+readyOnBoard.length);
-//                System.out.println("finalr = "+(readyOnBoard[i].getLocation().getRow()+ placementRow)+" "+readyOnBoard[i].getLocation().getColumn()+ placementCol);
-//                System.out.println(boardSquares.length);
 
                 int finalRow = readyOnBoard[i].getLocation().getRow()+ placementRow;
                 int finalCol = readyOnBoard[i].getLocation().getColumn()+ placementCol;
@@ -419,7 +402,7 @@ public class RaceToTheRaft {
      * You should both move the cat (updating the Board string) and also add the cat to the Exhausted Cats string, or
      * update that cat's reference in the Exhausted Cats string if it was already exhausted.
      *
-     * @author Yu Ma
+     * @author Yu Ma, Aditya Arora
      * @param gameState      An array representing the game state.
      * @param movementString A string representing the movement of a cat and the cards discarded to allow this move.
      *                       "B01100710Bm"
@@ -553,15 +536,10 @@ public class RaceToTheRaft {
      * A fire tile placement is valid if all the following conditions are met:
      * <p>
      * 1. No part of the fire tile is off-board
-     * 没有火超出边界
      * 2. No part of the fire tile overlaps fire
-     * 没有火覆盖火
      * 3. No part of the fire tile overlaps a cat
-     * 没有火覆盖猫
      * 4. No part of the fire tile overlaps part of a Raft card (any of the 8 squares surrounding the `o` state)
-     * 没有火覆盖木筏
      * 5. The Fire tile is orthogonally adjacent to another fire square.
-     * 火和火临近
      * </p>
      *
      * @param gameState       An array representing the gameState
@@ -569,23 +547,22 @@ public class RaceToTheRaft {
      * @return True if the placement is valid, otherwise false.
      */
     public static boolean isPlacementValid(String[] gameState, String placementString) {
-        // 解析放置字符串,确定是卡片放置还是火焰块放置
+        // Parses the placement string to determine if it is a card placement or a flame placement.
         if (Character.isLetter(placementString.charAt(1)) && Character.isLetter(placementString.charAt(6))) {
-            // 卡片放置
+            // Card Placement
             int row = Integer.parseInt(placementString.substring(2, 4));
             int col = Integer.parseInt(placementString.substring(4, 6));
             char orientation = placementString.charAt(6);
 
-            // 创建 PlacedCard 对象
             String[] cardData = new String[]{Utility.DECK_A[placementString.charAt(1) - 'a']};
             PlacedCard card = new PlacedCard(cardData[0], orientation, row, col);
 
-            // 检查卡片是否超出棋盘边界
+            // Check that the cards are not beyond the board boundaries
             if (row < 0 || row + 2 >= boardLength(gameState[0]) || col < 0 || col + 2 >= boardLength(gameState[0])) {
                 return false;
             }
 
-            // 检查卡片是否与火焰、猫或筏子卡片重叠
+            // Check that the cards don't overlap with flame, cat or raft cards
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     int boardRow = row + i;
@@ -600,14 +577,13 @@ public class RaceToTheRaft {
             return true;
 
         } else {
-            // 火焰块放置
+            // fire Placement
             int row = Integer.parseInt(placementString.substring(1, 3));
             int col = Integer.parseInt(placementString.substring(3, 5));
             boolean flipped = placementString.charAt(5) == 'T';
             char orientation = placementString.charAt(6);
 
-            // 解析 placement string
-//            System.out.println("放置命令 " + placementString);
+            // evaluate placement string
             char fireID = placementString.charAt(0);
             String fileBag="abcdefghigklmnopqrstuvwxyzABCDE";
 
@@ -618,12 +594,9 @@ public class RaceToTheRaft {
             if (fireIDIndex < 0 || fireIDIndex >= Utility.FIRE_TILES.length) {
                 throw new IllegalArgumentException("Invalid fireID: " + fireID);
             }
-//            System.out.println("fireID: " + fireID + ", fireIDIndex: " + fireIDIndex);
             int placementRow = Integer.parseInt(placementString.substring(1, 3)); // placement placementRow
             int placementCol = Integer.parseInt(placementString.substring(3, 5));
-//            System.out.println("fireTileString: " + fireTileString);// placement placementCol
-//            System.out.println("placementRow: " + placementRow + ", placementCol: " + placementCol + ", flipped: " + flipped + ", orientation: " + orientation);
-            // 计算板子最大行列
+            // Calculate the maximum rows and columns of the board
             StringBuilder boardBuilder = new StringBuilder(gameState[0]);
             String[] boardRows = boardBuilder.toString().split("\\r?\\n");
             int boardMaxRow = boardRows.length;
@@ -644,7 +617,6 @@ public class RaceToTheRaft {
 
             currentBoardState.setSquares(boardSquares);
 
-            // 创建 PlacedFireTile 对象
             PlacedFireTile fireTile = new PlacedFireTile(fireTileString, placementRow, placementCol, flipped, orientation, boardMaxRow, boardMaxColumn);
             for (Square square : fireTile.getSquares()) {
             int boardRow = square.getLocation().getRow() + placementRow;
@@ -654,19 +626,16 @@ public class RaceToTheRaft {
             }}
 
 
-            // 检查火焰块是否超出棋盘边界
+            // Check that the flame block does not extend beyond the board boundary
             for (Square square : fireTile.getSquares()) {
                 int boardRow = square.getLocation().getRow()+placementRow;
                 int boardCol = square.getLocation().getColumn()+placementCol;
-//                System.out.println("Checking square at row " + boardRow + ", col " + boardCol);
-//                System.out.println("Checking square at maxrow " + boardMaxRow + ", maxcol " + boardMaxColumn);
                 if (boardRow < 0 || boardRow >= boardMaxRow || boardCol < 0 || boardCol >= boardMaxColumn) {
-//                    System.out.println("Square out of bounds: row " + boardRow + ", col " + boardCol);
                     throw new IndexOutOfBoundsException("Square out of bounds: row " + boardRow + ", col " + boardCol);
                 }
             }
 
-            // 检查火焰块是否与火焰、猫或筏子卡片重叠
+            // Check that the flame block doesn't overlap with the flame, cat or raft cards
             for (Square square : fireTile.getSquares()) {
                 int boardRow = square.getLocation().getRow()+placementRow;
                 int boardCol = square.getLocation().getColumn()+placementCol;
@@ -676,7 +645,7 @@ public class RaceToTheRaft {
                 }
             }
 
-            // 检查火焰块是否与现有火焰正交相邻
+            // Check that the flame block is orthogonally adjacent to the existing flame
             boolean isAdjacent = false;
             for (Square square : fireTile.getSquares()) {
                 int boardRow = square.getLocation().getRow()+placementRow;
@@ -714,7 +683,7 @@ public class RaceToTheRaft {
      * @return True if the cat movement is valid, otherwise false
      */
     public static boolean isCatMovementValid(String[] gameState, String catMovementString) {
-        // 解析猫移动字符串
+        // Parsing cat movement strings
         char catColor = catMovementString.charAt(0);
         int startRow = Integer.parseInt(catMovementString.substring(1, 3));
         int startCol = Integer.parseInt(catMovementString.substring(3, 5));
@@ -725,7 +694,7 @@ public class RaceToTheRaft {
 
         if (endRow < 0 || endRow >= theBoard.getSquares().length ||  endCol < 0 || endCol >= theBoard.getSquares()[0].length ) {
             return false;
-        }//越界
+        }//cross-border
 
         if (gameState[3].contains(catMovementString.substring(0,5)) && move.length<3) {return false;}
         String[] hands=gameState[2].split("(?=\\p{Upper})");
@@ -736,12 +705,12 @@ public class RaceToTheRaft {
             }
         }
 
-        // 检查终点位置是否与猫的颜色匹配
+        // Check that the end position matches the colour of the cat
         if (theBoard.squares[endRow][endCol].colour.toChar()!= Character.toLowerCase(catColor)) {
             return false;
         }
 
-        // 使用广度优先搜索(BFS)检查是否存在一条由相同颜色的方块组成的路径,不包括对角线移动
+        // Use breadth-first search (BFS) to check if there is a path made up of squares of the same colour, excluding diagonal shifts
         int rows = boardLength(gameState[0]);
         int cols = rows;
 
@@ -783,17 +752,6 @@ public class RaceToTheRaft {
      * Card placement:
      * 1. If after placing this card, there are no more fire tiles left in the bag (the game is lost).
      * </p>
-     * * 火砖放置:
-     * * 1. 如果这个放置动作无效,而且没有其他位置可以有效地放置这个火砖,那么游戏就输了。
-     * *
-     * * 2. 如果放置这个火砖会导致任何一只猫无法到达筏子,那么游戏就输了。
-     * * <p>
-     * * 猫的移动:
-     * * 1. 如果在移动这只猫之后,所有的猫都安全地到达了筏子,那么游戏就赢了。
-     * * <p>
-     * * 卡片放置:
-     * * 1. 如果在放置这张卡片之后,袋子里没有剩余的火砖,那么游戏就输了。
-     * * </p>
      *
      * @param gameState An array of strings representing the game state
      * @param action    A string representing a fire tile placement, cat movement or card placement action.
@@ -802,14 +760,14 @@ public class RaceToTheRaft {
     public static boolean isGameOver(String[] gameState, String action) {
 
         if (gameState == null || gameState.length == 0 || gameState[0] == null || gameState[0].isEmpty()) {
-            return false; // 游戏状态为空或无效,视为游戏未结束
+            return false; // If the game state is empty or invalid, the game is considered unfinished.
         }
         theBoard=new TheBoard(gameState[0]);
-        // 解析操作字符串
+        // Parse the manipulated string
         if (action.length() == 7 && Character.isLetter(action.charAt(0)) && Character.isLetter(action.charAt(6))) {
-            // 火焰块放置
+            // Flame Block Placement
             if (!isPlacementValid(gameState, action)) {
-                // 如果当前放置无效,检查是否还有其他有效放置位置
+                // If the current placement is not valid, check if there are other valid placements.
                 boolean hasValidPlacement = false;
                 for (char fireID : gameState[4].toCharArray()) {
                     for (int row = 0; row < theBoard.rows; row++) {
@@ -831,15 +789,15 @@ public class RaceToTheRaft {
                     if (hasValidPlacement) break;
                 }
                 if (!hasValidPlacement) {
-                    return true; // 游戏结束,放置火焰块无效且没有其他有效放置位置
+                    return true; // Game over, the placement of the flame block is invalid and there are no other valid placements.
                 }
             }
-            // 检查放置火焰块后是否有猫无法到达筏子
+            // Check if a cat can't reach the raft after placing a flame block
             String[] updatedGameState = applyPlacement(gameState, action);
             theBoard=new TheBoard(updatedGameState[0]);
 
             if (updatedGameState == null || updatedGameState.length == 0 || updatedGameState[0] == null || updatedGameState[0].isEmpty()) {
-                return false; // 更新后的游戏状态为空或无效,视为游戏未结束
+                return false; // If the updated game status is empty or invalid, the game is considered unfinished.
             }
             for (int catRow = 0; catRow < boardLength(updatedGameState[0]); catRow++) {
                 for (int catCol = 0; catCol < boardLength(updatedGameState[0]); catCol++) {
@@ -849,7 +807,7 @@ public class RaceToTheRaft {
                         for (int raftRow = 0; raftRow < boardLength(updatedGameState[0]); raftRow++) {
                             for (int raftCol = 0; raftCol < boardLength(updatedGameState[0]); raftCol++) {
                                 if (updatedGameState[0].charAt(raftRow * (boardLength(updatedGameState[0]) + 1) + raftCol) == 'o') {
-                                    // 使用广度优先搜索(BFS)检查是否存在有效路径
+                                    // Use breadth-first search (BFS) to check for the existence of valid paths
                                     canReachRaft = hasPathToRaft(updatedGameState[0], catRow, catCol, raftRow, raftCol);
                                     if (canReachRaft) break;
                                 }
@@ -857,18 +815,18 @@ public class RaceToTheRaft {
                             if (canReachRaft) break;
                         }
                         if (!canReachRaft) {
-                            return true; // 游戏结束,某只猫无法到达筏子
+                            return true; // Game over. Some cat can't get to the raft.
                         }
                     }
                 }
             }
         } else if (action.length() == 10 || action.length() == 12) {
-            // 猫移动
+            // cat moves
             String[] updatedGameState = moveCat(gameState, action);
             if (updatedGameState == null || updatedGameState.length == 0 || updatedGameState[0] == null || updatedGameState[0].isEmpty()) {
-                return false; // 更新后的游戏状态为空或无效,视为游戏未结束
+                return false; // If the updated game status is empty or invalid, the game is considered unfinished.
             }
-            // 检查所有猫是否都到达了筏子
+            // Check that all the cats have arrived at the raft
             boolean allCatsOnRaft = true;
             for (int catRow = 0; catRow < boardLength(updatedGameState[0]); catRow++) {
                 for (int catCol = 0; catCol < boardLength(updatedGameState[0]); catCol++) {
@@ -895,21 +853,21 @@ public class RaceToTheRaft {
                 if (!allCatsOnRaft) break;
             }
             if (allCatsOnRaft) {
-                return true; // 游戏结束,所有猫都到达了筏子
+                return true; // Game over. All the cats have reached the raft.
             }
         } else if (action.length() == 7 && Character.isLetter(action.charAt(0)) && Character.isLetter(action.charAt(1)) && Character.isLetter(action.charAt(6))) {
-            // 卡片放置
+            // card palcement
             String[] updatedGameState = applyPlacement(gameState, action);
             if (updatedGameState == null || updatedGameState.length < 5 || updatedGameState[4] == null) {
-                return false; // 更新后的游戏状态为空或无效,视为游戏未结束
+                return false; // If the updated game status is empty or invalid, the game is considered unfinished.
             }
-            // 检查火焰块背包是否为空
+            // Check if the flame block backpack is empty
             if (updatedGameState[4].isEmpty()) {
-                return true; // 游戏结束,火焰块背包为空
+                return true; // Game over. Flaming block backpack is empty.
             }
         }
 
-        return false; // 游戏未结束
+        return false; // The game is not over.
     }
 
     private static boolean hasPathToRaft(String boardString, int startRow, int startCol, int endRow, int endCol) {
